@@ -9,12 +9,7 @@ State::~State(){
     objectArray.clear();
 }
 
-void State::Update(){
-
-}
-
 void State::Render(){
-
 }
 
 void State::AddObject(GameObject* ptr) {
@@ -51,7 +46,6 @@ void State::RenderArray(){
     for (unsigned i = 0; i < objectArray.size(); i++) {
         objectArray[i]->Render();
     }
-
 }
 
 void State::SortArray(){
@@ -72,8 +66,7 @@ void State::SortArray(){
     }
 }
 
-
-//void State::PushInventario(StateData::Item item){
+//void State::State_00_Title(StateData::Item item){
 //
 //}
 

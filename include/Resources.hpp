@@ -19,6 +19,7 @@ class Resources
         static void ClearMusic();
         static void ClearSounds();
         static void ClearFonts();
+        static void ClearResources();
     private:
         static std::unordered_map<std::string, SDL_Texture*> imageTable;
         static std::unordered_map<std::string, Mix_Music*> musicTable;

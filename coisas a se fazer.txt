@@ -1,4 +1,12 @@
 fullscreen
 
 State::PushInventario
-descomentar linha 9 e 15 em State.hpp (criar StateData)
+
+descomentar 
+	linha 9 e 15 em State.hpp (criar StateData)
+	StateTitle (cpp e hpp)
+	State Historia l. 329
+
+
+diferenças
+	eles usam music.Stop(); e eu music.Stop(0);

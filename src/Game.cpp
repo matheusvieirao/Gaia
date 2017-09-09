@@ -72,14 +72,18 @@ Game::~Game() {
     if(storedState != nullptr){
         delete storedState;
     }
-    for(unsigned i = 0; i < stateStack.size(); i++){
-       stateStack.pop();
+    while(!stateStack.empty()) {
+        stateStack.pop();
     }
+    Resources::ClearResources();
     instance = nullptr;
-	IMG_Quit();
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
+    IMG_Quit();
+    Mix_CloseAudio();
+    Mix_Quit();
+    TTF_Quit();
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 }
 
 Game& Game::GetInstance(){
@@ -91,12 +95,7 @@ SDL_Renderer* Game::GetRenderer(){
 }
 
 State& Game::GetCurrentState(){
-    if(storedState == nullptr){
-        return(*stateStack.top().get());
-    }
-    else{
-        return(*storedState);
-    }
+    return *stateStack.top();
 }
 
 void Game::Push(State* state){
@@ -105,31 +104,35 @@ void Game::Push(State* state){
 
 void Game::Run(){
     if(storedState != nullptr){
-        stateStack.emplace(storedState);
+        stateStack.push(std::unique_ptr<State>(storedState));
         storedState = nullptr;
-        while(!stateStack.empty() && !stateStack.top()->QuitRequested()) {
+
+        while(!stateStack.empty() && !GetCurrentState().QuitRequested()) {
             CalculateDeltaTime();
+            InputManager::GetInstance().Update();
+            GetCurrentState().Update(dt);
+            GetCurrentState().Render();
+            SDL_RenderPresent(renderer);
             //std::cout << "______________\n"<<dt<<std::endl;
 
-            if(stateStack.top()->PopRequested()){
-                stateStack.top()->Pause();
+            if(GetCurrentState().PopRequested()){
+                GetCurrentState().Pause();
                 stateStack.pop();
+                //Resources::ClearResources();
                 if(storedState != nullptr){
-                    stateStack.emplace(storedState);
+                    stateStack.push(std::unique_ptr<State>(storedState));
                     storedState = nullptr;
                 }
-                stateStack.top()->Resume();
-            }
-            else{
-                InputManager::GetInstance().Update();
-                stateStack.top()->Update();
-                stateStack.top()->Render();
-                SDL_RenderPresent(renderer);
+                if(!stateStack.empty())
+                    GetCurrentState().Resume();
             }
 
             int dt_mili = SDL_GetTicks() - frameStart;
             if(dt_mili < 33){
                 SDL_Delay(33-dt_mili);
+            }
+            else {
+                SDL_Delay(2);
             }
         }
     }
@@ -157,7 +160,7 @@ int Game::GetWindowHeight(){
 }
 
 bool Game::IsStateStackEmpty(){
-    return(stateStack.empty() || (stateStack.size()==1 && stateStack.top()->PopRequested()));
+    return(stateStack.empty() || (stateStack.size()==1 && GetCurrentState().PopRequested()));
 }
 
 void Game::AddErro(int num, std::string local){

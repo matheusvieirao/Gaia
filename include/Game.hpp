@@ -31,6 +31,8 @@
 class Game {
     public:
         Game(std::string title, int width, int height);
+        Game(Game&&) = default;
+        Game& operator=(Game&&) = default;
         ~Game();
         static Game& GetInstance();
         SDL_Renderer* GetRenderer();

@@ -12,12 +12,12 @@ class State{
     public:
         State();
         virtual ~State();
-        virtual void Update() = 0;
+        virtual void Update(float dt) = 0;
         virtual void Render() = 0;
         virtual void Pause() = 0;
         virtual void Resume() = 0;
         virtual bool Is(std::string type) = 0;
-        //virtual void PushInventario(StateData::Item item);
+        //virtual void State_00_Title(StateData::Item item);
         virtual void AddObject(GameObject* ptr);
         virtual TileMap* GetTileMap();
         bool PopRequested();

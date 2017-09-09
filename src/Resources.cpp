@@ -116,3 +116,11 @@ void Resources::ClearFonts(){
     }
 }
 
+void Resources::ClearResources(){
+    ClearImages();
+    ClearMusic();
+    ClearSounds();
+    ClearFonts();
+}
+
+

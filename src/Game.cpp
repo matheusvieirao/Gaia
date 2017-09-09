@@ -5,7 +5,7 @@
 #include "SDL2/SDL_ttf.h"
 #include "SDL2/SDL.h"
 #include "Game.hpp"
-#include "StateIndustriaT.hpp"
+//#include "StateIndustriaT.hpp"
 #include "InputManager.hpp"
 #include "Resources.hpp"
 #include "Color.hpp"

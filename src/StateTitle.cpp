@@ -1,13 +1,13 @@
 #include "StateTitle.hpp"
 #include "Game.hpp"
-#include "StateIndustriaT.hpp"
-#include "StateIndustriaSS.hpp"
+//#include "StateIndustriaT.hpp"
+//#include "StateIndustriaSS.hpp"
 #include "InputManager.hpp"
 #include "Color.hpp"
 #include "Game.hpp"
 #include "Resources.hpp"
-#include "StateData.hpp"
-#include "StateHistoria.hpp"
+//#include "StateData.hpp"
+//#include "StateHistoria.hpp"
 
 //ç = \u00e7
 StateTitle::StateTitle():pressSpace("font/URW Gothic L Demi.ttf", 50, BLENDED, "Pressione espaco para jogar", Color::white, 0, 0){
@@ -111,7 +111,7 @@ void StateTitle::Update(){
     if(opcao1 == 1 || opcao1 == 0){
         if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
             //inicio fase
-            Game::GetInstance().Push(new StateHistoria(1));
+/////////////////////////////            Game::GetInstance().Push(new StateHistoria(1));
             popRequested=true;
         }
     }
@@ -119,98 +119,104 @@ void StateTitle::Update(){
         if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
             if(opcao2 == 1){
                 //antes do encurralamento
-                Game::GetInstance().Push(new StateHistoria(2));
+/////////////////////////////                Game::GetInstance().Push(new StateHistoria(2));
 
                 popRequested = true;
             }
             else if(opcao2 == 2){
-                //antes da fala corredor SS
-                data.gaia_t_pos_inicio_comodo = Vec2(14, 16);
-                data.gaia_comodo = 4;
-                data.gaia_hp = 10;
-                data.p_deposito = false;
-                data.p_corredor2 = false;
-                data.esteira = false;
-                data.pegou_chave_rato = false;
-                data.ja_ficou_encurralada = 3;
-                data.corre = false;
-                data.ja_pressionou_f = false;
-                data.pegou_chicote = false;
-                data.fala_velho = false;
-                Game::GetInstance().Push(new StateIndustriaSS(data));
+/////////////////////////////                //antes da fala corredor SS
+                // data.gaia_t_pos_inicio_comodo = Vec2(14, 16);
+                // data.gaia_comodo = 4;
+                // data.gaia_hp = 10;
+                // data.p_deposito = false;
+                // data.p_corredor2 = false;
+                // data.esteira = false;
+                // data.pegou_chave_rato = false;
+                // data.ja_ficou_encurralada = 3;
+                // data.corre = false;
+                // data.ja_pressionou_f = false;
+                // data.pegou_chicote = false;
+                // data.fala_velho = false;
+                // Game::GetInstance().Push(new StateIndustriaSS(data));
 
                 popRequested = true;
             }
             else if(opcao2 == 3){
-                //depois de pegar o cartao
-                data.gaia_t_pos_inicio_comodo = Vec2(25, 16);
-                data.gaia_comodo = 4;
-                data.gaia_hp = 10;
-                data.corre = false;
-                data.ja_ficou_encurralada = 3;
-                data.fala_velho = true;
-                data.pegou_chave_rato = true;
-                data.ja_pressionou_f = true;
-                data.esteira = true;
-                data.p_deposito = true;
-                data.p_corredor2 = true;
-                data.pegou_chicote = false;
-                data.inventario.push_back(StateData::CHAVE_ENERGIA);
-                data.inventario.push_back(StateData::CARTAO_ACESSO);
-                Game::GetInstance().Push(new StateIndustriaSS(data));
+   /////////////////////////////             //depois de pegar o cartao
+                // data.gaia_t_pos_inicio_comodo = Vec2(25, 16);
+                // data.gaia_comodo = 4;
+                // data.gaia_hp = 10;
+                // data.corre = false;
+                // data.ja_ficou_encurralada = 3;
+                // data.fala_velho = true;
+                // data.pegou_chave_rato = true;
+                // data.ja_pressionou_f = true;
+                // data.esteira = true;
+                // data.p_deposito = true;
+                // data.p_corredor2 = true;
+                // data.pegou_chicote = false;
+                // data.inventario.push_back(StateData::CHAVE_ENERGIA);
+                // data.inventario.push_back(StateData::CARTAO_ACESSO);
+                // Game::GetInstance().Push(new StateIndustriaSS(data));
 
                 popRequested = true;
             }
             else if(opcao2 == 4){
-                //antes do encurralamento
-                data.gaia_t_pos_inicio_comodo.x = 15;
-                data.gaia_t_pos_inicio_comodo.y = 15;
-                data.gaia_comodo = 4;
-                data.gaia_hp = 10;
-                data.corre = false;
-                data.ja_ficou_encurralada = 0;
-                data.fala_velho = false;
-                data.pegou_chave_rato = false;
-                data.ja_pressionou_f = 0;
-                data.esteira = false;
-                data.p_corredor2 = false;
-                data.p_deposito = false;
-                data.pegou_chicote = false;
-                Game::GetInstance().Push(new StateIndustriaT(data));
+   /////////////////////////////             //antes do encurralamento
+                // data.gaia_t_pos_inicio_comodo.x = 15;
+                // data.gaia_t_pos_inicio_comodo.y = 15;
+                // data.gaia_comodo = 4;
+                // data.gaia_hp = 10;
+                // data.corre = false;
+                // data.ja_ficou_encurralada = 0;
+                // data.fala_velho = false;
+                // data.pegou_chave_rato = false;
+                // data.ja_pressionou_f = 0;
+                // data.esteira = false;
+                // data.p_corredor2 = false;
+                // data.p_deposito = false;
+                // data.pegou_chicote = false;
+                // Game::GetInstance().Push(new StateIndustriaT(data));
 
                 popRequested = true;
 
             }
             else if(opcao2 == 5){
                 //depois da fala corredor SS
-                data.gaia_t_pos_inicio_comodo = Vec2(25, 16);
-                data.gaia_comodo = 4;
-                data.gaia_hp = 10;
-                data.p_deposito = false;
-                data.p_corredor2 = true;
-                data.esteira = true;
-                data.pegou_chave_rato = true;
-                data.ja_ficou_encurralada = 3;
-                data.ja_pressionou_f = false;
-                data.corre = false;
-                data.pegou_chicote = false;
-                data.fala_velho = true;
-                data.inventario.push_back(StateData::CHAVE_ENERGIA);
-                data.inventario.push_back(StateData::CARTAO_ACESSO);
-                Game::GetInstance().Push(new StateIndustriaSS(data));
+ /////////////////////////////               // data.gaia_t_pos_inicio_comodo = Vec2(25, 16);
+                // data.gaia_comodo = 4;
+                // data.gaia_hp = 10;
+                // data.p_deposito = false;
+                // data.p_corredor2 = true;
+                // data.esteira = true;
+                // data.pegou_chave_rato = true;
+                // data.ja_ficou_encurralada = 3;
+                // data.ja_pressionou_f = false;
+                // data.corre = false;
+                // data.pegou_chicote = false;
+                // data.fala_velho = true;
+                // data.inventario.push_back(StateData::CHAVE_ENERGIA);
+                // data.inventario.push_back(StateData::CARTAO_ACESSO);
+                // Game::GetInstance().Push(new StateIndustriaSS(data));
 
                 popRequested = true;
             }
         }
     }
 
-    if(opcao1 == 2){
+    else if(opcao1 == 2){
         if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
             opcao1 = -1;
             if(!menu_continua){
                 opcao2 = 0;
                 menu_continua = true;
             }
+        }
+    }
+
+    else if(opcao1 == 3){
+        if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
+            quitRequested = true;
         }
     }
 

@@ -1,1 +1,4 @@
 fullscreen
+
+State::PushInventario
+descomentar linha 9 e 15 em State.hpp (criar StateData)

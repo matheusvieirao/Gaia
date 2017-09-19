@@ -71,7 +71,7 @@ State_00_Title::State_00_Title():pressSpace("font/URW Gothic L Demi.ttf", 50, BL
         music.Play(-1);
     }
 
-    opcao1 = 0;
+    opcao1 = 1;
     opcao2 = 1;
     opcao2_antiga = 1;
     menu_continua = false;
@@ -169,7 +169,7 @@ void State_00_Title::Update(float dt){
         if(opcao1<1){
             opcao1 = 3;
         }
-        
+
         if(menu_continua){
             if(opcao2 == 1 || opcao2 == 4){
                 opcao2_antiga = opcao2;
@@ -197,9 +197,7 @@ void State_00_Title::Update(float dt){
         timer.Restart();
     }
 
-    if(In.KeyPress(SDLK_ESCAPE) || In.QuitRequested()){
-        quitRequested = true;
-    }
+    
     if(!menu_continua){
         if(opcao1 == 1 || opcao1 == 0){
             if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
@@ -220,6 +218,9 @@ void State_00_Title::Update(float dt){
             if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
                 quitRequested = true;
             }
+        }
+        if(In.KeyPress(SDLK_ESCAPE) || In.QuitRequested()){
+            quitRequested = true;
         }
     }
     else {
@@ -308,6 +309,15 @@ void State_00_Title::Update(float dt){
 
                 popRequested = true;
             }
+        }
+        if(In.QuitRequested()){
+            quitRequested = true;
+        }
+        if(In.KeyPress(SDLK_ESCAPE)){
+            opcao1 = 1;
+            opcao2_antiga = 1;
+            opcao2 = 1;
+            menu_continua = false;
         }
     }
 }

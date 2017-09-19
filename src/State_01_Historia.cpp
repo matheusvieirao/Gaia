@@ -159,13 +159,9 @@ void State_01_Historia::Update(float dt){
     }
 
     if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
-        track++;
-    }
-
-
-    if(In.KeyPress(SDLK_SPACE)){
         if(fala.IsOpen()){
             fala.Stop();
+            tempo_falas.Restart();
         }
         track++;
     }
@@ -193,7 +189,7 @@ void State_01_Historia::Render(){
             case 2:
                 sp_2p1.Render(0,0,0);
                 if(tempo_falas.Get() > 0.3){
-                    track = 4;
+                    track = 3;
                     tempo_falas.Restart();
                 }
                 break;
@@ -201,25 +197,21 @@ void State_01_Historia::Render(){
             case 3:
                 sp_2p2.Render(0,0,0);
                 if(Falar(0.1, "audio/fase1/004A - puts.wav")){
-                    track = 5;
+                    track = 4;
                 }
                 break;
 
             case 4:
                 sp_3p1.Render(0,0,0);
                 if(tempo_falas.Get() > 1.5){
-                    track = 6;
+                    track = 5;
                     tempo_falas.Restart();
                 }
                 break;
-
-
-
-            //sp_4p0.Open("img/cenas/cena-4.png");
             case 5:
                 sp_4p0.Render(0,0,0);
                 if(tempo_falas.Get() > 0.5){
-                    track = 7;
+                    track = 6;
                     tempo_falas.Restart();
                 }
                 break;
@@ -227,14 +219,14 @@ void State_01_Historia::Render(){
             case 6:
                 sp_4p1.Render(0,0,0);
                 if(Falar(0.1, "audio/fase1/005A - iae seu gg.wav")){
-                    track = 8;
+                    track = 7;
                 }
                 break;
 
             case 7:
                 sp_4p2.Render(0,0,0);
                 if(Falar(0.1, "audio/fase1/006G - bom dia.wav")){
-                    track = 9;
+                    track = 8;
                 }
                 break;
 
@@ -242,14 +234,14 @@ void State_01_Historia::Render(){
             case 8:
                 sp_4p3.Render(0,0,0);
                 if(Falar(0.1, "audio/fase1/007A - me ve um cafe.wav")){
-                    track = 10;
+                    track = 9;
                 }
                 break;
 
             case 9:
                 sp_4p4.Render(0,0,0);
                 if(Falar(0.1, "audio/fase1/008G - eh pra ja.wav")){
-                    track = 11;
+                    track = 10;
                 }
                 break;
 
@@ -257,14 +249,14 @@ void State_01_Historia::Render(){
             case 10:
                 sp_4p5.Render(0,0,0);
                 if(Falar(0.6, "audio/fase1/009X - dia foi puxado.wav")){
-                    track = 12;
+                    track = 11;
                 }
                 break;
 
             case 11:
                 sp_4p6.Render(0,0,0);
                 if(Falar(0.1, "audio/fase1/010Ya - puts serio como foi.wav")){
-                    track = 13;
+                    track = 12;
                 }
                 break;
 
@@ -272,14 +264,14 @@ void State_01_Historia::Render(){
             case 12:
                 sp_4p7.Render(0,0,0);
                 if(Falar(0.1, "audio/fase1/011X - mo correria.wav")){
-                    track = 14;
+                    track = 13;
                 }
                 break;
 
             case 13:
                 sp_5p1.Render(0,0,0);
                 if(tempo_falas.Get() > 0.5){
-                    track = 15;
+                    track = 14;
                     tempo_falas.Restart();
                 }
                 break;
@@ -287,27 +279,27 @@ void State_01_Historia::Render(){
             case 14:
                 sp_5p2.Render(0,0,0);
                 if(Falar(0.1, "audio/fase1/012Y - e agora jose.wav")){
-                    track = 16;
+                    track = 15;
                 }
                 break;
 
             case 15:
                 sp_5p3.Render(0,0,0);
                 if(Falar(0.1, "audio/fase1/013X - ja aconteceu antes.wav")){
-                    track = 17;
+                    track = 16;
                 }
                 break;
 
             case 16:
                 sp_5p4.Render(0,0,0);
                 if(Falar(1, "audio/fase1/014A - que loucura.wav")){
-                    track = 18;
+                    track = 17;
                 }
                 break;
 
             case 17:
                 if(tempo_falas.Get() > 1){
-                    track = 19;
+                    track = 18;
                 }
 
             case 18:

@@ -72,7 +72,8 @@ State_00_Title::State_00_Title():pressSpace("font/URW Gothic L Demi.ttf", 50, BL
     }
 
     opcao1 = 0;
-    opcao2 = 0;
+    opcao2 = 1;
+    opcao2_antiga = 1;
     menu_continua = false;
 }
 
@@ -81,22 +82,113 @@ void State_00_Title::Update(float dt){
 
     if(In.KeyPress(SDLK_DOWN)){
         opcao1++;
-        opcao2++;
         if(opcao1>3){
             opcao1 = 1;
         }
-        if(opcao2>5){
-            opcao2 = 1;
+
+        if(menu_continua){
+            if(opcao2 == 1 || opcao2 == 2){
+                opcao2_antiga = opcao2;
+                opcao2 = 3;
+            }
+            else if(opcao2 == 3) {
+                if (opcao2_antiga == 1 || opcao2_antiga == 5){
+                    opcao2_antiga = opcao2;
+                    opcao2 = 4;
+                }
+                else {
+                    opcao2_antiga = opcao2;
+                    opcao2 = 5;
+                }
+            }
+            else { // 4 ou 5
+                opcao2_antiga = opcao2;
+                opcao2 = opcao2 - 3;
+            }
         }
     }
+
     if(In.KeyPress(SDLK_UP)){
         opcao1--;
-        opcao2--;
         if(opcao1<1){
             opcao1 = 3;
         }
-        if(opcao2<1){
-            opcao2 = 5;
+
+        if(menu_continua){
+            if(opcao2 == 1 || opcao2 == 2){
+                opcao2_antiga = opcao2;
+                opcao2 = opcao2 + 3;
+            }
+            else if(opcao2 == 3) {
+                if (opcao2_antiga == 1 || opcao2_antiga == 5){
+                    opcao2_antiga = opcao2;
+                    opcao2 = 2;
+                }
+                else {
+                    opcao2_antiga = opcao2;
+                    opcao2 = 1;
+                }
+            }
+            else { // 4 ou 5
+                opcao2_antiga = opcao2;
+                opcao2 = 3;
+            }
+        }
+    }
+
+    if(In.KeyPress(SDLK_RIGHT)){
+        opcao1++;
+        if(opcao1>3){
+            opcao1 = 1;
+        }
+
+        if(menu_continua){
+            if(opcao2 == 1 || opcao2 == 4){
+                opcao2_antiga = opcao2;
+                opcao2 = 3;
+            }
+            else if(opcao2 == 3) {
+                if (opcao2_antiga == 1 || opcao2_antiga == 5){
+                    opcao2_antiga = opcao2;
+                    opcao2 = 2;
+                }
+                else {
+                    opcao2_antiga = opcao2;
+                    opcao2 = 5;
+                }
+            }
+            else { // 2 ou 5
+                opcao2_antiga = opcao2;
+                opcao2--;
+            }
+        }
+    }
+
+    if(In.KeyPress(SDLK_LEFT)){
+        opcao1--;
+        if(opcao1<1){
+            opcao1 = 3;
+        }
+        
+        if(menu_continua){
+            if(opcao2 == 1 || opcao2 == 4){
+                opcao2_antiga = opcao2;
+                opcao2++;
+            }
+            else if(opcao2 == 3) {
+                if (opcao2_antiga == 2 || opcao2_antiga == 4){
+                    opcao2_antiga = opcao2;
+                    opcao2 = 1;
+                }
+                else {
+                    opcao2_antiga = opcao2;
+                    opcao2 = 4;
+                }
+            }
+            else { // 2 ou 5
+                opcao2_antiga = opcao2;
+                opcao2 = 3;
+            }
         }
     }
 
@@ -108,14 +200,29 @@ void State_00_Title::Update(float dt){
     if(In.KeyPress(SDLK_ESCAPE) || In.QuitRequested()){
         quitRequested = true;
     }
-    if(opcao1 == 1 || opcao1 == 0){
-        if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
-            //inicio fase
-            Game::GetInstance().Push(new State_01_Historia(1));
-            popRequested=true;
+    if(!menu_continua){
+        if(opcao1 == 1 || opcao1 == 0){
+            if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
+                //inicio fase
+                Game::GetInstance().Push(new State_01_Historia(1));
+                popRequested=true;
+            }
+        }
+        else if(opcao1 == 2){
+            if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
+                opcao1 = -1;
+                if(!menu_continua){
+                    menu_continua = true;
+                }
+            }
+        }
+        else if(opcao1 == 3){
+            if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
+                quitRequested = true;
+            }
         }
     }
-    if(menu_continua){
+    else {
         if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
             if(opcao2 == 1){
                 //antes do encurralamento
@@ -203,23 +310,6 @@ void State_00_Title::Update(float dt){
             }
         }
     }
-
-    else if(opcao1 == 2){
-        if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
-            opcao1 = -1;
-            if(!menu_continua){
-                opcao2 = 0;
-                menu_continua = true;
-            }
-        }
-    }
-
-    else if(opcao1 == 3){
-        if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
-            quitRequested = true;
-        }
-    }
-
 }
 
 void State_00_Title::Render(){

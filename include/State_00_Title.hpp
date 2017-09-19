@@ -27,8 +27,9 @@ class State_00_Title : public State{
         Sprite cont3;
         Sprite cont4;
         Sprite cont5;
-        int opcao1;
-        int opcao2;
+        int opcao1; //opcao do menu inicial
+        int opcao2; //opcao do menu de continue
+        int opcao2_antiga;
         bool menu_continua;
         Text pressSpace;
         Timer timer;

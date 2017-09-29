@@ -96,24 +96,28 @@ void Resources::ClearImages(){
     for (auto& x: imageTable) {
         SDL_DestroyTexture(x.second);
     }
+    imageTable.clear();
 }
 
 void Resources::ClearMusic(){
     for (auto& x: musicTable) {
         Mix_FreeMusic(x.second);
     }
+    musicTable.clear();
 }
 
 void Resources::ClearSounds(){
     for (auto& x: soundTable) {
         Mix_FreeChunk(x.second);
     }
+    soundTable.clear();
 }
 
 void Resources::ClearFonts(){
     for (auto& x: fontTable) {
         TTF_CloseFont(x.second);
     }
+    fontTable.clear();
 }
 
 void Resources::ClearResources(){
@@ -122,5 +126,3 @@ void Resources::ClearResources(){
     ClearSounds();
     ClearFonts();
 }
-
-

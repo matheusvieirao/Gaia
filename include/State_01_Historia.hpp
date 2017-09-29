@@ -6,6 +6,7 @@
 //#include "StateData.hpp"
 #include "Sound.hpp"
 #include "Timer.hpp"
+#include "Resources.hpp"
 #include <string>
 
 class State_01_Historia : public State{

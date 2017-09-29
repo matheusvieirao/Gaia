@@ -11,6 +11,7 @@
 class State_00_Title : public State{
     public:
         State_00_Title();
+        ~State_00_Title();
         void Update(float dt);
         void Render();
         void Pause();

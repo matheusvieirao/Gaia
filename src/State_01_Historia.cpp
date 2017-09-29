@@ -48,18 +48,20 @@ void State_01_Historia::Update(float dt){
 
     tempo_falas.Update(dt);
 
-
-    if(In.KeyPress(SDLK_ESCAPE)){
-        popRequested = true;
-        Game::GetInstance().Push(new State_00_Title());
-    }
-
     if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
         if(fala.IsOpen()){
             fala.Stop();
             tempo_falas.Restart();
         }
         track++;
+    }
+    if(In.KeyPress(SDLK_ESCAPE)){
+        popRequested = true;
+        Resources::ClearResources();
+        Game::GetInstance().Push(new State_00_Title());
+    }
+    if(In.QuitRequested()){
+        quitRequested = true;
     }
 }
 

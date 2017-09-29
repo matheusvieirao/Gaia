@@ -26,7 +26,6 @@ State_00_Title::State_00_Title():pressSpace("font/URW Gothic L Demi.ttf", 50, BL
     menu.SetScaleX(scale_x);
     menu.SetScaleY(scale_y);
 
-
     menu1.Open("img/menu_title/menu2.png");
     menu1.SetScaleX(scale_x);
     menu1.SetScaleY(scale_y);
@@ -63,8 +62,6 @@ State_00_Title::State_00_Title():pressSpace("font/URW Gothic L Demi.ttf", 50, BL
     cont5.SetScaleX(scale_x);
     cont5.SetScaleY(scale_y);
 
-
-
     timer.Restart();
     if(!music.IsOpen()){
         music.Open("audio/musicas/musica title theme.ogg");
@@ -75,6 +72,10 @@ State_00_Title::State_00_Title():pressSpace("font/URW Gothic L Demi.ttf", 50, BL
     opcao2 = 1;
     opcao2_antiga = 1;
     menu_continua = false;
+}
+
+State_00_Title::~State_00_Title(){
+    objectArray.clear();
 }
 
 void State_00_Title::Update(float dt){
@@ -202,6 +203,7 @@ void State_00_Title::Update(float dt){
         if(opcao1 == 1 || opcao1 == 0){
             if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
                 //inicio fase
+                Resources::ClearResources();
                 Game::GetInstance().Push(new State_01_Historia(1));
                 popRequested=true;
             }

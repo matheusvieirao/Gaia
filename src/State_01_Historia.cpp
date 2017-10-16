@@ -1,8 +1,4 @@
 #include "State_01_Historia.hpp"
-#include "InputManager.hpp"
-#include "Game.hpp"
-//#include "StateIndustriaT.hpp"
-#include "State_00_Title.hpp"
 
 State_01_Historia::State_01_Historia(int parte){
     this->parte = parte;
@@ -188,19 +184,8 @@ void State_01_Historia::Render(){
                 }
 
             case 18:
-                // data.gaia_t_pos_inicio_comodo = Vec2(47, 15);
-                // data.gaia_comodo = 4;
-                // data.gaia_hp = 10;
-                // data.corre = true;
-                // data.ja_ficou_encurralada = 0;
-                // data.fala_velho = false;
-                // data.pegou_chave_rato = false;
-                // data.ja_pressionou_f = 0;
-                // data.esteira = false;
-                // data.p_corredor2 = false;
-                // data.p_deposito = false;
-                // data.pegou_chicote = false;
-                // Game::GetInstance().Push(new StateIndustriaT(data));
+                data.Carregar("inicio jogo");
+                Game::GetInstance().Push(new State_02_IndustriaT(data));
 
                 popRequested = true;
                 break;

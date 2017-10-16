@@ -6,7 +6,7 @@
 #include "Text.hpp"
 #include "Timer.hpp"
 #include "Music.hpp"
-//#include "StateData.hpp"
+#include "StateData.hpp"
 
 class State_00_Title : public State{
     public:
@@ -35,7 +35,7 @@ class State_00_Title : public State{
         Text pressSpace;
         Timer timer;
         Music music;
-        //StateData data;
+        StateData data;
 };
 
 

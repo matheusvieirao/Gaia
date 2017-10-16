@@ -228,8 +228,8 @@ void State_00_Title::Update(float dt){
     else {
         if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
             if(opcao2 == 1){
-                //antes do encurralamento
-/////////////////////////////                Game::GetInstance().Push(new State_01_Historia(2));
+                data.Carregar("inicio jogo");
+                Game::GetInstance().Push(new State_02_IndustriaT(data));
 
                 popRequested = true;
             }

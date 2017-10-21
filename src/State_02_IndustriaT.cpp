@@ -25,7 +25,6 @@ State_02_IndustriaT::State_02_IndustriaT(StateData data):bg("img/background.jpg"
     pause1.SetScaleX((float)Game::GetInstance().GetWindowWidth()/pause1.GetWidth());
     pause1.SetScaleY((float)Game::GetInstance().GetWindowHeight()/pause1.GetHeight());
 
-
     num_fala = 0;
     track = 0;
     estado = JOGO;
@@ -257,7 +256,7 @@ void State_02_IndustriaT::Update(float dt){
             if(track == 0){
                 if(tempo_falas.Get() > 0.3){
                     if(!fala.IsOpen()){
-                        fala.Open("audio/fase2/001.wav");
+                        fala.Open("audio/02_industria/001.wav");
                         fala.Play(0);
                     }
                     if(!fala.IsPlaying()){
@@ -270,7 +269,7 @@ void State_02_IndustriaT::Update(float dt){
             if(track == 1){
                 if(tempo_falas.Get() > 0.5){
                     if(!fala.IsOpen() ){
-                        fala.Open("audio/fase2/002.wav");
+                        fala.Open("audio/02_industria/002.wav");
                         fala.Play(0);
                     }
                     if(!fala.IsPlaying()){

@@ -16,7 +16,7 @@ State_00_Title::State_00_Title():pressSpace("font/URW Gothic L Demi.ttf", 50, BL
 
     pressSpace.SetPos(game_w/2, game_h-(game_h/7.5), true, true);
 
-    menu.Open("img/menu_title/menu1.png");
+    menu.Open("img/telas/menu1.png");
 
     int w = menu.GetWidth();
     int h = menu.GetHeight();
@@ -26,45 +26,45 @@ State_00_Title::State_00_Title():pressSpace("font/URW Gothic L Demi.ttf", 50, BL
     menu.SetScaleX(scale_x);
     menu.SetScaleY(scale_y);
 
-    menu1.Open("img/menu_title/menu2.png");
+    menu1.Open("img/telas/menu2.png");
     menu1.SetScaleX(scale_x);
     menu1.SetScaleY(scale_y);
 
-    menu2.Open("img/menu_title/menu3.png");
+    menu2.Open("img/telas/menu3.png");
     menu2.SetScaleX(scale_x);
     menu2.SetScaleY(scale_y);
 
-    menu3.Open("img/menu_title/menu4.png");
+    menu3.Open("img/telas/menu4.png");
     menu3.SetScaleX(scale_x);
     menu3.SetScaleY(scale_y);
 
-    cont.Open("img/menu_title/cont.png");
+    cont.Open("img/telas/cont.png");
     cont.SetScaleX(scale_x);
     cont.SetScaleY(scale_y);
 
-    cont1.Open("img/menu_title/cont1.png");
+    cont1.Open("img/telas/cont1.png");
     cont1.SetScaleX(scale_x);
     cont1.SetScaleY(scale_y);
 
-    cont2.Open("img/menu_title/cont2.png");
+    cont2.Open("img/telas/cont2.png");
     cont2.SetScaleX(scale_x);
     cont2.SetScaleY(scale_y);
 
-    cont3.Open("img/menu_title/cont3.png");
+    cont3.Open("img/telas/cont3.png");
     cont3.SetScaleX(scale_x);
     cont3.SetScaleY(scale_y);
 
-    cont4.Open("img/menu_title/cont4.png");
+    cont4.Open("img/telas/cont4.png");
     cont4.SetScaleX(scale_x);
     cont4.SetScaleY(scale_y);
 
-    cont5.Open("img/menu_title/cont5.png");
+    cont5.Open("img/telas/cont5.png");
     cont5.SetScaleX(scale_x);
     cont5.SetScaleY(scale_y);
 
     timer.Restart();
     if(!music.IsOpen()){
-        music.Open("audio/musicas/musica title theme.ogg");
+        music.Open("audio/00_title/musica title theme.ogg");
         music.Play(-1);
     }
 

@@ -2,26 +2,26 @@
 
 //State_02_IndustriaT* State_02_IndustriaT::instance = nullptr;
 
-State_02_IndustriaT::State_02_IndustriaT(StateData data):bg("img/background.jpg"){
+State_02_IndustriaT::State_02_IndustriaT(StateData data):bg("img/telas/background.jpg"){
     //if(instance == nullptr){ //da erro se fizer isso
     //instance = this;
 
     if(!musica1.IsOpen()){
-        musica1.Open("audio/musicas/musica fase2 layer 1.ogg");
+        musica1.Open("audio/02_industria/musica fase2 layer 1.ogg");
         musica1.Play(-1);
     }
     if(!musica2.IsOpen()){
-        musica2.Open("audio/musicas/musica fase2 layer 2.ogg");
+        musica2.Open("audio/02_industria/musica fase2 layer 2.ogg");
         musica2.Play(-1);
     }
     if(!musica3.IsOpen()){
-        musica3.Open("audio/musicas/musica fase2 layer 3.ogg");
+        musica3.Open("audio/02_industria/musica fase2 layer 3.ogg");
         if(data.ja_ficou_encurralada == 0  || data.pegou_chicote){
             musica3.Play(-1);
         }
     }
 
-    pause1.Open("img/pause1.png");
+    pause1.Open("img/telas/pause1.png");
     pause1.SetScaleX((float)Game::GetInstance().GetWindowWidth()/pause1.GetWidth());
     pause1.SetScaleY((float)Game::GetInstance().GetWindowHeight()/pause1.GetHeight());
 
@@ -32,15 +32,15 @@ State_02_IndustriaT::State_02_IndustriaT(StateData data):bg("img/background.jpg"
 
     bg.SetScaleX((float)Game::GetInstance().GetWindowWidth()/bg.GetWidth());
     bg.SetScaleY((float)Game::GetInstance().GetWindowHeight()/bg.GetHeight());
-    tile_set = new TileSet(12, 11, 152, "img/tile_set.png");
-    tile_map = new TileMap("map/State_02_IndustriaT.txt", tile_set);
+    tile_set = new TileSet(12, 11, 152, "img/tiles/tile_set.png");
+    tile_map = new TileMap("map/02_industria/State_02_IndustriaT.txt", tile_set);
 
-    sp_press_d.Open("img/tecla_d.png");
+    sp_press_d.Open("img/teclas/tecla_d.png");
     float scale = (float)(Game::GetInstance().GetWindowWidth()/1.5)/sp_press_d.GetWidth();
     sp_press_d.SetScaleX(scale);
     sp_press_d.SetScaleY(scale);
 
-    sp_corre.Open("img/tecla_corre.png");
+    sp_corre.Open("img/teclas/tecla_corre.png");
     scale = (float)(Game::GetInstance().GetWindowWidth()/2)/sp_corre.GetWidth();
     sp_corre.SetScaleX(scale);
     sp_corre.SetScaleY(scale);
@@ -86,6 +86,7 @@ State_02_IndustriaT::~State_02_IndustriaT(){
 }
 
 void State_02_IndustriaT::Update(float dt){
+    data.PrintData();
     InputManager& In = InputManager::GetInstance();
     Vec2 gaia_pos(0,0);
     if(Gaia::player != nullptr){
@@ -172,11 +173,13 @@ void State_02_IndustriaT::Update(float dt){
             }
         }
 
-    printf("oi 1");
+        printf("oi 1");
         if(data.esteira && data.gaia_comodo == 0){
-    printf("oi 2");
-            som_esteira.Open("audio/sons/esteira loop.ogg");
-            som_esteira.Play(-1);
+            printf("oi 2");
+            if(!som_esteira.IsOpen()){
+                som_esteira.Open("audio/sons/esteira loop.ogg");
+                som_esteira.Play(-1);
+            }
             int tile_info;
             tempo_esteira.Update(dt);
             if(tempo_esteira.Get() > 0.1){
@@ -198,22 +201,29 @@ void State_02_IndustriaT::Update(float dt){
             }
         }
         else{
-    printf("oi 2.2");
-            som_esteira.Stop();
+            printf("oi 2.2");
+            if(som_esteira.IsOpen()){
+                som_esteira.Stop();
+            }
+                printf("aa");
         }
 
         if(data.gaia_comodo == 8){
-    printf("oi 3");
-            som_ronco.Open("audio/sons/som_ronco.ogg");
-            som_ronco.Play(-1);
+            printf("oi 3");
+            if(!som_ronco.IsOpen()){
+                som_ronco.Open("audio/sons/som_ronco.ogg");
+                som_ronco.Play(-1);
+            }
         }
         else{
-            som_ronco.Stop();
+            if(som_ronco.IsOpen()){ 
+                som_ronco.Stop();
+            }
         }
 
         //se apertar esquerda para de mostrar "corre"
         if(data.corre){
-    printf("oi 4");
+            printf("oi 4");
             if(In.KeyPress(SDLK_LEFT)){
                 data.corre = false;
             }
@@ -302,24 +312,26 @@ void State_02_IndustriaT::Update(float dt){
     for (unsigned i = 0; i < objectArray.size(); i++) {
         if(objectArray[i]->IsDead()){
             if(objectArray[i]->Is("Gaia")){
-
+                if(fala.IsOpen()){
+                    fala.Stop();
+                }
                 int r = rand() % 347;
-                Sound som_morte;
                 if(r<160){
-                    som_morte = Sound("audio/sons/morte1.ogg");
+                    fala.Open("audio/sons/morte1.ogg");
                 }
                 else if (r<305){
-                    som_morte = Sound("audio/sons/morte2.ogg");
+                    fala.Open("audio/sons/morte2.ogg");
                 }
                 else{
-                    som_morte = Sound("audio/sons/morri.ogg");
+                    fala.Open("audio/sons/morri.ogg");
                 }
-                som_morte.Play(0);
+                fala.Play(0);
                 SDL_Delay(1800);
                 PopRequest();
                 data.gaia_hp = 10;
                 Game::GetInstance().Push(new State_02_IndustriaT(data));
             }
+            //realmente é necessário apagar a gaia aqui? #Verdps
             objectArray.erase(objectArray.begin() + i);
             i--;
         }

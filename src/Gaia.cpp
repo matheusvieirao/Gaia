@@ -6,7 +6,7 @@ Gaia::Gaia(float x, float y, int hp, int comodo){
     player = this;
     pause = false;
 
-    sp_andando.Open("img/gaia_andando.png");
+    sp_andando.Open("img/personagens/gaia_andando.png");
     sp_andando.SetFrameTotal(24);
     sp_andando.SetFrameStart(1);
     sp_andando.SetFrameAnimation(6);
@@ -14,7 +14,7 @@ Gaia::Gaia(float x, float y, int hp, int comodo){
     sp_andando.SetScaleX(0.9);
     sp_andando.SetScaleY(0.9);
 
-    sp_correndo.Open("img/gaia_correndo.png");
+    sp_correndo.Open("img/personagens/gaia_correndo.png");
     sp_correndo.SetFrameTotal(16);
     sp_correndo.SetFrameStart(1);
     sp_correndo.SetFrameAnimation(4);
@@ -22,7 +22,7 @@ Gaia::Gaia(float x, float y, int hp, int comodo){
     sp_correndo.SetScaleX(1);
     sp_correndo.SetScaleY(1);
 
-    sp_chicote.Open("img/gaia_chicote.png");
+    sp_chicote.Open("img/personagens/gaia_chicote.png");
     sp_chicote.SetFrameTotal(40);
     sp_chicote.SetFrameStart(1);
     sp_chicote.SetFrameAnimation(10);
@@ -30,7 +30,7 @@ Gaia::Gaia(float x, float y, int hp, int comodo){
     sp_chicote.SetScaleX(1.5);
     sp_chicote.SetScaleY(1.5);
 
-    sp_carro.Open("img/gaia_carro.png");
+    sp_carro.Open("img/personagens/gaia_carro.png");
     sp_carro.SetFrameTotal(36);
     sp_carro.SetFrameStart(1);
     sp_carro.SetFrameAnimation(9);
@@ -38,7 +38,7 @@ Gaia::Gaia(float x, float y, int hp, int comodo){
     sp_carro.SetScaleX(1.2);
     sp_carro.SetScaleY(1.2);
 
-    sp_transparente.Open("img/gaia_transparente.png");
+    sp_transparente.Open("img/personagens/gaia_transparente.png");
     sp_transparente.SetFrameTotal(24);
     sp_transparente.SetFrameStart(1);
     sp_transparente.SetFrameAnimation(6);

@@ -4,12 +4,14 @@
 #include "Vec2.hpp"
 #include <vector>
 #include <string>
+#include <iostream>
 
 class StateData{
     public:
         StateData();
         StateData(std::string nome);
         void Carregar(std::string nome);
+        void PrintData();
         Vec2 gaia_t_pos;
         Vec2 gaia_t_pos_antiga;
         Vec2 gaia_t_pos_inicio_comodo;
@@ -24,6 +26,7 @@ class StateData{
         bool corre;
         bool pegou_chicote;
         bool fala_velho; //false nao falou, true ja falou
+
         enum Item{CARTAO_ACESSO, CHAVE_ENERGIA, BEBIDINHA};
         std::vector<Item> inventario;
 };

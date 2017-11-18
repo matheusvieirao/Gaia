@@ -86,7 +86,6 @@ State_02_IndustriaT::~State_02_IndustriaT(){
 }
 
 void State_02_IndustriaT::Update(float dt){
-    data.PrintData();
     InputManager& In = InputManager::GetInstance();
     Vec2 gaia_pos(0,0);
     if(Gaia::player != nullptr){
@@ -173,9 +172,7 @@ void State_02_IndustriaT::Update(float dt){
             }
         }
 
-        printf("oi 1");
         if(data.esteira && data.gaia_comodo == 0){
-            printf("oi 2");
             if(!som_esteira.IsOpen()){
                 som_esteira.Open("audio/sons/esteira loop.ogg");
                 som_esteira.Play(-1);
@@ -201,15 +198,12 @@ void State_02_IndustriaT::Update(float dt){
             }
         }
         else{
-            printf("oi 2.2");
             if(som_esteira.IsOpen()){
                 som_esteira.Stop();
             }
-                printf("aa");
         }
 
         if(data.gaia_comodo == 8){
-            printf("oi 3");
             if(!som_ronco.IsOpen()){
                 som_ronco.Open("audio/sons/som_ronco.ogg");
                 som_ronco.Play(-1);
@@ -223,7 +217,6 @@ void State_02_IndustriaT::Update(float dt){
 
         //se apertar esquerda para de mostrar "corre"
         if(data.corre){
-            printf("oi 4");
             if(In.KeyPress(SDLK_LEFT)){
                 data.corre = false;
             }
@@ -246,13 +239,11 @@ void State_02_IndustriaT::Update(float dt){
         //parte que a gaia entra no lugar de ficar encurralada
         if(ficou_encurralada < 3){
 
-    printf("oi 5");
             TratarEncurralamento();
         }
     }
 
     else if(estado == FALA && !pause){
-    printf("oi 6");
         if(In.KeyPress(SDLK_SPACE)){
             if(fala.IsOpen()){
                 fala.Stop();
@@ -262,7 +253,6 @@ void State_02_IndustriaT::Update(float dt){
 
         //Gaia eh encurralada e fica transparente
         if(num_fala == 1){
-    printf("oi 7");
             if(track == 0){
                 if(tempo_falas.Get() > 0.3){
                     if(!fala.IsOpen()){
@@ -295,7 +285,6 @@ void State_02_IndustriaT::Update(float dt){
         }
     }
 
-    printf("oi 8");
     //Colisao de objetos
     unsigned k = 1;
     for (unsigned i = 0; i < objectArray.size(); i++) {
@@ -307,7 +296,6 @@ void State_02_IndustriaT::Update(float dt){
         }
     }
 
-    printf("oiii 10\n");
     //Deletar quem morrer
     for (unsigned i = 0; i < objectArray.size(); i++) {
         if(objectArray[i]->IsDead()){
@@ -456,11 +444,11 @@ void State_02_IndustriaT::TratarEncurralamento(){
 
 void State_02_IndustriaT::InicializarComodo(int comodo){
     if(comodo == 4) { //corredor
-        // Vec2 guarda_t_pos = Vec2(52, 17);
-        // Vec2 guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        // guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
-        // guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
-        // AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PERSEGUINDO, comodo, "a1"));
+        Vec2 guarda_t_pos = Vec2(52, 17);
+        Vec2 guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
+        guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
+        guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
+        AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::DESCANSANDO_PARADO, comodo, "a1"));
 
         // guarda_t_pos = Vec2(50, 16);
         // guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
@@ -474,29 +462,29 @@ void State_02_IndustriaT::InicializarComodo(int comodo){
         // guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
         // AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PERSEGUINDO, comodo, "a3"));
 
-        // guarda_t_pos = Vec2(11, 15);
-        // guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        // guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
-        // guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
-        // AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PARADO_AUTOMATICO, comodo, "b1"));
+        guarda_t_pos = Vec2(11, 15);
+        guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
+        guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
+        guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
+        AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PARADO_AUTOMATICO, comodo, "b1"));
 
-        // guarda_t_pos = Vec2(11, 17);
-        // guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        // guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
-        // guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
-        // AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PARADO_AUTOMATICO, comodo, "b2"));
+        guarda_t_pos = Vec2(11, 17);
+        guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
+        guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
+        guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
+        AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PARADO_AUTOMATICO, comodo, "b2"));
 
-        // guarda_t_pos = Vec2(3, 15);
-        // guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        // guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
-        // guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
-        // AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PARADO_AUTOMATICO, comodo, "c1"));
+        guarda_t_pos = Vec2(3, 15);
+        guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
+        guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
+        guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
+        AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PARADO_AUTOMATICO, comodo, "c1"));
 
-        // guarda_t_pos = Vec2(3, 17);
-        // guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        // guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
-        // guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
-        // AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PARADO_AUTOMATICO, comodo, "c2"));
+        guarda_t_pos = Vec2(3, 17);
+        guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
+        guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
+        guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
+        AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PARADO_AUTOMATICO, comodo, "c2"));
 
     }
 }

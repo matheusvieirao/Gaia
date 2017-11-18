@@ -262,6 +262,7 @@ void Gaia::Update(float dt){
 
             if(sprite_atual == ANDANDO){
                 if(sprite_anterior != sprite_atual){
+                    vel = 300 * dt;
                     int centro_x = box.GetCenter().x;
                     int centro_y = box.GetCenter().y;
                     box.w = sp_andando.GetWidth();
@@ -277,10 +278,10 @@ void Gaia::Update(float dt){
                     m_noroeste = 1+m_dur*2;
                     m_sudoeste = 1+m_dur*3;
                 }
-                vel = 300 * dt;
             }
             else if(sprite_atual == CORRENDO){
                 if(sprite_anterior != sprite_atual){
+                    vel = 500 * dt;
                     int centro_x = box.GetCenter().x;
                     int centro_y = box.GetCenter().y;
                     box.w = sp_correndo.GetWidth();
@@ -296,7 +297,6 @@ void Gaia::Update(float dt){
                     m_noroeste = 1+m_dur*2;
                     m_sudoeste = 1+m_dur*3;
                 }
-                vel = 500 * dt;
             }
             else if(sprite_atual == CHICOTE){
                 if(sprite_anterior != sprite_atual){
@@ -338,6 +338,7 @@ void Gaia::Update(float dt){
             }
             else if(sprite_atual == CARRO){
                 if(sprite_anterior != sprite_atual){
+                    vel = 800 * dt;
                     int centro_x = box.GetCenter().x;
                     int centro_y = box.GetCenter().y;
                     box.w = sp_carro.GetWidth();
@@ -353,7 +354,6 @@ void Gaia::Update(float dt){
                 m_nordeste = 1+m_dur;
                 m_noroeste = 1+m_dur*2;
                 m_sudoeste = 1+m_dur*3;
-                vel = 800 * dt;
             }
 
 
@@ -674,7 +674,6 @@ void Gaia::Andar(int mov, float vel, float dt){
                 sp_correndo.SetFrameStart(m_sudoeste);
                 sp_correndo.SetFrameAnimation(m_dur);
                 mov_anterior = SO;
-            printf("2\n");
             }
             box.x -= cos_angulo * vel;
             box.y += sen_angulo* vel;

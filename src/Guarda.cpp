@@ -196,6 +196,7 @@ void Guarda::Update(float dt){
          //   printf("PERSEGUINDO\n");
 
             if(contador_fuga > 2 || tempo_estado.Get() > 2){
+                printf("entrou Contador fuga %d\n",contador_fuga);
                 contador_fuga = 0;
                 caminho.clear();
                 CalcularCaminho(gaia_t_pos, t_map);
@@ -205,17 +206,56 @@ void Guarda::Update(float dt){
             
             printf("GP dx %.0f, x %.0f, dy %.0f, y %.0f\n",guarda_t_pos_desejada.x, guarda_t_pos.x, guarda_t_pos_desejada.y, guarda_t_pos.y);
             printf("tempo_estado %.4f, tempo rapido %.4f\n", tempo_estado.Get(), tempo_rapido);
+            for(int i = 0; i < caminho.size() ; i++) {
+                if(caminho[i] == SE){
+                    printf("| SE ");
+                }
+                else if(caminho[i] == SO){
+                    printf("| SO ");
+                }
+                else if(caminho[i] == NE){
+                    printf("| NE ");
+                }
+                else if(caminho[i] == NO){
+                    printf("| NO ");
+                }
+            }
+            if(caminho.size()>0){
+                printf("|\n");
+            }
 
+            //chega no tile desejado
             if(guarda_t_pos_desejada.x == guarda_t_pos.x && guarda_t_pos_desejada.y == guarda_t_pos.y){
                 printf("_1\n");
                 if (flag_perseguindo == 0){
                     printf("_1.1\n");
                     tempo_estado.Restart();
                     flag_perseguindo = 1;
+                    contador_fuga++;
                 }
             }
 
+            if(flag_perseguindo == 1){
+                //ir pro centro do tile
+                //se chegar flag == 2
+            }
 
+            if(flag_perseguindo == 2){
+                printf("nao entra!!!!!!!!");
+                flag_perseguindo = 0;
+                if(caminho.size() == 0){
+                    CalcularCaminho(gaia_t_pos, t_map);
+                }
+                if(caminho.size() > 0){
+                    CalcularMovimentoAtual();
+                }
+                else {
+                    EncontraNoMesmoTile(gaia_pos, guarda_pos);
+                }
+                tempo_estado.Restart();
+            }
+
+            //tempo pra chegar no meio do tile ao chegar no tile desejado
             if(flag_perseguindo == 1 && tempo_estado.Get() > tempo_rapido){
                 printf("_2\n");
                 flag_perseguindo = 0;
@@ -223,9 +263,13 @@ void Guarda::Update(float dt){
                     printf("_3\n");
                     CalcularCaminho(gaia_t_pos, t_map);
                 }
-                CalcularMovimentoAtual();
+                if(caminho.size() > 0){
+                    CalcularMovimentoAtual();
+                }
+                else {
+                    EncontraNoMesmoTile(gaia_pos, guarda_pos);
+                }
                 tempo_estado.Restart();
-                contador_fuga++;
             }
 
             Andar(vel_rapido, t_map);
@@ -402,7 +446,7 @@ void Guarda::Andar(float vel, TileMap* t_map){
         }
     }
     else if(movimento_atual == NE){
-        printf("neee\n");
+        printf("ne\n");
         if(movimento_anterior != NE){
             sp.SetFrameStart(m_nordeste);
             sp.SetFrameAnimation(m_dur);
@@ -482,10 +526,7 @@ bool Guarda::EstaNaVisao(Vec2 gaia_t_pos){
     int ix = guarda_t_pos.x;
     int iy = guarda_t_pos.y;
 
-    printf("visao gx %d, gy %d, ix %d, iy %d\n",gx,gy,ix,iy);
-
     if(sp.GetFrameStart() <= 4){ //olhando pra SE
-        printf("olhando para SE\n");
         if((gx==ix&&gy==iy)  ||
         (gx==ix+1&&gy==iy-1) || (gx==ix+1&&gy==iy) || (gx==ix+1&&gy==iy+1) ||
         (gx==ix+2&&gy==iy-1) || (gx==ix+2&&gy==iy) || (gx==ix+2&&gy==iy+1)){
@@ -496,7 +537,6 @@ bool Guarda::EstaNaVisao(Vec2 gaia_t_pos){
         }
     }
     else if(sp.GetFrameStart() <= 8){ //olhando para NE
-        printf("olhando para NE\n");
         if((gx==ix&&gx==iy)  ||
         (gx==ix-1&&gy==iy-1) || (gx==ix&&gy==iy-1) || (gx==ix+1&&gy==iy-1) ||
         (gx==ix-1&&gy==iy-12) || (gx==ix&&gy==iy-2) || (gx==ix+1&&gy==iy-2)){
@@ -507,7 +547,6 @@ bool Guarda::EstaNaVisao(Vec2 gaia_t_pos){
         }
     }
     else if(sp.GetFrameStart() <= 12){ //olhando para NO
-        printf("olhando para NO\n");
         if((gx==ix&&gx==iy)  ||
         (gx==ix-1&&gy==iy-1) || (gx==ix-1&&gy==iy) || (gx==ix-1&&gy==iy+1) ||
         (gx==ix-2&&gy==iy-1) || (gx==ix-2&&gy==iy) || (gx==ix-2&&gy==iy+1)){
@@ -518,7 +557,6 @@ bool Guarda::EstaNaVisao(Vec2 gaia_t_pos){
         }
     }
     else{ //olhando para SO
-        printf("olhando para SO\n");
         if((gx==ix&&gy==iy)  ||
         (gx==ix-1&&gy==iy+1) || (gx==ix&&gy==iy+1) || (gx==ix+1&&gy==iy+1) ||
         (gx==ix-1&&gy==iy+2) || (gx==ix&&gy==iy+2) || (gx==ix-2&&gy==iy+2)){
@@ -587,7 +625,7 @@ bool Guarda::IsDead(){
 
 //retorna o tamanho do vetor caminho, que contem as coordenadas a se andar
 int Guarda::CalcularCaminho(Vec2 gaia_t_pos, TileMap* t_map){
-    printf("calccaminho\n");
+    printf("calc caminho\n");
     bool achou = false;
 
     int map_width = t_map->GetWidth();
@@ -689,7 +727,6 @@ void Guarda::CalcularMovimentoAtual(){
         movimento_atual = caminho.back();
         caminho.pop_back();
         if(movimento_atual == NE){
-            printf("ne\n");
             guarda_t_pos_desejada.x = guarda_t_pos.x;
             guarda_t_pos_desejada.y = guarda_t_pos.y-1;
         }
@@ -710,7 +747,8 @@ void Guarda::CalcularMovimentoAtual(){
 
 bool Guarda::VerificarMapa(int x, int y, int map_width, int map_height){
     if (x>=0 && x<map_width && y>= 0 && y<map_height){
-        if(mapa_aux[y*map_width + x] != 0){
+        //0 é aonde nao tem tile e 18 é o tile que nao pode ser pisado
+        if(mapa_aux[y*map_width + x] != 0 && mapa_aux[y*map_width + x] != 18){
             mapa_aux[y*map_width + x] = 0;
             return (true);
         }

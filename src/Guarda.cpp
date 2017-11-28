@@ -1,5 +1,8 @@
 #include "Guarda.hpp"
 
+int turno = 0;
+int flag_perseguindo = 0;
+
 Guarda::Guarda(float x, float y, GuardaEstado estado_inicial, int comodo, std::string nome):sp("img/personagens/guarda_andando.png", 16, 1, 4, 0.2){
     tempo_estado.Restart();
     this->nome = nome;
@@ -56,6 +59,8 @@ void Guarda::Update(float dt){
     if(Game::GetInstance().IsStateStackEmpty()){
         return;
     }
+    turno++;
+    printf("-------------------%d--------------------\n",turno);
 
     TileMap* t_map = Game::GetInstance().GetCurrentState().GetTileMap();
     int tile_width = t_map->GetTileWidth();
@@ -68,7 +73,6 @@ void Guarda::Update(float dt){
     float vel_rapido = 550*dt;
     float tempo_devagar = (float)(tile_height*dt)/(vel_devagar);//tempo de andar 1 tile na velocidade devagar. a conta esta simplificada, o certo seria: "(tile_height/2) / ((vel_rapido*0.5)/dt) sendo 0.5 o seno do angulo da inclinacao do tile
     float tempo_rapido = (float)(tile_height*dt)/(2*vel_rapido);//tempo de andar 1 tile na velocidade rapido
-    int flag_perseguindo = 0;
 
     sp.Update(dt);
 
@@ -86,6 +90,7 @@ void Guarda::Update(float dt){
             }
 
             if(!Gaia::player->EstaTransparente() && EstaNaVisao(gaia_t_pos)){
+                printf("ACHOOOU\n");
                 contador_fuga = 0;
                 estado_atual = PERSEGUINDO;
                 caminho.clear();
@@ -104,7 +109,9 @@ void Guarda::Update(float dt){
                 estado_atual = DESCANSANDO_PARADO;
                 tempo_estado.Restart();
             }
+
             if(!Gaia::player->EstaTransparente() && EstaNaVisao(gaia_t_pos)){
+                printf("ACHOOOU\n");
                 contador_fuga = 0;
                 estado_atual = PERSEGUINDO;
                 caminho.clear();
@@ -196,21 +203,29 @@ void Guarda::Update(float dt){
                 tempo_estado.Restart();
             }
             
-            printf("GP dx %.1f, x %.1f, dy %.1f, y %.1f\n",guarda_t_pos_desejada.x, guarda_t_pos.x, guarda_t_pos_desejada.y, guarda_t_pos.y);
+            printf("GP dx %.0f, x %.0f, dy %.0f, y %.0f\n",guarda_t_pos_desejada.x, guarda_t_pos.x, guarda_t_pos_desejada.y, guarda_t_pos.y);
+            printf("tempo_estado %.4f, tempo rapido %.4f\n", tempo_estado.Get(), tempo_rapido);
+
             if(guarda_t_pos_desejada.x == guarda_t_pos.x && guarda_t_pos_desejada.y == guarda_t_pos.y){
-                printf("entroooou\n");
+                printf("_1\n");
                 if (flag_perseguindo == 0){
+                    printf("_1.1\n");
                     tempo_estado.Restart();
                     flag_perseguindo = 1;
                 }
-                if(tempo_estado.Get() > tempo_rapido){
-                    flag_perseguindo = 0;
-                    if(caminho.size() > 0){
-                        printf("mov atual: ");
-                        CalcularMovimentoAtual();
-                    }
-                    contador_fuga++;
+            }
+
+
+            if(flag_perseguindo == 1 && tempo_estado.Get() > tempo_rapido){
+                printf("_2\n");
+                flag_perseguindo = 0;
+                if(caminho.size() == 0){
+                    printf("_3\n");
+                    CalcularCaminho(gaia_t_pos, t_map);
                 }
+                CalcularMovimentoAtual();
+                tempo_estado.Restart();
+                contador_fuga++;
             }
 
             Andar(vel_rapido, t_map);
@@ -467,7 +482,10 @@ bool Guarda::EstaNaVisao(Vec2 gaia_t_pos){
     int ix = guarda_t_pos.x;
     int iy = guarda_t_pos.y;
 
+    printf("visao gx %d, gy %d, ix %d, iy %d\n",gx,gy,ix,iy);
+
     if(sp.GetFrameStart() <= 4){ //olhando pra SE
+        printf("olhando para SE\n");
         if((gx==ix&&gy==iy)  ||
         (gx==ix+1&&gy==iy-1) || (gx==ix+1&&gy==iy) || (gx==ix+1&&gy==iy+1) ||
         (gx==ix+2&&gy==iy-1) || (gx==ix+2&&gy==iy) || (gx==ix+2&&gy==iy+1)){
@@ -478,9 +496,10 @@ bool Guarda::EstaNaVisao(Vec2 gaia_t_pos){
         }
     }
     else if(sp.GetFrameStart() <= 8){ //olhando para NE
+        printf("olhando para NE\n");
         if((gx==ix&&gx==iy)  ||
-        (gx==ix-1&&gx==iy-1) || (gx==ix&&gx==iy-1) || (gx==ix+1&&gx==iy-1) ||
-        (gx==ix-1&&gx==iy-2) || (gx==ix&&gx==iy-2) || (gx==ix+1&&gx==iy-2)){
+        (gx==ix-1&&gy==iy-1) || (gx==ix&&gy==iy-1) || (gx==ix+1&&gy==iy-1) ||
+        (gx==ix-1&&gy==iy-12) || (gx==ix&&gy==iy-2) || (gx==ix+1&&gy==iy-2)){
             return(true);
         }
         else{
@@ -488,9 +507,10 @@ bool Guarda::EstaNaVisao(Vec2 gaia_t_pos){
         }
     }
     else if(sp.GetFrameStart() <= 12){ //olhando para NO
+        printf("olhando para NO\n");
         if((gx==ix&&gx==iy)  ||
-        (gx==ix-1&&gx==iy-1) || (gx==ix-1&&gx==iy) || (gx==ix-1&&gx==iy+1) ||
-        (gx==ix-2&&gx==iy-1) || (gx==ix-2&&gx==iy) || (gx==ix-2&&gx==iy+1)){
+        (gx==ix-1&&gy==iy-1) || (gx==ix-1&&gy==iy) || (gx==ix-1&&gy==iy+1) ||
+        (gx==ix-2&&gy==iy-1) || (gx==ix-2&&gy==iy) || (gx==ix-2&&gy==iy+1)){
             return(true);
         }
         else{
@@ -498,6 +518,7 @@ bool Guarda::EstaNaVisao(Vec2 gaia_t_pos){
         }
     }
     else{ //olhando para SO
+        printf("olhando para SO\n");
         if((gx==ix&&gy==iy)  ||
         (gx==ix-1&&gy==iy+1) || (gx==ix&&gy==iy+1) || (gx==ix+1&&gy==iy+1) ||
         (gx==ix-1&&gy==iy+2) || (gx==ix&&gy==iy+2) || (gx==ix-2&&gy==iy+2)){
@@ -670,7 +691,7 @@ void Guarda::CalcularMovimentoAtual(){
         if(movimento_atual == NE){
             printf("ne\n");
             guarda_t_pos_desejada.x = guarda_t_pos.x;
-            guarda_t_pos_desejada.y = guarda_t_pos.y+1;
+            guarda_t_pos_desejada.y = guarda_t_pos.y-1;
         }
         else if(movimento_atual == SE){
             guarda_t_pos_desejada.x = guarda_t_pos.x+1;
@@ -678,7 +699,7 @@ void Guarda::CalcularMovimentoAtual(){
         }
         else if(movimento_atual == SO){
             guarda_t_pos_desejada.x = guarda_t_pos.x;
-            guarda_t_pos_desejada.y = guarda_t_pos.y-1;
+            guarda_t_pos_desejada.y = guarda_t_pos.y+1;
         }
         else if(movimento_atual == NO){
             guarda_t_pos_desejada.x = guarda_t_pos.x-1;

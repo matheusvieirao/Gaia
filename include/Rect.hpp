@@ -36,6 +36,7 @@ class Rect {
         Rect operator+(const Vec2& v);
         void operator+=(const Vec2& v);
         void SomaVet(const Vec2& v);
+        void SubtraiVet(const Vec2& v);
         bool IsInside(float x, float y) const;
         Vec2 GetCenter() const;
         void NovoCentro(float x, float y);

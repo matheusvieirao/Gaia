@@ -33,6 +33,11 @@ void Rect::SomaVet(const Vec2& v){
     this->y += v.y;
 }
 
+void Rect::SubtraiVet(const Vec2& v){
+    this->x -= v.x;
+    this->y -= v.y;
+}
+
 bool Rect::IsInside(float a, float b) const{
     return(a>=x && a<=(x+w) && b>=y && b<=(y+h));
 }

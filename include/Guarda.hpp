@@ -48,6 +48,11 @@ class Guarda : public GameObject{
         bool VerificarMapa(int x, int y, int map_width, int map_height);
         void InserirOrdenado(int x, int y, Celula *cel_aux);
         void EncontraNoMesmoTile(Vec2 gaia_pos, Vec2 guarda_pos);
+        void DrawRectangle(int x1, int y1, int x2, int y2);
+        void DrawRectangleX(int x1, int y1, int x2, int y2);
+        void DrawRectangle(Vec2 v);
+        void DrawRectangleX(Vec2 v);
+
     private:
         std::string nome;
         GuardaEstado estado_atual;

@@ -195,7 +195,7 @@ void Guarda::Update(float dt){
         else if(estado_atual == PERSEGUINDO){
          //   printf("PERSEGUINDO\n");
 
-            if(contador_fuga > 2 || tempo_estado.Get() > 2){
+            if(contador_fuga > 2){
                 printf("entrou Contador fuga %d\n",contador_fuga);
                 contador_fuga = 0;
                 caminho.clear();
@@ -204,72 +204,44 @@ void Guarda::Update(float dt){
                 tempo_estado.Restart();
             }
             
-            printf("GP dx %.0f, x %.0f, dy %.0f, y %.0f\n",guarda_t_pos_desejada.x, guarda_t_pos.x, guarda_t_pos_desejada.y, guarda_t_pos.y);
-            printf("tempo_estado %.4f, tempo rapido %.4f\n", tempo_estado.Get(), tempo_rapido);
-            for(int i = 0; i < caminho.size() ; i++) {
-                if(caminho[i] == SE){
-                    printf("| SE ");
-                }
-                else if(caminho[i] == SO){
-                    printf("| SO ");
-                }
-                else if(caminho[i] == NE){
-                    printf("| NE ");
-                }
-                else if(caminho[i] == NO){
-                    printf("| NO ");
-                }
-            }
-            if(caminho.size()>0){
-                printf("|\n");
-            }
+                                                                                                                                        printf("GP dx %.0f, x %.0f, dy %.0f, y %.0f\n",guarda_t_pos_desejada.x, guarda_t_pos.x, guarda_t_pos_desejada.y, guarda_t_pos.y);
+                                                                                                                                        printf("tempo_estado %.4f, tempo rapido %.4f\n", tempo_estado.Get(), tempo_rapido);
+                                                                                                                                        for(unsigned i = 0; i < caminho.size() ; i++) {
+                                                                                                                                            if(caminho[i] == SE){
+                                                                                                                                                printf("| SE ");
+                                                                                                                                            }
+                                                                                                                                            else if(caminho[i] == SO){
+                                                                                                                                                printf("| SO ");
+                                                                                                                                            }
+                                                                                                                                            else if(caminho[i] == NE){
+                                                                                                                                                printf("| NE ");
+                                                                                                                                            }
+                                                                                                                                            else if(caminho[i] == NO){
+                                                                                                                                                printf("| NO ");
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                        if(caminho.size()>0){
+                                                                                                                                            printf("|\n");
+                                                                                                                                        }
 
             //chega no tile desejado
             if(guarda_t_pos_desejada.x == guarda_t_pos.x && guarda_t_pos_desejada.y == guarda_t_pos.y){
-                printf("_1\n");
+                printf("Chegou no tile desejado!\n");
+                if(caminho.size() == 0){
+                    CalcularCaminho(gaia_t_pos, t_map);
+                }
+                if(caminho.size() > 0){
+                    CalcularMovimentoAtual();
+                }
                 if (flag_perseguindo == 0){
-                    printf("_1.1\n");
+                    printf("flag perseguindo == 0\n");
                     tempo_estado.Restart();
                     flag_perseguindo = 1;
                     contador_fuga++;
                 }
             }
-
-            if(flag_perseguindo == 1){
-                //ir pro centro do tile
-                //se chegar flag == 2
-            }
-
-            if(flag_perseguindo == 2){
-                printf("nao entra!!!!!!!!");
+            else{
                 flag_perseguindo = 0;
-                if(caminho.size() == 0){
-                    CalcularCaminho(gaia_t_pos, t_map);
-                }
-                if(caminho.size() > 0){
-                    CalcularMovimentoAtual();
-                }
-                else {
-                    EncontraNoMesmoTile(gaia_pos, guarda_pos);
-                }
-                tempo_estado.Restart();
-            }
-
-            //tempo pra chegar no meio do tile ao chegar no tile desejado
-            if(flag_perseguindo == 1 && tempo_estado.Get() > tempo_rapido){
-                printf("_2\n");
-                flag_perseguindo = 0;
-                if(caminho.size() == 0){
-                    printf("_3\n");
-                    CalcularCaminho(gaia_t_pos, t_map);
-                }
-                if(caminho.size() > 0){
-                    CalcularMovimentoAtual();
-                }
-                else {
-                    EncontraNoMesmoTile(gaia_pos, guarda_pos);
-                }
-                tempo_estado.Restart();
             }
 
             Andar(vel_rapido, t_map);
@@ -414,17 +386,51 @@ int Guarda::AndarAleatorio(TileMap* t_map){
 }
 
 void Guarda::Andar(float vel, TileMap* t_map){
-    float cos_angulo = 0.866025403784438646763723170752936183471402626905190314027; //30º
-    float sen_angulo = 0.5; //30º
+    //float cos_angulo = 0.866025403784438646763723170752936183471402626905190314027; //30º
+    //float sen_angulo = 0.5; //30º
     int m_dur = 4; //quantos frames de animaçao tem em cada movimento
     int m_sudeste = 1;
     int m_nordeste = 5;
     int m_noroeste = 9;
     int m_sudoeste = 13;
+    Vec2 direcao;
+    Vec2 ponto_pe_guarda;
+    Vec2 guarda_pos_desejada;
 
     sp.ResumeAnimation();
     box_anterior.x = box.x;
     box_anterior.y = box.y;
+
+    ponto_pe_guarda.x = box.GetCenter().x;
+    ponto_pe_guarda.y = box.y + box.h - altura_pe;
+
+    guarda_pos_desejada = guarda_t_pos_desejada.CardToIsometric(t_map->GetTileWidth(), t_map->GetTileHeight());
+    direcao = guarda_pos_desejada - ponto_pe_guarda;
+    direcao = direcao.Normalizado();
+    direcao = direcao * vel;
+
+    printf("guarda_pos_desejada x %.1f, guarda_pos_desejada y %.1f\n",guarda_pos_desejada.x,guarda_pos_desejada.y);
+    printf("ponto_pe_guarda x %.1f, ponto_pe_guarda y %.1f\n",ponto_pe_guarda.x,ponto_pe_guarda.y);
+    printf("direcao x %.1f, direcao y %.1f\n",direcao.x,direcao.y);
+    printf("box x %.1f, box y %.1f\n",box.x,box.y);
+    DrawRectangle(ponto_pe_guarda);
+    DrawRectangleX(guarda_pos_desejada);
+
+    box.SomaVet(direcao);
+    printf("box x %.1f, box y %.1f\n",box.x,box.y);
+    Vec2 t_pos = t_map->FindTile(ponto_pe_guarda.x, ponto_pe_guarda.y);
+    int tile_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+    //se colidir em algo
+    if(tile_info == 0 || tile_info == 13 || tile_info == 14 || tile_info == 18 || tile_info == 19){
+        box.SubtraiVet(direcao);
+        //sp.SetFrame(m_sudoeste+1);
+        sp.PauseAnimation();
+    }
+    //se passar
+    if((direcao.x < 0 && box.x < guarda_pos_desejada.x) || (direcao.x > 0 && box.x > guarda_pos_desejada.x)){
+        printf("passou da posicao\n");
+        box.NovoCentro(guarda_pos_desejada.x, guarda_pos_desejada.y);
+    }
 
     if(movimento_atual == SE){
         printf("se\n");
@@ -433,17 +439,17 @@ void Guarda::Andar(float vel, TileMap* t_map){
             sp.SetFrameAnimation(m_dur);
             movimento_anterior = SE;
         }
-        box.x += cos_angulo * vel;
+        /*box.x += cos_angulo * vel;
         box.y += sen_angulo* vel;
         //se andar em tiles vazios voltar o movimento feito (ficar parado)
-        Vec2 t_pos = t_map->FindTile(box.GetCenter().x, box.y+box.h-altura_pe);
+        Vec2 t_pos = t_map->FindTile(ponto_pe_guarda.x, ponto_pe_guarda.y);
         int tile_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
         if(tile_info == 0 || tile_info == 13 || tile_info == 14 || tile_info == 18 || tile_info == 19){
             box.x -= cos_angulo * vel;
             box.y -= sen_angulo* vel;
             sp.SetFrame(m_sudeste+1);
             sp.PauseAnimation();
-        }
+        }*/
     }
     else if(movimento_atual == NE){
         printf("ne\n");
@@ -452,16 +458,16 @@ void Guarda::Andar(float vel, TileMap* t_map){
             sp.SetFrameAnimation(m_dur);
             movimento_anterior = NE;
         }
-        box.x += cos_angulo * vel;
+        /*box.x += cos_angulo * vel;
         box.y -= sen_angulo* vel;
-        Vec2 t_pos = t_map->FindTile(box.GetCenter().x, box.y+box.h-altura_pe);
+        Vec2 t_pos = t_map->FindTile(ponto_pe_guarda.x, ponto_pe_guarda.y);.y
         int tile_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
         if(tile_info == 0 || tile_info == 13 || tile_info == 14 || tile_info == 18 || tile_info == 19){
             box.x -= cos_angulo * vel;
             box.y += sen_angulo* vel;
             sp.SetFrame(m_nordeste+1);
             sp.PauseAnimation();
-        }
+        }*/
     }
     else if(movimento_atual == NO){
         printf("no\n");
@@ -470,16 +476,16 @@ void Guarda::Andar(float vel, TileMap* t_map){
             sp.SetFrameAnimation(m_dur);
             movimento_anterior = NO;
         }
-        box.x -= cos_angulo * vel;
+        /*box.x -= cos_angulo * vel;
         box.y -= sen_angulo* vel;
-        Vec2 t_pos = t_map->FindTile(box.GetCenter().x, box.y+box.h-altura_pe);
+        Vec2 t_pos = t_map->FindTile(ponto_pe_guarda.x, ponto_pe_guarda.y);
         int tile_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
         if(tile_info == 0 || tile_info == 13 || tile_info == 14 || tile_info == 18 || tile_info == 19){
             box.x += cos_angulo * vel;
             box.y += sen_angulo* vel;
             sp.SetFrame(m_noroeste+1);
             sp.PauseAnimation();
-        }
+        }*/
     }
     else if(movimento_atual == SO){
         printf("so\n");
@@ -488,16 +494,16 @@ void Guarda::Andar(float vel, TileMap* t_map){
             sp.SetFrameAnimation(m_dur);
             movimento_anterior = SO;
         }
-        box.x -= cos_angulo * vel;
+        /*box.x -= cos_angulo * vel;
         box.y += sen_angulo* vel;
-        Vec2 t_pos = t_map->FindTile(box.GetCenter().x, box.y+box.h-altura_pe);
+        Vec2 t_pos = t_map->FindTile(ponto_pe_guarda.x, ponto_pe_guarda.y);
         int tile_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
         if(tile_info == 0 || tile_info == 13 || tile_info == 14 || tile_info == 18 || tile_info == 19){
             box.x += cos_angulo * vel;
             box.y -= sen_angulo* vel;
             sp.SetFrame(m_sudoeste+1);
             sp.PauseAnimation();
-        }
+        }*/
     }
 }
 
@@ -728,7 +734,7 @@ void Guarda::CalcularMovimentoAtual(){
         caminho.pop_back();
         if(movimento_atual == NE){
             guarda_t_pos_desejada.x = guarda_t_pos.x;
-            guarda_t_pos_desejada.y = guarda_t_pos.y-1;
+            guarda_t_pos_desejada.y = guarda_t_pos.y+1;
         }
         else if(movimento_atual == SE){
             guarda_t_pos_desejada.x = guarda_t_pos.x+1;
@@ -736,7 +742,7 @@ void Guarda::CalcularMovimentoAtual(){
         }
         else if(movimento_atual == SO){
             guarda_t_pos_desejada.x = guarda_t_pos.x;
-            guarda_t_pos_desejada.y = guarda_t_pos.y+1;
+            guarda_t_pos_desejada.y = guarda_t_pos.y-1;
         }
         else if(movimento_atual == NO){
             guarda_t_pos_desejada.x = guarda_t_pos.x-1;
@@ -828,4 +834,54 @@ void Guarda::EncontraNoMesmoTile(Vec2 gaia_pos, Vec2 guarda_pos){
             movimento_atual = PARADO;
         }
     }
+}
+
+void Guarda::DrawRectangle(int x1, int y1, int x2, int y2){
+    SDL_Renderer* GameRenderer = Game::GetInstance().GetRenderer();
+
+    SDL_RenderDrawLine(GameRenderer, x1, y1, x1, y2);
+    SDL_RenderDrawLine(GameRenderer, x1, y1, x2, y1);
+    SDL_RenderDrawLine(GameRenderer, x1, y2, x2, y2);
+    SDL_RenderDrawLine(GameRenderer, x2, y1, x2, y2);
+}
+
+void Guarda::DrawRectangleX(int x1, int y1, int x2, int y2){
+    SDL_Renderer* GameRenderer = Game::GetInstance().GetRenderer();
+
+    SDL_RenderDrawLine(GameRenderer, x1, y1, x1, y2);
+    SDL_RenderDrawLine(GameRenderer, x1, y1, x2, y1);
+    SDL_RenderDrawLine(GameRenderer, x1, y1, x2, y2);
+    SDL_RenderDrawLine(GameRenderer, x1, y2, x2, y1);
+    SDL_RenderDrawLine(GameRenderer, x1, y2, x2, y2);
+    SDL_RenderDrawLine(GameRenderer, x2, y1, x2, y2);
+}
+
+void Guarda::DrawRectangle(Vec2 v){
+    SDL_Renderer* GameRenderer = Game::GetInstance().GetRenderer();
+
+    int x1 = (float) v.x-5;
+    int x2 = (float) v.x+5;
+    int y1 = (float) v.y-5;
+    int y2 = (float) v.y+5;
+
+    SDL_RenderDrawLine(GameRenderer, x1, y1, x1, y2);
+    SDL_RenderDrawLine(GameRenderer, x1, y1, x2, y1);
+    SDL_RenderDrawLine(GameRenderer, x1, y2, x2, y2);
+    SDL_RenderDrawLine(GameRenderer, x2, y1, x2, y2);
+}
+
+void Guarda::DrawRectangleX(Vec2 v){
+    SDL_Renderer* GameRenderer = Game::GetInstance().GetRenderer();
+
+    int x1 = (float) v.x-5;
+    int x2 = (float) v.x+5;
+    int y1 = (float) v.y-5;
+    int y2 = (float) v.y+5;
+
+    SDL_RenderDrawLine(GameRenderer, x1, y1, x1, y2);
+    SDL_RenderDrawLine(GameRenderer, x1, y1, x2, y1);
+    SDL_RenderDrawLine(GameRenderer, x1, y1, x2, y2);
+    SDL_RenderDrawLine(GameRenderer, x1, y2, x2, y1);
+    SDL_RenderDrawLine(GameRenderer, x1, y2, x2, y2);
+    SDL_RenderDrawLine(GameRenderer, x2, y1, x2, y2);
 }

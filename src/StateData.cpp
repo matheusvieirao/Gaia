@@ -25,7 +25,7 @@ StateData::StateData(std::string nome){
 void StateData::Carregar(std::string nome){
     if(nome == "inicio jogo"){    
         //gaia_t_pos_inicio_comodo = Vec2(41, 17);
-        gaia_t_pos_inicio_comodo = Vec2(50, 16);
+        gaia_t_pos_inicio_comodo = Vec2(48, 17);
         gaia_comodo = 4;
         gaia_hp = 10;
         corre = true;

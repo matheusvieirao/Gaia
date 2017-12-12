@@ -444,7 +444,7 @@ void State_02_IndustriaT::TratarEncurralamento(){
 
 void State_02_IndustriaT::InicializarComodo(int comodo){
     if(comodo == 4) { //corredor
-        Vec2 guarda_t_pos = Vec2(52, 17);
+        Vec2 guarda_t_pos = Vec2(52, 16);
         Vec2 guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
         guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
         guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;

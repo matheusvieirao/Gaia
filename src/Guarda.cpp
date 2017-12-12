@@ -70,7 +70,7 @@ void Guarda::Update(float dt){
     Vec2 guarda_pos = Vec2(box.GetCenter().x, box.y+box.h-altura_pe);
     guarda_t_pos = guarda_pos.IsometricToCard(tile_width, tile_height);
     float vel_devagar = 200*dt;
-    float vel_rapido = 550*dt;
+    float vel_rapido = 100*dt;
     float tempo_devagar = (float)(tile_height*dt)/(vel_devagar);//tempo de andar 1 tile na velocidade devagar. a conta esta simplificada, o certo seria: "(tile_height/2) / ((vel_rapido*0.5)/dt) sendo 0.5 o seno do angulo da inclinacao do tile
     float tempo_rapido = (float)(tile_height*dt)/(2*vel_rapido);//tempo de andar 1 tile na velocidade rapido
 
@@ -195,6 +195,10 @@ void Guarda::Update(float dt){
         else if(estado_atual == PERSEGUINDO){
          //   printf("PERSEGUINDO\n");
 
+            
+
+            
+
             if(contador_fuga > 2){
                 printf("entrou Contador fuga %d\n",contador_fuga);
                 contador_fuga = 0;
@@ -204,8 +208,6 @@ void Guarda::Update(float dt){
                 tempo_estado.Restart();
             }
             
-                                                                                                                                        printf("GP dx %.0f, x %.0f, dy %.0f, y %.0f\n",guarda_t_pos_desejada.x, guarda_t_pos.x, guarda_t_pos_desejada.y, guarda_t_pos.y);
-                                                                                                                                        printf("tempo_estado %.4f, tempo rapido %.4f\n", tempo_estado.Get(), tempo_rapido);
                                                                                                                                         for(unsigned i = 0; i < caminho.size() ; i++) {
                                                                                                                                             if(caminho[i] == SE){
                                                                                                                                                 printf("| SE ");
@@ -227,11 +229,12 @@ void Guarda::Update(float dt){
             //chega no tile desejado
             if(guarda_t_pos_desejada.x == guarda_t_pos.x && guarda_t_pos_desejada.y == guarda_t_pos.y){
                 printf("Chegou no tile desejado!\n");
-                if(caminho.size() == 0){
-                    CalcularCaminho(gaia_t_pos, t_map);
-                }
+                CalcularCaminho(gaia_t_pos, t_map);
                 if(caminho.size() > 0){
                     CalcularMovimentoAtual();
+                }
+                else{
+                    EncontraNoMesmoTile(gaia_pos, guarda_pos);
                 }
                 if (flag_perseguindo == 0){
                     printf("flag perseguindo == 0\n");
@@ -267,6 +270,22 @@ void Guarda::Update(float dt){
 
 void Guarda::Render(){
     sp.Render(box.x-Camera::pos.x, box.y-Camera::pos.y, rotation);
+    
+    Vec2 ponto_pe_guarda;
+    Vec2 guarda_pos_desejada;
+
+    TileMap* t_map = Game::GetInstance().GetCurrentState().GetTileMap();
+    guarda_pos_desejada = guarda_t_pos_desejada.CardToIsometric(t_map->GetTileWidth(), t_map->GetTileHeight());
+    ponto_pe_guarda.x = box.GetCenter().x;
+    ponto_pe_guarda.y = box.y + box.h - altura_pe;
+
+    ponto_pe_guarda.x -= Camera::pos.x;
+    ponto_pe_guarda.y -= Camera::pos.y;
+    guarda_pos_desejada.x -= Camera::pos.x;
+    guarda_pos_desejada.y -= Camera::pos.y;
+
+    DrawRectangle(ponto_pe_guarda);
+    DrawRectangleX(guarda_pos_desejada);
 }
 
 int Guarda::AndarAleatorio(TileMap* t_map){
@@ -409,15 +428,10 @@ void Guarda::Andar(float vel, TileMap* t_map){
     direcao = direcao.Normalizado();
     direcao = direcao * vel;
 
-    printf("guarda_pos_desejada x %.1f, guarda_pos_desejada y %.1f\n",guarda_pos_desejada.x,guarda_pos_desejada.y);
-    printf("ponto_pe_guarda x %.1f, ponto_pe_guarda y %.1f\n",ponto_pe_guarda.x,ponto_pe_guarda.y);
-    printf("direcao x %.1f, direcao y %.1f\n",direcao.x,direcao.y);
-    printf("box x %.1f, box y %.1f\n",box.x,box.y);
-    DrawRectangle(ponto_pe_guarda);
-    DrawRectangleX(guarda_pos_desejada);
-
+    printf("guarda_t_pos_desejada x %.1f, guarda_t_pos_desejada y %.1f\n",guarda_t_pos_desejada.x,guarda_t_pos_desejada.y);
+    Vec2 ponto_t_pe_guarda = ponto_pe_guarda.IsometricToCard(t_map->GetTileWidth(), t_map->GetTileHeight());
+    printf("ponto_t_pe_guarda x %.1f, ponto_t_pe_guarda y %.1f\n",ponto_t_pe_guarda.x ,ponto_t_pe_guarda.y);
     box.SomaVet(direcao);
-    printf("box x %.1f, box y %.1f\n",box.x,box.y);
     Vec2 t_pos = t_map->FindTile(ponto_pe_guarda.x, ponto_pe_guarda.y);
     int tile_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
     //se colidir em algo
@@ -426,11 +440,15 @@ void Guarda::Andar(float vel, TileMap* t_map){
         //sp.SetFrame(m_sudoeste+1);
         sp.PauseAnimation();
     }
-    //se passar
-    if((direcao.x < 0 && box.x < guarda_pos_desejada.x) || (direcao.x > 0 && box.x > guarda_pos_desejada.x)){
-        printf("passou da posicao\n");
-        box.NovoCentro(guarda_pos_desejada.x, guarda_pos_desejada.y);
-    }
+    //se passar,  ta implementado errado
+    // if((direcao.x < 0 && ponto_pe_guarda.x < guarda_pos_desejada.x) || (direcao.x > 0 && ponto_pe_guarda.x > guarda_pos_desejada.x)){
+    //     if((direcao.y < 0 && ponto_pe_guarda.y < guarda_pos_desejada.y) || (direcao.y > 0 && ponto_pe_guarda.y > guarda_pos_desejada.y)){
+    //         printf("passou da posicao\n");
+    //         guarda_pos_desejada = ponto_t_pe_guarda.CardToIsometric(t_map->GetTileWidth(), t_map->GetTileHeight());
+    //         box.x = guarda_pos_desejada.x - box.w/2;
+    //         box.y = guarda_pos_desejada.y + altura_pe - box.h;
+    //     }
+    // }
 
     if(movimento_atual == SE){
         printf("se\n");
@@ -728,13 +746,14 @@ int Guarda::CalcularCaminho(Vec2 gaia_t_pos, TileMap* t_map){
 }
 
 void Guarda::CalcularMovimentoAtual(){
-    printf("calc mov atual\n");
+    printf("--calc mov atual--\n");
+    printf("guarda t pos x %.0f y %.0f\n",guarda_t_pos.x, guarda_t_pos.y);
     if(caminho.size() > 0){
         movimento_atual = caminho.back();
         caminho.pop_back();
         if(movimento_atual == NE){
             guarda_t_pos_desejada.x = guarda_t_pos.x;
-            guarda_t_pos_desejada.y = guarda_t_pos.y+1;
+            guarda_t_pos_desejada.y = guarda_t_pos.y-1;
         }
         else if(movimento_atual == SE){
             guarda_t_pos_desejada.x = guarda_t_pos.x+1;
@@ -742,7 +761,7 @@ void Guarda::CalcularMovimentoAtual(){
         }
         else if(movimento_atual == SO){
             guarda_t_pos_desejada.x = guarda_t_pos.x;
-            guarda_t_pos_desejada.y = guarda_t_pos.y-1;
+            guarda_t_pos_desejada.y = guarda_t_pos.y+1;
         }
         else if(movimento_atual == NO){
             guarda_t_pos_desejada.x = guarda_t_pos.x-1;
@@ -858,11 +877,12 @@ void Guarda::DrawRectangleX(int x1, int y1, int x2, int y2){
 
 void Guarda::DrawRectangle(Vec2 v){
     SDL_Renderer* GameRenderer = Game::GetInstance().GetRenderer();
+    int raio = 10;
 
-    int x1 = (float) v.x-5;
-    int x2 = (float) v.x+5;
-    int y1 = (float) v.y-5;
-    int y2 = (float) v.y+5;
+    int x1 = (float) v.x-raio;
+    int x2 = (float) v.x+raio;
+    int y1 = (float) v.y-raio;
+    int y2 = (float) v.y+raio;
 
     SDL_RenderDrawLine(GameRenderer, x1, y1, x1, y2);
     SDL_RenderDrawLine(GameRenderer, x1, y1, x2, y1);
@@ -872,11 +892,12 @@ void Guarda::DrawRectangle(Vec2 v){
 
 void Guarda::DrawRectangleX(Vec2 v){
     SDL_Renderer* GameRenderer = Game::GetInstance().GetRenderer();
+    int raio = 10;
 
-    int x1 = (float) v.x-5;
-    int x2 = (float) v.x+5;
-    int y1 = (float) v.y-5;
-    int y2 = (float) v.y+5;
+    int x1 = (float) v.x-raio;
+    int x2 = (float) v.x+raio;
+    int y1 = (float) v.y-raio;
+    int y2 = (float) v.y+raio;
 
     SDL_RenderDrawLine(GameRenderer, x1, y1, x1, y2);
     SDL_RenderDrawLine(GameRenderer, x1, y1, x2, y1);

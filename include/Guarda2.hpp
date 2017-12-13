@@ -34,9 +34,7 @@ class Guarda2 : public GameObject{
         void NotifyCollision(GameObject& other);
         bool Is(std::string type);
         bool IsDead();
-        // int AndarAleatorio(TileMap* t_map);
         // int MaiorDistancia(Vec2 gaia_t_pos);
-        // bool EstaNaVisao(Vec2 gaia_t_pos);
         // void AcharComodo();
         // void SetPause(bool pausar);
         // void PushMovimento(int mov);
@@ -48,10 +46,12 @@ class Guarda2 : public GameObject{
         void InserirOrdenado(int x, int y, Celula *cel_aux);
 
         void CalcularMovimentoAtual(TileMap* t_map);
-        void Andar(float vel, TileMap* t_map);
+        void Andar(float vel, TileMap* t_map); //Anda em direção a guarda_pos_desejada
 
+        void AndarAleatorio(TileMap* t_map);
+        bool EstaNaVisao(Vec2 gaia_t_pos);
 
-        // void EncontraNoMesmoTile(Vec2 gaia_pos, Vec2 guarda_pos);
+        /////////////////////////// void EncontraNoMesmoTile(Vec2 gaia_pos, Vec2 guarda_pos);
         // void DrawRectangle(int x1, int y1, int x2, int y2);
         // void DrawRectangleX(int x1, int y1, int x2, int y2);
         // void DrawRectangle(Vec2 v);
@@ -65,7 +65,7 @@ class Guarda2 : public GameObject{
         GuardaEstado estado_atual;
         Rect box_anterior;
 
-        // int andar_n_tiles;
+        //////////////////////// int andar_n_tiles;
         // int contador_fuga;
         // bool mov_automatico;
 
@@ -86,7 +86,7 @@ class Guarda2 : public GameObject{
         Vec2 guarda_t_pos;
         Vec2 guarda_pos_desejada;
         Vec2 guarda_t_pos_desejada;
-        bool chegou_pos_desejada;
+        bool calcular_proximo_passo;
 
 
 };

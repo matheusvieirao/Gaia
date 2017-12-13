@@ -26,11 +26,11 @@ Guarda2::Guarda2(float x, float y, GuardaEstado estado_inicial, int comodo, std:
     estado_atual = estado_inicial;
 
 
-	movimento_anterior = PARADO;
-	movimento_atual = PARADO;
-	
+    movimento_anterior = PARADO;
+    movimento_atual = PARADO;
+    
     if(estado_atual == PERSEGUINDO){
-    	chegou_pos_desejada = true; //para entrar no primeiro loop de calcular o caminho entre o guarda e a gaia
+        calcular_proximo_passo = true; //para entrar no primeiro loop de calcular o caminho entre o guarda e a gaia
     }
     //movimento_atual = NO;
 
@@ -60,7 +60,7 @@ Guarda2::~Guarda2(){
 }
 
 void Guarda2::Update(float dt){
-    // float vel_devagar = 200*dt;
+    float vel_devagar = 200*dt;
     float vel_rapido = 300*dt;
 
     if(Game::GetInstance().IsStateStackEmpty()){
@@ -78,8 +78,8 @@ void Guarda2::Update(float dt){
     guarda_pos = Vec2(box.GetCenter().x, box.y+box.h-altura_pe);
     guarda_t_pos = guarda_pos.IsometricToCard(tile_width, tile_height);
 
-    // float tempo_devagar = (float)(tile_height*dt)/(vel_devagar);//tempo de andar 1 tile na velocidade devagar. a conta esta simplificada, o certo seria: "(tile_height/2) / ((vel_rapido*0.5)/dt) sendo 0.5 o seno do angulo da inclinacao do tile
-    // float tempo_rapido = (float)(tile_height*dt)/(2*vel_rapido);//tempo de andar 1 tile na velocidade rapido
+    float tempo_devagar = (float)(tile_height*dt)/(vel_devagar);//tempo de andar 1 tile na velocidade devagar. a conta esta simplificada, o certo seria: "(tile_height/2) / ((vel_rapido*0.5)/dt) sendo 0.5 o seno do angulo da inclinacao do tile
+    float tempo_rapido = (float)(tile_height*dt)/(2*vel_rapido);//tempo de andar 1 tile na velocidade rapido
 
     sp.Update(dt);
 
@@ -87,47 +87,43 @@ void Guarda2::Update(float dt){
 
     if(!pause){
 
-        /*if(estado_atual == DESCANSANDO_PARADO){
-           // printf("DESCANSANDO_PARADO\n");
-
+        if(estado_atual == DESCANSANDO_PARADO){
             if(tempo_estado.Get() > tempo_devagar*0.973){
-                andar_n_tiles = AndarAleatorio(t_map);
+                AndarAleatorio(t_map);
+                calcular_proximo_passo = true;
                 estado_atual = DESCANSANDO_ANDANDO;
                 tempo_estado.Restart();
             }
 
             if(!Gaia::player->EstaTransparente() && EstaNaVisao(gaia_t_pos)){
-                printf("ACHOOOU\n");
-                contador_fuga = 0;
+                calcular_proximo_passo = true; //para inicializar a busca pela gaia em PERSEGUICAO
                 estado_atual = PERSEGUINDO;
-                caminho.clear();
-                CalcularCaminho(gaia_t_pos, t_map);
-                CalcularMovimentoAtual();
                 tempo_estado.Restart();
             }
         }
-
+        
         else if(estado_atual == DESCANSANDO_ANDANDO){
-        //    printf("DESCANSANDO_ANDANDO\n");
-
-            Andar(vel_devagar, t_map);
-
-            if(tempo_estado.Get() > andar_n_tiles*tempo_devagar*0.973){
+        	if(calcular_proximo_passo){
+                CalcularMovimentoAtual(t_map);
+                calcular_proximo_passo = false;
+            }
+            //se ja andou tudo o que tinha pra andar ou se passar do tempo limite medio de 3 tiles
+            if(movimento_atual == PARADO || tempo_estado.Get() > 3*tempo_devagar*0.983){
                 estado_atual = DESCANSANDO_PARADO;
                 tempo_estado.Restart();
             }
 
+            if(movimento_atual != PARADO){
+            	Andar(vel_devagar, t_map);
+            }
+
             if(!Gaia::player->EstaTransparente() && EstaNaVisao(gaia_t_pos)){
-                printf("ACHOOOU\n");
-                contador_fuga = 0;
+                calcular_proximo_passo = true;
                 estado_atual = PERSEGUINDO;
-                caminho.clear();
-                CalcularCaminho(gaia_t_pos, t_map);
-                CalcularMovimentoAtual();
                 tempo_estado.Restart();
             }
         }
-
+/*
         else if(estado_atual == SAIR){
          //   printf("SAIR\n");
 
@@ -202,15 +198,31 @@ void Guarda2::Update(float dt){
         else*/ if(estado_atual == PERSEGUINDO){
                 tempo_estado.Restart();
 
-                if(chegou_pos_desejada){
-	                caminho.clear();	
-	                CalcularCaminho(gaia_t_pos, t_map);
-	                CalcularMovimentoAtual(t_map);
-	                chegou_pos_desejada = false;
+                if(calcular_proximo_passo){
+                    caminho.clear();    
+                    CalcularCaminho(gaia_t_pos, t_map);
+                    CalcularMovimentoAtual(t_map);
+                    calcular_proximo_passo = false;
                 }
+
                 if(movimento_atual != PARADO){
-                	Andar(vel_rapido, t_map);
+                    Andar(vel_rapido, t_map);
                 }
+	            else {
+	            	printf("parado\n");
+	            	calcular_proximo_passo = true;
+	            }
+
+                if(Gaia::player->EstaTransparente()){
+	                estado_atual = SAIR;
+	                tempo_estado.Restart();
+	            }
+
+	            if(gaia_t_pos.x == guarda_t_pos.x && gaia_t_pos.y == guarda_t_pos.y){
+	                printf("mesmo tile\n");
+	                caminho.clear();
+	                guarda_pos_desejada = gaia_pos;
+	            }
             
             
                                                                                                                                         for(unsigned i = 0; i < caminho.size() ; i++) {
@@ -230,40 +242,7 @@ void Guarda2::Update(float dt){
                                                                                                                                         if(caminho.size()>0){
                                                                                                                                             printf("|\n");
                                                                                                                                         }
-/*
-            //chega no tile desejado
-            if(guarda_t_pos_desejada.x == guarda_t_pos.x && guarda_t_pos_desejada.y == guarda_t_pos.y){
-                printf("Chegou no tile desejado!\n");
-                CalcularCaminho(gaia_t_pos, t_map);
-                if(caminho.size() > 0){
-                    CalcularMovimentoAtual();
-                }
-                else{
-                    EncontraNoMesmoTile(gaia_pos, guarda_pos);
-                }
-                if (flag_perseguindo == 0){
-                    printf("flag perseguindo == 0\n");
-                    tempo_estado.Restart();
-                    flag_perseguindo = 1;
-                    contador_fuga++;
-                }
-            }
-            else{
-                flag_perseguindo = 0;
-            }
 
-            Andar(vel_rapido, t_map);
-
-            //se estiver no mesmo tile q a gaia
-            if(gaia_t_pos.x == guarda_t_pos.x && gaia_t_pos.y == guarda_t_pos.y){
-                caminho.clear();
-                EncontraNoMesmoTile(gaia_pos, guarda_pos);
-            }
-
-            if(Gaia::player->EstaTransparente()){
-                estado_atual = SAIR;
-                tempo_estado.Restart();
-            }*/
         }
     }
 
@@ -294,7 +273,7 @@ int Guarda2::GetAlturaPe(){
 
 void Guarda2::NotifyCollision(GameObject& other){
     if(other.Is("Guarda")){
-    	//durante a colisao com outros guardas, o que colidir por tras fica parado
+        //durante a colisao com outros guardas, o que colidir por tras fica parado
         if(movimento_atual == NO || movimento_atual == NE || movimento_atual == N || movimento_atual == O){
             if(box.y < other.box.y){
                 box.x = box_anterior.x;
@@ -484,7 +463,7 @@ void Guarda2::CalcularMovimentoAtual(TileMap* t_map){
             guarda_t_pos_desejada.x = guarda_t_pos.x-1;
             guarda_t_pos_desejada.y = guarda_t_pos.y;
         }
-    	guarda_pos_desejada = guarda_t_pos_desejada.CardToIsometricCenter(t_map->GetTileWidth(), t_map->GetTileHeight()); //retorna o ponto no centro do tile
+        guarda_pos_desejada = guarda_t_pos_desejada.CardToIsometricCenter(t_map->GetTileWidth(), t_map->GetTileHeight()); //retorna o ponto no centro do tile
     }
     printf("guarda t pos desejada x %.0f y %.0f\n",guarda_t_pos_desejada.x, guarda_t_pos_desejada.y);
 }
@@ -513,8 +492,8 @@ void Guarda2::Andar(float vel, TileMap* t_map){
 
     //se for passar, so andar ate o limite
     if(distancia_a_percorrer >= distancia_falta){
-    	direcao = guarda_pos_desejada - guarda_pos;
-    	chegou_pos_desejada = true;
+        direcao = guarda_pos_desejada - guarda_pos;
+        calcular_proximo_passo = true;
     }
 
 //    printf("guarda_t_pos_desejada x %.1f, guarda_t_pos_desejada y %.1f\n",guarda_t_pos_desejada.x,guarda_t_pos_desejada.y);
@@ -531,8 +510,8 @@ void Guarda2::Andar(float vel, TileMap* t_map){
         sp.PauseAnimation();
     }
 
-    if(chegou_pos_desejada){
-    	movimento_atual = PARADO;
+    if(calcular_proximo_passo){
+        movimento_atual = PARADO;
     }
 
     //se chegar no objetivo com uma margem de erro
@@ -575,6 +554,193 @@ void Guarda2::Andar(float vel, TileMap* t_map){
             sp.SetFrameStart(m_sudoeste);
             sp.SetFrameAnimation(m_dur);
             movimento_anterior = SO;
+        }
+    }
+}
+
+void Guarda2::AndarAleatorio(TileMap* t_map){
+    int direcao;
+    bool direcao_errada = true;
+    int modulo = rand() % 12; //(0,3,4,5,8,9) = 1 tile | (1,2,6,10) = 2 tiles| (7,11) = 3 tiles
+    int repeticoes = 0;
+
+    if(modulo == 7|| modulo == 11){
+        modulo = 3;
+    }
+    else if(modulo == 1 || modulo == 2 || modulo == 6 || modulo == 10){
+        modulo = 2;
+    }
+    else{
+        modulo = 1;
+    }
+
+    caminho.clear();
+    direcao = rand() % 16;
+    while(direcao_errada) {
+        repeticoes++;
+        if(repeticoes == 5 || repeticoes == 9 || repeticoes == 13){
+        	modulo--;
+        	if(modulo == 0){
+        		break;
+        	}
+        }
+        if(direcao == 0 || direcao == 4 || direcao == 11 || direcao == 15){ //SE
+            if(modulo == 1){
+                if(t_map->GetTileInfo(comodo_atual, guarda_t_pos.x+1, guarda_t_pos.y) != 0 ){
+                	caminho.push_back(SE);
+                    direcao_errada = false;
+                }
+            }
+            else if(modulo == 2){
+                if(t_map->GetTileInfo(comodo_atual, guarda_t_pos.x+1, guarda_t_pos.y) != 0  &&
+                   t_map->GetTileInfo(comodo_atual, guarda_t_pos.x+2, guarda_t_pos.y) != 0 ){
+                	caminho.push_back(SE);
+                	caminho.push_back(SE);
+                    direcao_errada = false;
+                }
+            }
+            else{
+                if(t_map->GetTileInfo(comodo_atual, guarda_t_pos.x+1, guarda_t_pos.y) != 0 &&
+                   t_map->GetTileInfo(comodo_atual, guarda_t_pos.x+2, guarda_t_pos.y) != 0 &&
+                   t_map->GetTileInfo(comodo_atual, guarda_t_pos.x+3, guarda_t_pos.y) != 0 ){
+                	caminho.push_back(SE);
+                	caminho.push_back(SE);
+                	caminho.push_back(SE);
+                    direcao_errada = false;
+                }
+            }
+        }
+        else if(direcao == 1 || direcao == 7 || direcao == 8 || direcao == 14) { //NE
+            if(modulo == 1){
+                if(t_map->GetTileInfo(comodo_atual, guarda_t_pos.x, guarda_t_pos.y-1) != 0 ){
+                	caminho.push_back(NE);
+                    direcao_errada = false;
+                }
+            }
+            else if(modulo == 2){
+                if(t_map->GetTileInfo(comodo_atual, guarda_t_pos.x, guarda_t_pos.y-1) != 0  &&
+                   t_map->GetTileInfo(comodo_atual, guarda_t_pos.x, guarda_t_pos.y-2) != 0 ){
+                	caminho.push_back(NE);
+                	caminho.push_back(NE);
+                    direcao_errada = false;
+                }
+            }
+            else{
+                if(t_map->GetTileInfo(comodo_atual, guarda_t_pos.x, guarda_t_pos.y-1) != 0 &&
+                   t_map->GetTileInfo(comodo_atual, guarda_t_pos.x, guarda_t_pos.y-2) != 0 &&
+                   t_map->GetTileInfo(comodo_atual, guarda_t_pos.x, guarda_t_pos.y-3) != 0 ){
+                	caminho.push_back(NE);
+                	caminho.push_back(NE);
+                	caminho.push_back(NE);
+                    direcao_errada = false;
+                }
+            }
+        }
+        else if(direcao == 2 || direcao == 5 || direcao == 10 || direcao == 13) { //NO
+            if(modulo == 1){
+                if(t_map->GetTileInfo(comodo_atual, guarda_t_pos.x-1, guarda_t_pos.y) != 0 ){
+                	caminho.push_back(NO);
+                    direcao_errada = false;
+                }
+            }
+            else if(modulo == 2){
+                if(t_map->GetTileInfo(comodo_atual, guarda_t_pos.x-1, guarda_t_pos.y) != 0  &&
+                   t_map->GetTileInfo(comodo_atual, guarda_t_pos.x-2, guarda_t_pos.y) != 0 ){
+                	caminho.push_back(NO);
+                	caminho.push_back(NO);
+                    direcao_errada = false;
+                }
+            }
+            else{
+                if(t_map->GetTileInfo(comodo_atual, guarda_t_pos.x-1, guarda_t_pos.y) != 0 &&
+                   t_map->GetTileInfo(comodo_atual, guarda_t_pos.x-2, guarda_t_pos.y) != 0 &&
+                   t_map->GetTileInfo(comodo_atual, guarda_t_pos.x-3, guarda_t_pos.y) != 0 ){
+                	caminho.push_back(NO);
+                	caminho.push_back(NO);
+                	caminho.push_back(NO);
+                    direcao_errada = false;
+                }
+            }
+        }
+        else if(direcao == 3 || direcao == 6 || direcao == 9 || direcao == 12) { //SO
+            if(modulo == 1){
+                if(t_map->GetTileInfo(comodo_atual, guarda_t_pos.x, guarda_t_pos.y+1) != 0 ){
+                	caminho.push_back(SO);
+                    direcao_errada = false;
+                }
+            }
+            else if(modulo == 2){
+                if(t_map->GetTileInfo(comodo_atual, guarda_t_pos.x, guarda_t_pos.y+1) != 0  &&
+                   t_map->GetTileInfo(comodo_atual, guarda_t_pos.x, guarda_t_pos.y+2) != 0 ){
+                	caminho.push_back(SO);
+                	caminho.push_back(SO);
+                    direcao_errada = false;
+                }
+            }
+            else{
+                if(t_map->GetTileInfo(comodo_atual, guarda_t_pos.x, guarda_t_pos.y+1) != 0 &&
+                   t_map->GetTileInfo(comodo_atual, guarda_t_pos.x, guarda_t_pos.y+2) != 0 &&
+                   t_map->GetTileInfo(comodo_atual, guarda_t_pos.x, guarda_t_pos.y+3) != 0 ){
+                	caminho.push_back(SO);
+                	caminho.push_back(SO);
+                	caminho.push_back(SO);
+                    direcao_errada = false;
+                }
+            }
+        }
+        if(direcao<15){
+        	direcao++;
+        }
+        else{
+        	direcao = 0;
+        }
+    }
+}
+
+bool Guarda2::EstaNaVisao(Vec2 gaia_t_pos){
+    int gx = gaia_t_pos.x;
+    int gy = gaia_t_pos.y;
+    int ix = guarda_t_pos.x;
+    int iy = guarda_t_pos.y;
+
+    if(sp.GetFrameStart() <= 4){ //olhando pra SE
+        if((gx==ix&&gy==iy)  ||
+        (gx==ix+1&&gy==iy-1) || (gx==ix+1&&gy==iy) || (gx==ix+1&&gy==iy+1) ||
+        (gx==ix+2&&gy==iy-1) || (gx==ix+2&&gy==iy) || (gx==ix+2&&gy==iy+1)){
+            return(true);
+        }
+        else{
+            return(false);
+        }
+    }
+    else if(sp.GetFrameStart() <= 8){ //olhando para NE
+        if((gx==ix&&gx==iy)  ||
+        (gx==ix-1&&gy==iy-1) || (gx==ix&&gy==iy-1) || (gx==ix+1&&gy==iy-1) ||
+        (gx==ix-1&&gy==iy-12) || (gx==ix&&gy==iy-2) || (gx==ix+1&&gy==iy-2)){
+            return(true);
+        }
+        else{
+            return(false);
+        }
+    }
+    else if(sp.GetFrameStart() <= 12){ //olhando para NO
+        if((gx==ix&&gx==iy)  ||
+        (gx==ix-1&&gy==iy-1) || (gx==ix-1&&gy==iy) || (gx==ix-1&&gy==iy+1) ||
+        (gx==ix-2&&gy==iy-1) || (gx==ix-2&&gy==iy) || (gx==ix-2&&gy==iy+1)){
+            return(true);
+        }
+        else{
+            return(false);
+        }
+    }
+    else{ //olhando para SO
+        if((gx==ix&&gy==iy)  ||
+        (gx==ix-1&&gy==iy+1) || (gx==ix&&gy==iy+1) || (gx==ix+1&&gy==iy+1) ||
+        (gx==ix-1&&gy==iy+2) || (gx==ix&&gy==iy+2) || (gx==ix-2&&gy==iy+2)){
+            return(true);
+        }
+        else{
+            return(false);
         }
     }
 }

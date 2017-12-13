@@ -446,7 +446,7 @@ void State_02_IndustriaT::InicializarComodo(int comodo){
     if(comodo == 4) { //corredor
         Vec2 guarda_t_pos = Vec2(52, 16);
         Vec2 guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a1"));
+        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::DESCANSANDO_PARADO, comodo, "a1"));
 
         // guarda_t_pos = Vec2(50, 16);
         // guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());

@@ -119,35 +119,35 @@ void Gaia::Update(float dt){
             }
 
             if(mov_atual == S){
-                Andar(S, vel, dt);
+                Andar(S, vel);
                 direcao = S;
             }
             else if(mov_atual == SE){
-                Andar(SE, vel, dt);
+                Andar(SE, vel);
                 direcao = SE;
             }
             else if(mov_atual == L){
-                Andar(L, vel, dt);
+                Andar(L, vel);
                 direcao = L;
             }
             else if(mov_atual == NE){
-                Andar(NE, vel, dt);
+                Andar(NE, vel);
                 direcao = NE;
             }
             else if(mov_atual == N){
-                Andar(N, vel, dt);
+                Andar(N, vel);
                 direcao = N;
             }
             else if(mov_atual == NO){
-                Andar(NO, vel, dt);
+                Andar(NO, vel);
                 direcao = NO;
             }
             else if(mov_atual == O){
-                Andar(O, vel, dt);
+                Andar(O, vel);
                 direcao = O;
             }
             else if(mov_atual == SO){
-                Andar(SO, vel, dt);
+                Andar(SO, vel);
                 direcao = SO;
             }
             else if(mov_atual == PARADO){
@@ -367,35 +367,35 @@ void Gaia::Update(float dt){
                 else{
                 //se estiver em movimento obs:: os movimentos combinados (duas teclas, NE, NO, SE, SO) devem ser implementados antes dos movimentos simples (uma tecla, N, S, L, O)
                     if(In.IsKeysDown(SDLK_DOWN, SDLK_RIGHT)){
-                        Andar(SE, vel, dt);
+                        Andar(SE, vel);
                         direcao = SE;
                     }
                     else if(In.IsKeysDown(SDLK_RIGHT, SDLK_UP)){
-                        Andar(NE, vel, dt);
+                        Andar(NE, vel);
                         direcao = NE;
                     }
                     else if(In.IsKeysDown(SDLK_UP, SDLK_LEFT)){
-                        Andar(NO, vel, dt);
+                        Andar(NO, vel);
                         direcao = NO;
                     }
                     else if(In.IsKeysDown(SDLK_LEFT, SDLK_DOWN)){
-                        Andar(SO, vel, dt);
+                        Andar(SO, vel);
                         direcao = SO;
                     }
                     else if(In.IsKeyDown(SDLK_DOWN)){
-                        Andar(SO, vel, dt);
+                        Andar(SO, vel);
                         direcao = SO;
                     }
                     else if(In.IsKeyDown(SDLK_RIGHT)){
-                        Andar(SE, vel, dt);
+                        Andar(SE, vel);
                         direcao = SE;
                     }
                     else if(In.IsKeyDown(SDLK_UP)){
-                        Andar(NE, vel, dt);
+                        Andar(NE, vel);
                         direcao = NE;
                     }
                     else if(In.IsKeyDown(SDLK_LEFT)){
-                        Andar(NO, vel, dt);
+                        Andar(NO, vel);
                         direcao = NO;
                     }
                 }
@@ -452,35 +452,35 @@ void Gaia::Update(float dt){
 
             if(sprite_atual == CARRO){
                 if(In.IsKeysDown(SDLK_DOWN, SDLK_RIGHT)){
-                    Andar(SE, vel, dt);
+                    Andar(SE, vel);
                     direcao = SE;
                 }
                 else if(In.IsKeysDown(SDLK_RIGHT, SDLK_UP)){
-                    Andar(NE, vel, dt);
+                    Andar(NE, vel);
                     direcao = NE;
                 }
                 else if(In.IsKeysDown(SDLK_UP, SDLK_LEFT)){
-                    Andar(NO, vel, dt);
+                    Andar(NO, vel);
                     direcao = NO;
                 }
                 else if(In.IsKeysDown(SDLK_LEFT, SDLK_DOWN)){
-                    Andar(SO, vel, dt);
+                    Andar(SO, vel);
                     direcao = SO;
                 }
                 else if(In.IsKeyDown(SDLK_DOWN)){
-                    Andar(SO, vel, dt);
+                    Andar(SO, vel);
                     direcao = SO;
                 }
                 else if(In.IsKeyDown(SDLK_RIGHT)){
-                    Andar(SE, vel, dt);
+                    Andar(SE, vel);
                     direcao = SE;
                 }
                 else if(In.IsKeyDown(SDLK_UP)){
-                    Andar(NE, vel, dt);
+                    Andar(NE, vel);
                     direcao = NE;
                 }
                 else if(In.IsKeyDown(SDLK_LEFT)){
-                    Andar(NO, vel, dt);
+                    Andar(NO, vel);
                     direcao = NO;
                 }
             }
@@ -522,10 +522,10 @@ void Gaia::Render(){
     }
 }
 
-void Gaia::Andar(int mov, float vel, float dt){
+void Gaia::Andar(int mov, float vel){
     float cos_angulo = 0.866025403784438646763723170752936183471402626905190314027; //30º
     float sen_angulo = 0.5; //30º
-    float tg_angulo = 0.577350269189625764509148780501957455647601751270126876018 ;// 30º
+    //float tg_angulo = 0.577350269189625764509148780501957455647601751270126876018 ;// 30º
     TileMap* t_map = Game::GetInstance().GetCurrentState().GetTileMap();
     int t_info;
 

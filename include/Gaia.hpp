@@ -39,7 +39,7 @@ class Gaia : public GameObject{
         int GetHP();
         void SetPause(bool pausar);
         void PushMovimento(int mov);
-        void Andar(int mov, float vel, float dt);
+        void Andar(int mov, float vel);
         //void Transparente();
         bool EstaTransparente();
         void Parar();

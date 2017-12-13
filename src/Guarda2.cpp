@@ -24,6 +24,14 @@ Guarda2::Guarda2(float x, float y, GuardaEstado estado_inicial, int comodo, std:
     comodo_atual = comodo;
     hp = 3;
     estado_atual = estado_inicial;
+
+
+	movimento_anterior = PARADO;
+	movimento_atual = PARADO;
+	
+    if(estado_atual == PERSEGUINDO){
+    	chegou_pos_desejada = true; //para entrar no primeiro loop de calcular o caminho entre o guarda e a gaia
+    }
     //movimento_atual = NO;
 
     /*if(estado_atual == PERSEGUINDO){
@@ -52,6 +60,9 @@ Guarda2::~Guarda2(){
 }
 
 void Guarda2::Update(float dt){
+    // float vel_devagar = 200*dt;
+    float vel_rapido = 300*dt;
+
     if(Game::GetInstance().IsStateStackEmpty()){
         return;
     }
@@ -64,11 +75,9 @@ void Guarda2::Update(float dt){
 
     Vec2 gaia_pos = Gaia::player->GetPos();
     Vec2 gaia_t_pos = gaia_pos.IsometricToCard(tile_width, tile_height);
-    Vec2 guarda_pos = Vec2(box.GetCenter().x, box.y+box.h-altura_pe);
+    guarda_pos = Vec2(box.GetCenter().x, box.y+box.h-altura_pe);
     guarda_t_pos = guarda_pos.IsometricToCard(tile_width, tile_height);
 
-    // float vel_devagar = 200*dt;
-    // float vel_rapido = 100*dt;
     // float tempo_devagar = (float)(tile_height*dt)/(vel_devagar);//tempo de andar 1 tile na velocidade devagar. a conta esta simplificada, o certo seria: "(tile_height/2) / ((vel_rapido*0.5)/dt) sendo 0.5 o seno do angulo da inclinacao do tile
     // float tempo_rapido = (float)(tile_height*dt)/(2*vel_rapido);//tempo de andar 1 tile na velocidade rapido
 
@@ -191,11 +200,17 @@ void Guarda2::Update(float dt){
 
         //talvez pensar num modo do guarda sair do modo perseguindo se a distancia for mt grande  
         else*/ if(estado_atual == PERSEGUINDO){
-
-                caminho.clear();
-                CalcularCaminho(gaia_t_pos, t_map);
-                /*CalcularMovimentoAtual();
                 tempo_estado.Restart();
+
+                if(chegou_pos_desejada){
+	                caminho.clear();	
+	                CalcularCaminho(gaia_t_pos, t_map);
+	                CalcularMovimentoAtual(t_map);
+	                chegou_pos_desejada = false;
+                }
+                if(movimento_atual != PARADO){
+                	Andar(vel_rapido, t_map);
+                }
             
             
                                                                                                                                         for(unsigned i = 0; i < caminho.size() ; i++) {
@@ -215,7 +230,7 @@ void Guarda2::Update(float dt){
                                                                                                                                         if(caminho.size()>0){
                                                                                                                                             printf("|\n");
                                                                                                                                         }
-
+/*
             //chega no tile desejado
             if(guarda_t_pos_desejada.x == guarda_t_pos.x && guarda_t_pos_desejada.y == guarda_t_pos.y){
                 printf("Chegou no tile desejado!\n");
@@ -261,20 +276,15 @@ void Guarda2::Update(float dt){
 void Guarda2::Render(){
     sp.Render(box.x-Camera::pos.x, box.y-Camera::pos.y, rotation);
     
-    /*Vec2 ponto_pe_guarda;
+    /*
     Vec2 guarda_pos_desejada;
 
-    TileMap* t_map = Game::GetInstance().GetCurrentState().GetTileMap();
-    guarda_pos_desejada = guarda_t_pos_desejada.CardToIsometric(t_map->GetTileWidth(), t_map->GetTileHeight());
-    ponto_pe_guarda.x = box.GetCenter().x;
-    ponto_pe_guarda.y = box.y + box.h - altura_pe;
-
-    ponto_pe_guarda.x -= Camera::pos.x;
-    ponto_pe_guarda.y -= Camera::pos.y;
+    guarda_pos.x -= Camera::pos.x;
+    guarda_pos.y -= Camera::pos.y;
     guarda_pos_desejada.x -= Camera::pos.x;
     guarda_pos_desejada.y -= Camera::pos.y;
 
-    DrawRectangle(ponto_pe_guarda);
+    DrawRectangle(guarda_pos);
     DrawRectangleX(guarda_pos_desejada);*/
 }
 
@@ -364,37 +374,29 @@ int Guarda2::CalcularCaminho(Vec2 gaia_t_pos, TileMap* t_map){
             for( ; cel_aux->ptr_cel_antiga!=nullptr; cel_aux=cel_aux->ptr_cel_antiga){
                 if(cel_aux->x < cel_aux->ptr_cel_antiga->x){
                     caminho.push_back(NO);
-                    printf("NO ");
                 }
                 else if(cel_aux->y < cel_aux->ptr_cel_antiga->y){
                     caminho.push_back(NE);
-                    printf("NE ");
                 }
                 else if(cel_aux->x > cel_aux->ptr_cel_antiga->x){
                     caminho.push_back(SE);
-                    printf("SE ");
                 }
                 else if(cel_aux->y > cel_aux->ptr_cel_antiga->y){
                     caminho.push_back(SO);
-                    printf("SO ");
                 }
                 //printf("%d,%d | ",(int)cel_aux->x, (int)cel_aux->y);
             }
             if(cel_aux->x < guarda_t_pos.x){
                 caminho.push_back(NO);
-                    printf("NO ");
             }
             else if(cel_aux->y < guarda_t_pos.y){
                 caminho.push_back(NE);
-                    printf("NE ");
             }
             else if(cel_aux->x > guarda_t_pos.x){
                 caminho.push_back(SE);
-                    printf("SE ");
             }
             else if(cel_aux->y > guarda_t_pos.y){
                 caminho.push_back(SO);
-                    printf("SO ");
             }
             achou = true;
         }
@@ -415,7 +417,6 @@ int Guarda2::CalcularCaminho(Vec2 gaia_t_pos, TileMap* t_map){
     }
     return(caminho.size());
 }
-
 bool Guarda2::VerificarMapa(int x, int y, int map_width, int map_height){
     if (x>=0 && x<map_width && y>= 0 && y<map_height){
         //0 é aonde nao tem tile e 18 é o tile que nao pode ser pisado
@@ -431,7 +432,6 @@ bool Guarda2::VerificarMapa(int x, int y, int map_width, int map_height){
         return(false);
     }
 }
-
 float Guarda2::QuantoFalta(int x, int y){
     float mod_x = x - x_destino;
     float mod_y = y - y_destino;
@@ -445,7 +445,6 @@ float Guarda2::QuantoFalta(int x, int y){
 
     return(sqrt(mod_x*mod_x + mod_y*mod_y));
 }
-
 void Guarda2::InserirOrdenado(int x, int y, Celula* cel_aux){
     Celula* nova_cel = new Celula(x, y, cel_aux);
     nova_cel->custo_ate_agora = cel_aux->custo_ate_agora + 1;
@@ -463,3 +462,119 @@ void Guarda2::InserirOrdenado(int x, int y, Celula* cel_aux){
 }
 
 
+void Guarda2::CalcularMovimentoAtual(TileMap* t_map){
+    printf("calc movimento atual\n");
+    printf("guarda t pos x %.0f y %.0f\n",guarda_t_pos.x, guarda_t_pos.y);
+    if(caminho.size() > 0){
+        movimento_atual = caminho.back();
+        caminho.pop_back();
+        if(movimento_atual == NE){
+            guarda_t_pos_desejada.x = guarda_t_pos.x;
+            guarda_t_pos_desejada.y = guarda_t_pos.y-1;
+        }
+        else if(movimento_atual == SE){
+            guarda_t_pos_desejada.x = guarda_t_pos.x+1;
+            guarda_t_pos_desejada.y = guarda_t_pos.y;
+        }
+        else if(movimento_atual == SO){
+            guarda_t_pos_desejada.x = guarda_t_pos.x;
+            guarda_t_pos_desejada.y = guarda_t_pos.y+1;
+        }
+        else if(movimento_atual == NO){
+            guarda_t_pos_desejada.x = guarda_t_pos.x-1;
+            guarda_t_pos_desejada.y = guarda_t_pos.y;
+        }
+    	guarda_pos_desejada = guarda_t_pos_desejada.CardToIsometricCenter(t_map->GetTileWidth(), t_map->GetTileHeight()); //retorna o ponto no centro do tile
+    }
+    printf("guarda t pos desejada x %.0f y %.0f\n",guarda_t_pos_desejada.x, guarda_t_pos_desejada.y);
+}
+
+void Guarda2::Andar(float vel, TileMap* t_map){
+    int m_dur = 4; //quantos frames de animaçao tem em cada movimento
+    int m_sudeste = 1; //o primeiro frame andando em direcao sudeste
+    int m_nordeste = 5;
+    int m_noroeste = 9;
+    int m_sudoeste = 13;
+
+    Vec2 direcao;
+
+    sp.ResumeAnimation();
+    box_anterior.x = box.x;
+    box_anterior.y = box.y;
+
+    guarda_pos.x = box.GetCenter().x;
+    guarda_pos.y = box.y + box.h - altura_pe;
+
+    direcao = guarda_pos_desejada - guarda_pos;
+    float distancia_falta = guarda_pos_desejada.DistanciaVets(guarda_pos);
+    direcao = direcao.Normalizado();
+    direcao = direcao * vel;
+    float distancia_a_percorrer = direcao.Magnitude();
+
+    //se for passar, so andar ate o limite
+    if(distancia_a_percorrer >= distancia_falta){
+    	direcao = guarda_pos_desejada - guarda_pos;
+    	chegou_pos_desejada = true;
+    }
+
+//    printf("guarda_t_pos_desejada x %.1f, guarda_t_pos_desejada y %.1f\n",guarda_t_pos_desejada.x,guarda_t_pos_desejada.y);
+//    printf("guarda_t_pos x %.1f, guarda_t_pos y %.1f\n",guarda_t_pos.x ,guarda_t_pos.y);
+
+    box.SomaVet(direcao);
+    Vec2 t_pos = t_map->FindTile(guarda_pos.x, guarda_pos.y);
+    int tile_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+
+    //se colidir em algo
+    if(tile_info == 0 || tile_info == 13 || tile_info == 14 || tile_info == 18 || tile_info == 19){
+        box.SubtraiVet(direcao);
+        movimento_atual = PARADO;
+        sp.PauseAnimation();
+    }
+
+    if(chegou_pos_desejada){
+    	movimento_atual = PARADO;
+    }
+
+    //se chegar no objetivo com uma margem de erro
+
+    //se passar,  ta implementado errado
+    // if((direcao.x < 0 && guarda_pos.x < guarda_pos_desejada.x) || (direcao.x > 0 && guarda_pos.x > guarda_pos_desejada.x)){
+    //     if((direcao.y < 0 && guarda_pos.y < guarda_pos_desejada.y) || (direcao.y > 0 && guarda_pos.y > guarda_pos_desejada.y)){
+    //         printf("passou da posicao\n");
+    //         guarda_pos_desejada = guarda_t_pos.CardToIsometricCenter(t_map->GetTileWidth(), t_map->GetTileHeight());
+    //         box.x = guarda_pos_desejada.x - box.w/2;
+    //         box.y = guarda_pos_desejada.y + altura_pe - box.h;
+    //     }
+    // }
+
+
+    //Animação
+    if(movimento_atual == SE){
+        if(movimento_anterior != SE){
+            sp.SetFrameStart(m_sudeste);
+            sp.SetFrameAnimation(m_dur);
+            movimento_anterior = SE;
+        }
+    }
+    else if(movimento_atual == NE){
+        if(movimento_anterior != NE){
+            sp.SetFrameStart(m_nordeste);
+            sp.SetFrameAnimation(m_dur);
+            movimento_anterior = NE;
+        }
+    }
+    else if(movimento_atual == NO){
+        if(movimento_anterior != NO){
+            sp.SetFrameStart(m_noroeste);
+            sp.SetFrameAnimation(m_dur);
+            movimento_anterior = NO;
+        }
+    }
+    else if(movimento_atual == SO){
+        if(movimento_anterior != SO){
+            sp.SetFrameStart(m_sudoeste);
+            sp.SetFrameAnimation(m_dur);
+            movimento_anterior = SO;
+        }
+    }
+}

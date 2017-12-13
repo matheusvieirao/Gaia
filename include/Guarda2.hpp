@@ -35,7 +35,6 @@ class Guarda2 : public GameObject{
         bool Is(std::string type);
         bool IsDead();
         // int AndarAleatorio(TileMap* t_map);
-        // void Andar(float vel, TileMap* t_map);
         // int MaiorDistancia(Vec2 gaia_t_pos);
         // bool EstaNaVisao(Vec2 gaia_t_pos);
         // void AcharComodo();
@@ -48,7 +47,10 @@ class Guarda2 : public GameObject{
         bool VerificarMapa(int x, int y, int map_width, int map_height);
         void InserirOrdenado(int x, int y, Celula *cel_aux);
 
-        // void CalcularMovimentoAtual();
+        void CalcularMovimentoAtual(TileMap* t_map);
+        void Andar(float vel, TileMap* t_map);
+
+
         // void EncontraNoMesmoTile(Vec2 gaia_pos, Vec2 guarda_pos);
         // void DrawRectangle(int x1, int y1, int x2, int y2);
         // void DrawRectangleX(int x1, int y1, int x2, int y2);
@@ -62,10 +64,7 @@ class Guarda2 : public GameObject{
         Timer tempo_estado;
         GuardaEstado estado_atual;
         Rect box_anterior;
-        int movimento_atual;
-        // int movimento_anterior;
-        Vec2 guarda_t_pos;
-        // Vec2 guarda_t_pos_desejada;
+
         // int andar_n_tiles;
         // int contador_fuga;
         // bool mov_automatico;
@@ -80,6 +79,14 @@ class Guarda2 : public GameObject{
         int y_destino;
         std::vector<int> caminho; //coordenadas que o guarda deve tomar para chegar ate a Gaia
         std::vector<int> mapa_aux; // é Utilizada em CalcularCaminho e VerificarMapa
+
+        int movimento_atual;
+        int movimento_anterior; //utilizado na função Andar para ver quando inicializar uma nova animação
+        Vec2 guarda_pos;
+        Vec2 guarda_t_pos;
+        Vec2 guarda_pos_desejada;
+        Vec2 guarda_t_pos_desejada;
+        bool chegou_pos_desejada;
 
 
 };

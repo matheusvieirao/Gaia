@@ -30,6 +30,7 @@ Guarda::Guarda(float x, float y, GuardaEstado estado_inicial, int comodo, std::s
 
     if(estado_atual == PERSEGUINDO){
         movimento_atual = PARADO;
+        movimento_anterior = PARADO;
         contador_fuga = 99;
     }
     else if(estado_atual == PARADO_AUTOMATICO){
@@ -275,7 +276,7 @@ void Guarda::Render(){
     Vec2 guarda_pos_desejada;
 
     TileMap* t_map = Game::GetInstance().GetCurrentState().GetTileMap();
-    guarda_pos_desejada = guarda_t_pos_desejada.CardToIsometric(t_map->GetTileWidth(), t_map->GetTileHeight());
+    guarda_pos_desejada = guarda_t_pos_desejada.CardToIsometricCenter(t_map->GetTileWidth(), t_map->GetTileHeight());
     ponto_pe_guarda.x = box.GetCenter().x;
     ponto_pe_guarda.y = box.y + box.h - altura_pe;
 
@@ -416,14 +417,14 @@ void Guarda::Andar(float vel, TileMap* t_map){
     Vec2 ponto_pe_guarda;
     Vec2 guarda_pos_desejada;
 
-    sp.ResumeAnimation();
+    //sp.ResumeAnimation();
     box_anterior.x = box.x;
     box_anterior.y = box.y;
 
     ponto_pe_guarda.x = box.GetCenter().x;
     ponto_pe_guarda.y = box.y + box.h - altura_pe;
 
-    guarda_pos_desejada = guarda_t_pos_desejada.CardToIsometric(t_map->GetTileWidth(), t_map->GetTileHeight());
+    guarda_pos_desejada = guarda_t_pos_desejada.CardToIsometricCenter(t_map->GetTileWidth(), t_map->GetTileHeight());
     direcao = guarda_pos_desejada - ponto_pe_guarda;
     direcao = direcao.Normalizado();
     direcao = direcao * vel;
@@ -444,7 +445,7 @@ void Guarda::Andar(float vel, TileMap* t_map){
     // if((direcao.x < 0 && ponto_pe_guarda.x < guarda_pos_desejada.x) || (direcao.x > 0 && ponto_pe_guarda.x > guarda_pos_desejada.x)){
     //     if((direcao.y < 0 && ponto_pe_guarda.y < guarda_pos_desejada.y) || (direcao.y > 0 && ponto_pe_guarda.y > guarda_pos_desejada.y)){
     //         printf("passou da posicao\n");
-    //         guarda_pos_desejada = ponto_t_pe_guarda.CardToIsometric(t_map->GetTileWidth(), t_map->GetTileHeight());
+    //         guarda_pos_desejada = ponto_t_pe_guarda.CardToIsometricCenter(t_map->GetTileWidth(), t_map->GetTileHeight());
     //         box.x = guarda_pos_desejada.x - box.w/2;
     //         box.y = guarda_pos_desejada.y + altura_pe - box.h;
     //     }

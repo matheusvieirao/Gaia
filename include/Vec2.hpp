@@ -18,7 +18,8 @@ class Vec2 {
         float InclinacaoX() const; //conferir quadrantes 2 e 3
         float InclinacaoReta(const Vec2& v) const;
         Vec2 Rotate(float teta) const; //em radianos
-        Vec2 CardToIsometric(float tile_width, float tile_height) const; //pega um valor que está na matriz do mapa e transforma em uma coordenada x,y da tela
+        Vec2 CardToIsometric(float tile_width, float tile_height) const; //pega um valor que está na matriz do mapa e transforma em uma coordenada x,y da tela (do canto superior esquerdo do tile)
+        Vec2 CardToIsometricCenter(float tile_width, float tile_height) const; //pega um valor que está na matriz do mapa e transforma em uma coordenada x,y da tela (do centro do tile)
         Vec2 IsometricToCard(float tile_width, float tile_height) const; //pega uma coordenada x,y da tela e transforma em um valor que é usado na matriz do mapa (de 0 a n-1 sendo n o tamanho da dimensão)
         float x;
         float y;

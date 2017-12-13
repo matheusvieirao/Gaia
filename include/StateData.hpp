@@ -15,6 +15,7 @@ class StateData{
         Vec2 gaia_t_pos;
         Vec2 gaia_t_pos_antiga;
         Vec2 gaia_t_pos_inicio_comodo;
+        //bool comecou_jogo;
         int gaia_comodo; // T: 0- Producao | 4- Corredor | 8- Dormitorio | 12- Corredor2 | 16- Refeitorio // SS: 0- Quarto Velho | 4- Corredor | 8- Deposito | 12- Descarga
         int gaia_hp;
         bool p_deposito; //false trancada, true aberta

@@ -25,7 +25,7 @@ Vec2 Vec2::operator*(float n) const{
 }
 
 Vec2 Vec2::Soma(const Vec2& v) const {
-    return(Vec2(v.x+x, v.y+y));
+    return(Vec2(x+v.x, y+v.y));
 }
 
 Vec2 Vec2::Subtracao(const Vec2& v) const{
@@ -68,6 +68,15 @@ Vec2 Vec2::Rotate(float teta) const{
 Vec2 Vec2::CardToIsometric(float tile_width, float tile_height) const{
     float x_novo = (x - y) * tile_width / 2;
     float y_novo = (x + y) * tile_height /2;
+    return (Vec2(x_novo, y_novo));
+}
+
+//retorna o centro do tile
+Vec2 Vec2::CardToIsometricCenter(float tile_width, float tile_height) const{
+    float x_novo = (x - y) * tile_width / 2;
+    float y_novo = (x + y) * tile_height /2;
+    x_novo += tile_width/2;
+    y_novo += tile_height/2;
     return (Vec2(x_novo, y_novo));
 }
 

@@ -448,43 +448,43 @@ void State_02_IndustriaT::InicializarComodo(int comodo){
         Vec2 guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
         guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
         guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
-        AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PERSEGUINDO, comodo, "a1"));
+        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a1"));
 
         // guarda_t_pos = Vec2(50, 16);
         // guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
         // guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
         // guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
-        // AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PERSEGUINDO, comodo, "a2"));
+        // AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a2"));
 
         // guarda_t_pos = Vec2(51, 15);
         // guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
         // guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
         // guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
-        // AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PERSEGUINDO, comodo, "a3"));
+        // AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a3"));
 
         // guarda_t_pos = Vec2(11, 15);
         // guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
         // guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
         // guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
-        // AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PARADO_AUTOMATICO, comodo, "b1"));
+        // AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PARADO_AUTOMATICO, comodo, "b1"));
 
         // guarda_t_pos = Vec2(11, 17);
         // guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
         // guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
         // guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
-        // AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PARADO_AUTOMATICO, comodo, "b2"));
+        // AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PARADO_AUTOMATICO, comodo, "b2"));
 
         // guarda_t_pos = Vec2(3, 15);
         // guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
         // guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
         // guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
-        // AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PARADO_AUTOMATICO, comodo, "c1"));
+        // AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PARADO_AUTOMATICO, comodo, "c1"));
 
         // guarda_t_pos = Vec2(3, 17);
         // guarda_pe_pos = guarda_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
         // guarda_pe_pos.x = guarda_pe_pos.x + tile_set->GetTileWidth()/2;
         // guarda_pe_pos.y = guarda_pe_pos.y + tile_set->GetTileHeight()/2;
-        // AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PARADO_AUTOMATICO, comodo, "c2"));
+        // AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PARADO_AUTOMATICO, comodo, "c2"));
 
     }
 }

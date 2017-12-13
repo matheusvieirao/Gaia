@@ -745,31 +745,6 @@ int Guarda::CalcularCaminho(Vec2 gaia_t_pos, TileMap* t_map){
     return(caminho.size());
 }
 
-void Guarda::CalcularMovimentoAtual(){
-    printf("--calc mov atual--\n");
-    printf("guarda t pos x %.0f y %.0f\n",guarda_t_pos.x, guarda_t_pos.y);
-    if(caminho.size() > 0){
-        movimento_atual = caminho.back();
-        caminho.pop_back();
-        if(movimento_atual == NE){
-            guarda_t_pos_desejada.x = guarda_t_pos.x;
-            guarda_t_pos_desejada.y = guarda_t_pos.y-1;
-        }
-        else if(movimento_atual == SE){
-            guarda_t_pos_desejada.x = guarda_t_pos.x+1;
-            guarda_t_pos_desejada.y = guarda_t_pos.y;
-        }
-        else if(movimento_atual == SO){
-            guarda_t_pos_desejada.x = guarda_t_pos.x;
-            guarda_t_pos_desejada.y = guarda_t_pos.y+1;
-        }
-        else if(movimento_atual == NO){
-            guarda_t_pos_desejada.x = guarda_t_pos.x-1;
-            guarda_t_pos_desejada.y = guarda_t_pos.y;
-        }
-    }
-}
-
 bool Guarda::VerificarMapa(int x, int y, int map_width, int map_height){
     if (x>=0 && x<map_width && y>= 0 && y<map_height){
         //0 é aonde nao tem tile e 18 é o tile que nao pode ser pisado
@@ -813,6 +788,31 @@ void Guarda::InserirOrdenado(int x, int y, Celula* cel_aux){
     while(i>0 && celulas_nao_checadas[i]->custo_total > celulas_nao_checadas[i-1]->custo_total){
         std::swap(celulas_nao_checadas[i], celulas_nao_checadas[i-1]);
         i--;
+    }
+}
+
+void Guarda::CalcularMovimentoAtual(){
+    printf("--calc mov atual--\n");
+    printf("guarda t pos x %.0f y %.0f\n",guarda_t_pos.x, guarda_t_pos.y);
+    if(caminho.size() > 0){
+        movimento_atual = caminho.back();
+        caminho.pop_back();
+        if(movimento_atual == NE){
+            guarda_t_pos_desejada.x = guarda_t_pos.x;
+            guarda_t_pos_desejada.y = guarda_t_pos.y-1;
+        }
+        else if(movimento_atual == SE){
+            guarda_t_pos_desejada.x = guarda_t_pos.x+1;
+            guarda_t_pos_desejada.y = guarda_t_pos.y;
+        }
+        else if(movimento_atual == SO){
+            guarda_t_pos_desejada.x = guarda_t_pos.x;
+            guarda_t_pos_desejada.y = guarda_t_pos.y+1;
+        }
+        else if(movimento_atual == NO){
+            guarda_t_pos_desejada.x = guarda_t_pos.x-1;
+            guarda_t_pos_desejada.y = guarda_t_pos.y;
+        }
     }
 }
 

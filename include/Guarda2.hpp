@@ -62,6 +62,7 @@ class Guarda2 : public GameObject{
         std::string nome;
         int hp;
         Timer tempo_estado;
+        Timer pausa;
         GuardaEstado estado_atual;
         Rect box_anterior;
 
@@ -87,6 +88,8 @@ class Guarda2 : public GameObject{
         Vec2 guarda_pos_desejada;
         Vec2 guarda_t_pos_desejada;
         bool calcular_proximo_passo;
+
+        bool acabou_de_entrar_no_estado;
 
 
 };

@@ -82,6 +82,7 @@ void Guarda2::Update(float dt){
 
     
     sp.Update(dt);
+    pausa.Update(dt);
 
     tempo_estado.Update(dt);
 
@@ -127,25 +128,52 @@ void Guarda2::Update(float dt){
         else if(estado_atual == SAIR){
         	printf("sair\n");
 
-        	if(calcular_proximo_passo){
-        		CalcularMovimentoAtual(t_map);
-                //movimento_anterior = PARADO;
-                calcular_proximo_passo = false;
+        	if(acabou_de_entrar_no_estado){
+        		acabou_de_entrar_no_estado = false;
+        		movimento_anterior = movimento_atual;
+                movimento_atual = PARADO;
+                pausa.Restart();
+
+                caminho.clear();
+                if(guarda_t_pos.x > gaia_t_pos.x){
+                    caminho.push_back(SE);
+                    caminho.push_back(SE);
+                }
+                else if (guarda_t_pos.x < gaia_t_pos.x){
+                    caminho.push_back(NO);
+                    caminho.push_back(NO);
+                }
+                else{
+                	if(rand()%12 < 6){
+	                    caminho.push_back(SE);
+	                    caminho.push_back(SE);
+                	}
+                	else{
+	                    caminho.push_back(NO);
+	                    caminho.push_back(NO);
+                	}
+                }
+                calcular_proximo_passo = true;
         	}
 
+        	
+
             if(Gaia::player->EstaTransparente()){
-                if(tempo_estado.Get() > 1.5){
-                    if(guarda_pos.y > gaia_pos.y){
-                    	caminho.clear();
-                        caminho.push_back(SE);
-                        caminho.push_back(SE);
-                    }
-                    else{
-                    	caminho.clear();
-                        caminho.push_back(NO);
-                        caminho.push_back(NO);
-                    }
-                    calcular_proximo_passo = true;
+                if(pausa.Get() > 1.5){
+                	if(calcular_proximo_passo){
+		        		CalcularMovimentoAtual(t_map);
+		                //movimento_anterior = PARADO;
+		                calcular_proximo_passo = false;
+		        	}
+		            float dist = guarda_pos.DistanciaVets(gaia_pos);
+		            if(dist > 400 || tempo_estado.Get() > 3){
+		                estado_atual = DESCANSANDO_PARADO;
+		                tempo_estado.Restart();
+		            }
+
+		            if(movimento_atual != PARADO){
+		            	Andar(vel_devagar, t_map);
+		            }
                 }
             }
             else if(EstaNaVisao(gaia_t_pos)){
@@ -154,15 +182,6 @@ void Guarda2::Update(float dt){
                 tempo_estado.Restart();
             }
 
-            float dist = guarda_pos.DistanciaVets(gaia_pos);
-            if(dist > 400 || tempo_estado.Get() > 3){
-                estado_atual = DESCANSANDO_PARADO;
-                tempo_estado.Restart();
-            }
-
-            if(movimento_atual != PARADO){
-            	Andar(vel_devagar, t_map);
-            }
         }/*
 
         else if(estado_atual == PARADO_AUTOMATICO){
@@ -204,58 +223,38 @@ void Guarda2::Update(float dt){
 
             Andar(vel_rapido, t_map);
         }
-
+*/
         //talvez pensar num modo do guarda sair do modo perseguindo se a distancia for mt grande  
-        else*/ if(estado_atual == PERSEGUINDO){
+        else if(estado_atual == PERSEGUINDO){
+            tempo_estado.Restart();
+
+            if(calcular_proximo_passo){
+                caminho.clear();    
+                CalcularCaminho(gaia_t_pos, t_map);
+                CalcularMovimentoAtual(t_map);
+                calcular_proximo_passo = false;
+            }
+
+            if(movimento_atual != PARADO){
+                Andar(vel_rapido, t_map);
+            }
+            else {
+            	printf("parado\n");
+            	calcular_proximo_passo = true;
+            }
+
+            if(Gaia::player->EstaTransparente()){
+                estado_atual = SAIR;
+                movimento_atual = PARADO;
                 tempo_estado.Restart();
+                acabou_de_entrar_no_estado = true;
+            }
 
-                if(calcular_proximo_passo){
-                    caminho.clear();    
-                    CalcularCaminho(gaia_t_pos, t_map);
-                    CalcularMovimentoAtual(t_map);
-                    calcular_proximo_passo = false;
-                }
-
-                if(movimento_atual != PARADO){
-                    Andar(vel_rapido, t_map);
-                }
-	            else {
-	            	printf("parado\n");
-	            	calcular_proximo_passo = true;
-	            }
-
-                if(Gaia::player->EstaTransparente()){
-	                estado_atual = SAIR;
-	                movimento_atual = PARADO;
-	                tempo_estado.Restart();
-	                calcular_proximo_passo = false;
-	            }
-
-	            if(gaia_t_pos.x == guarda_t_pos.x && gaia_t_pos.y == guarda_t_pos.y){
-	                printf("mesmo tile\n");
-	                caminho.clear();
-	                guarda_pos_desejada = gaia_pos;
-	            }
-            
-            
-                                                                                                                                        for(unsigned i = 0; i < caminho.size() ; i++) {
-                                                                                                                                            if(caminho[i] == SE){
-                                                                                                                                                printf("| SE ");
-                                                                                                                                            }
-                                                                                                                                            else if(caminho[i] == SO){
-                                                                                                                                                printf("| SO ");
-                                                                                                                                            }
-                                                                                                                                            else if(caminho[i] == NE){
-                                                                                                                                                printf("| NE ");
-                                                                                                                                            }
-                                                                                                                                            else if(caminho[i] == NO){
-                                                                                                                                                printf("| NO ");
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                        if(caminho.size()>0){
-                                                                                                                                            printf("|\n");
-                                                                                                                                        }
-
+            if(gaia_t_pos.x == guarda_t_pos.x && gaia_t_pos.y == guarda_t_pos.y){
+                printf("mesmo tile\n");
+                caminho.clear();
+                guarda_pos_desejada = gaia_pos;
+            }
         }
     }
 
@@ -516,7 +515,7 @@ void Guarda2::Andar(float vel, TileMap* t_map){
 
     //se colidir em algo
     if(tile_info == 0 || tile_info == 13 || tile_info == 14 || tile_info == 18 || tile_info == 19){
-        box.SubtraiVet(direcao);
+        box.SubtraiVet(direcao*1.8);
         movimento_atual = PARADO;
         sp.PauseAnimation();
     }
@@ -524,18 +523,6 @@ void Guarda2::Andar(float vel, TileMap* t_map){
     if(calcular_proximo_passo){
         movimento_atual = PARADO;
     }
-
-    //se chegar no objetivo com uma margem de erro
-
-    //se passar,  ta implementado errado
-    // if((direcao.x < 0 && guarda_pos.x < guarda_pos_desejada.x) || (direcao.x > 0 && guarda_pos.x > guarda_pos_desejada.x)){
-    //     if((direcao.y < 0 && guarda_pos.y < guarda_pos_desejada.y) || (direcao.y > 0 && guarda_pos.y > guarda_pos_desejada.y)){
-    //         printf("passou da posicao\n");
-    //         guarda_pos_desejada = guarda_t_pos.CardToIsometricCenter(t_map->GetTileWidth(), t_map->GetTileHeight());
-    //         box.x = guarda_pos_desejada.x - box.w/2;
-    //         box.y = guarda_pos_desejada.y + altura_pe - box.h;
-    //     }
-    // }
 
 
     //Animação

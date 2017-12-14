@@ -3,7 +3,7 @@
 #include "Gaia.hpp"
 #include "Camera.hpp"
 
-Rato::Rato(float x, float y, bool chave):sp("img/lularanha.png", 12, 1, 3, 0.2){
+Rato::Rato(float x, float y, bool chave):sp("img/personagens/lularanha.png", 12, 1, 3, 0.2){
     altura_pe = 49;
     largura_box_col = 54;
     altura_box_col = 42;
@@ -14,7 +14,7 @@ Rato::Rato(float x, float y, bool chave):sp("img/lularanha.png", 12, 1, 3, 0.2){
     som.Open("audio/sons/rato.ogg");
 
     if(chave){
-        sp_chave.Open("img/chave.png");
+        sp_chave.Open("img/itens/chave.png");
     }
 
     AcharComodo();
@@ -115,7 +115,7 @@ void Rato::Update(float dt){
     }
 
     if(t_map == nullptr){
-        Game::GetInstance().AddErro(12, "Rato::Update");
+        std::cout << "t_map não pode ser nullptr. Rato::Update"  << std::endl;
     }
 }
 
@@ -626,7 +626,7 @@ void Rato::NotifyCollision(GameObject& other){
     if(other.Is("Gaia")){
         if(chave==true){
             chave = false;
-            //Game::GetInstance().GetCurrentState().PushInventario(StateData::CHAVE_ENERGIA);
+            Game::GetInstance().GetCurrentState().PushInventario(StateData::CHAVE_ENERGIA);
             if(!som_item.IsOpen())
                 som_item.Open("audio/sons/got item.ogg");
             som_item.Play(0);

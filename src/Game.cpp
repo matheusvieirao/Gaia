@@ -31,26 +31,26 @@ Game::Game(std::string title, int width, int height) {
 					}
 					else {
 						if (window == nullptr) {
-							AddErro(4, "Game::Game");
+							std::cout << "SDL_CreateWindow falhou. - " << "Game::Game" << SDL_GetError() << std::endl;
 						}
 						else {
-							AddErro(5, "Game::Game");
+							std::cout << "SDL_CreateRenderer falhou. - " << "Game::Game" << SDL_GetError() << std::endl;
 						}
 					}
 				}
 				else {
-					AddErro(3, "Game::Game");
+					std::cout << "IMG_Init falhou. - " << "Game::Game" << std::endl; //Game::Game
 				}
 				if(Mix_Init(MIX_INIT_OGG | MIX_INIT_MP3) != 0){
                     if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == 0){
                         //musica aberta com sucesso
                     }
                     else{
-                        AddErro(7, ": Mix_OpenAudio falhou. - Game::Game");
+                        std::cout << "Mix_OpenAudio falhou. - Game::Game" << std::endl;
                     }
 				}
 				else {
-                    AddErro(6, "Game::Game");
+                    std::cout << "Mix_Init falhou. - " << "Game::Game" << std::endl;
 				}
 				if(TTF_Init() == 0){
                     //sucess
@@ -60,11 +60,11 @@ Game::Game(std::string title, int width, int height) {
 				}
 			}
 			else{
-				AddErro(2, "Game::Game");
+                std::cout << "SDL_Init falhou. - " << "Game::Game" << SDL_GetError() << std::endl; //Game::Game
 			}
 	}
 	else {
-		AddErro(1, "Game::Game");
+        std::cout << "A instancia inicial do jogo é diferente de null. O jogo ta tentando instanciar duas vezes. - " << "Game::Game" << std::endl; //Game::Game
 	}
 }
 

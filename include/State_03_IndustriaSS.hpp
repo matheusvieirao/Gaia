@@ -32,8 +32,8 @@ class State_03_IndustriaSS : public State{
         bool Falar(float delay, std::string arquivo);
         //static State_03_IndustriaSS& GetInstance();
         TileMap* GetTileMap();
-        void PushInventario(StateData::Item item);
         void TrocarDeComodo();
+        void PushInventario(StateData::Item item);
 
         TileMap* tile_map;
     private:

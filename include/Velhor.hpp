@@ -29,6 +29,7 @@ class Velhor : public GameObject{
         void NotifyCollision(GameObject& other);
         bool Is(std::string type);
         bool IsDead();
+        void PushMovimento(int mov); //para andar no automatico
     private:
         std::string nome;
         Sprite sp_levitando;

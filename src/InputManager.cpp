@@ -72,7 +72,7 @@ void InputManager::Update() {
                     mouseUpdate[mouse_aux] = updateCounter;
                 }
                 else {
-                    Game::GetInstance().AddErro(11, "InputManager::Update");
+                    std::cout << "Um botão do mouse fora do range foi detectada. - InputManager::Update "  << std::endl;
                 }
                 break;
 
@@ -84,7 +84,7 @@ void InputManager::Update() {
                     mouseUpdate[mouse_aux] = updateCounter;
                 }
                 else {
-                    Game::GetInstance().AddErro(11, "InputManager::Update");
+                    std::cout << "Um botão do mouse fora do range foi detectada. - InputManager::Update "  << std::endl;
                 }
                 break;
 
@@ -98,7 +98,7 @@ void InputManager::Update() {
                         keyUpdate[key_aux] = updateCounter;
                     }
                     else {
-                        Game::GetInstance().AddErro(9, "InputManager::Update");
+                        std::cout << "Uma tecla do teclado fora do range foi detectada. - InputManager::Update "  << std::endl;
                     }
                 }
                 break;
@@ -113,7 +113,7 @@ void InputManager::Update() {
                         keyUpdate[key_aux] = updateCounter;
                     }
                     else {
-                        Game::GetInstance().AddErro(9, "InputManager::Update");
+                        std::cout << "Uma tecla do teclado fora do range foi detectada. - InputManager::Update "  << std::endl;
                     }
                 }
                 break;
@@ -131,7 +131,7 @@ bool InputManager::KeyPress(int key){
         }
     }
     else {
-        Game::GetInstance().AddErro(10, "InputManager::KeyPress");
+        std::cout << "Uma tecla fora do alcance do teclado foi solicitada. - InputManager::KeyPress(int)"  << std::endl;
         return(false);
     }
 }
@@ -146,7 +146,7 @@ bool InputManager::KeysPress(int key1, int key2){
         }
     }
     else {
-        Game::GetInstance().AddErro(10, "InputManager::KeysPress");
+        std::cout << "Uma tecla fora do alcance do teclado foi solicitada. - InputManager::KeysPress(int int)"  << std::endl;
         return(false);
     }
 }
@@ -161,7 +161,7 @@ bool InputManager::KeyRelease(int key){
         }
     }
     else {
-        Game::GetInstance().AddErro(10, "InputManager::KeyRelease");
+        std::cout << "Uma tecla fora do alcance do teclado foi solicitada. - InputManager::KeyRelease"  << std::endl;
         return(false);
     }
 }

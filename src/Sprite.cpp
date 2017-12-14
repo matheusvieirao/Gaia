@@ -53,7 +53,8 @@ void Sprite::Open(std::string file) {
         SetFrame(frame_start+1);
     }
     else {
-       Game::GetInstance().AddErro(8, "Sprite::Open");
+        std::cout << "IMG_LoadTexture não conseguiu abrir " << file << " - Sprite::Open " << SDL_GetError() << std::endl;
+        exit(1); 
     }
 }
 

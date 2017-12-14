@@ -28,7 +28,7 @@ void TileMap::Load(std::string file){
         }
     }
     else {
-        Game::GetInstance().AddErro(7, "TileMap::Load");
+        std::cout << "Mix_OpenAudio falhou. - Game::Game" << std::endl;
     }
     fp.close();
 }
@@ -52,7 +52,7 @@ void TileMap::RenderLayer(int layer, int camera_x, int camera_y){
     Vec2 v;
 
     if(layer >= GetDepth()){
-        Game::GetInstance().AddErro(13, "TileMap::RenderLayer (1)");
+        std::cout << "TileMap esta tentando renderizar uma camada de tile que nao existe - TileMap::RenderLayer(int int int)" << std::endl;
     }
 
     tile_width = tile_set->GetTileWidth();
@@ -83,7 +83,7 @@ void TileMap::RenderLayer(int layer, int lim_x, int lim_y, int camera_x, int cam
     Vec2 v;
 
     if(layer >= GetDepth()){
-        Game::GetInstance().AddErro(13, "TileMap::RenderLayer (2)");
+        std::cout << "TileMap esta tentando renderizar uma camada de tile que nao existe - TileMap::RenderLayer(int int int int int)" << std::endl;
     }
 
     tile_width = tile_set->GetTileWidth();
@@ -115,7 +115,7 @@ void TileMap::RenderTile(int layer, int t_x, int t_y, int camera_x, int camera_y
     Vec2 v;
 
     if(layer >= GetDepth()){
-        Game::GetInstance().AddErro(13, "TileMap::RenderTile");
+        std::cout << "TileMap esta tentando renderizar uma camada de tile que nao existe - TileMap::RenderTile " << std::endl;
     }
 
     tile_width = tile_set->GetTileWidth();

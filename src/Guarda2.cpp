@@ -60,8 +60,8 @@ void Guarda2::Update(float dt){
     int tile_height = t_map->GetTileHeight();
 
     float vel_devagar = 200*dt;
-    float vel_rapido = 500*dt;float tempo_devagar = (float)(tile_height*dt)/(vel_devagar);//tempo de andar 1 tile na velocidade devagar. a conta esta simplificada, o certo seria: "(tile_height/2) / ((vel_rapido*0.5)/dt) sendo 0.5 o seno do angulo da inclinacao do tile
-    float tempo_rapido = (float)(tile_height*dt)/(2*vel_rapido);//tempo de andar 1 tile na velocidade rapido
+    float vel_rapido = 600*dt;float tempo_devagar = (float)(tile_height*dt)/(vel_devagar);//tempo de andar 1 tile na velocidade devagar. a conta esta simplificada, o certo seria: "(tile_height/2) / ((vel_rapido*0.5)/dt) sendo 0.5 o seno do angulo da inclinacao do tile
+    //float tempo_rapido = (float)(tile_height*dt)/(2*vel_rapido);//tempo de andar 1 tile na velocidade rapido
 
     Vec2 gaia_pos = Gaia::player->GetPos();
     Vec2 gaia_t_pos = gaia_pos.IsometricToCard(tile_width, tile_height);
@@ -73,8 +73,6 @@ void Guarda2::Update(float dt){
         return;
     }
     turno_atual++;
-    printf("-------------------%d--------------------\n",turno_atual);
-
     
     sp.Update(dt);
     pausa.Update(dt);
@@ -121,7 +119,6 @@ void Guarda2::Update(float dt){
         }
 
         else if(estado_atual == SAIR){
-        	printf("sair\n");
 
         	if(acabou_de_entrar_no_estado){
         		acabou_de_entrar_no_estado = false;
@@ -180,7 +177,6 @@ void Guarda2::Update(float dt){
         }/*
 
         else if(estado_atual == PARADO_AUTOMATICO){
-        //    printf("PARADO_AUTOMATICO\n");
             if(mov_automatico){
                 estado_atual = MOVIMENTO_AUTOMATICO;
                 movimento_atual = movimentos.back();
@@ -190,7 +186,6 @@ void Guarda2::Update(float dt){
         }
 
         else if(estado_atual == MOVIMENTO_AUTOMATICO){
-          //  printf("MOVIMENTO_AUTOMATICO\n");
             vel_rapido = 500 * dt;
             tempo_rapido = (float)tile_height/((vel_rapido)/dt);
 
@@ -234,7 +229,6 @@ void Guarda2::Update(float dt){
                 Andar(vel_rapido, t_map);
             }
             else {
-            	printf("parado\n");
             	calcular_proximo_passo = true;
             }
 
@@ -246,7 +240,6 @@ void Guarda2::Update(float dt){
             }
 
             if(gaia_t_pos.x == guarda_t_pos.x && gaia_t_pos.y == guarda_t_pos.y){
-                printf("mesmo tile\n");
                 caminho.clear();
                 guarda_pos_desejada = gaia_pos;
             }
@@ -255,7 +248,7 @@ void Guarda2::Update(float dt){
 
 
     if(t_map == nullptr){
-        Game::GetInstance().AddErro(12, "Guarda2::Update");
+        std::cout << "t_map não pode ser nullptr. Guarda2::Update"  << std::endl;
     }
 }
 
@@ -304,11 +297,16 @@ bool Guarda2::IsDead(){
     return(hp<0);
 }
 
+void Guarda2::PushMovimento(int mov){
+    caminho.clear();
+    caminho.push_back(mov);
+    mov_automatico = true;
+}
+
 
 
 //retorna o tamanho do vetor caminho, que contem as coordenadas a se andar
 int Guarda2::CalcularCaminho(Vec2 gaia_t_pos, TileMap* t_map){
-    printf("calc caminho\n");
     bool achou = false;
 
     int map_width = t_map->GetWidth();
@@ -370,7 +368,6 @@ int Guarda2::CalcularCaminho(Vec2 gaia_t_pos, TileMap* t_map){
                 else if(cel_aux->y > cel_aux->ptr_cel_antiga->y){
                     caminho.push_back(SO);
                 }
-                //printf("%d,%d | ",(int)cel_aux->x, (int)cel_aux->y);
             }
             if(cel_aux->x < guarda_t_pos.x){
                 caminho.push_back(NO);
@@ -450,8 +447,6 @@ void Guarda2::InserirOrdenado(int x, int y, Celula* cel_aux){
 
 
 void Guarda2::CalcularMovimentoAtual(TileMap* t_map){
-    printf("calc movimento atual\n");
-    printf("guarda t pos x %.0f y %.0f\n",guarda_t_pos.x, guarda_t_pos.y);
     if(caminho.size() > 0){
         movimento_atual = caminho.back();
         caminho.pop_back();
@@ -473,7 +468,6 @@ void Guarda2::CalcularMovimentoAtual(TileMap* t_map){
         }
         guarda_pos_desejada = guarda_t_pos_desejada.CardToIsometricCenter(t_map->GetTileWidth(), t_map->GetTileHeight()); //retorna o ponto no centro do tile
     }
-    printf("guarda t pos desejada x %.0f y %.0f\n",guarda_t_pos_desejada.x, guarda_t_pos_desejada.y);
 }
 
 void Guarda2::Andar(float vel, TileMap* t_map){

@@ -5,6 +5,12 @@ State::State(){
     quitRequested = false;
 }
 
+State::State(StateData data){
+    popRequested = false;
+    quitRequested = false;
+    this->data = data;
+}
+
 State::~State(){
     objectArray.clear();
 }
@@ -14,6 +20,10 @@ void State::Render(){
 
 void State::AddObject(GameObject* ptr) {
     objectArray.emplace_back(ptr);
+}
+
+void State::PushInventario(StateData::Item item) {
+    data.inventario.push_back(item);
 }
 
 bool State::Is(std::string type){

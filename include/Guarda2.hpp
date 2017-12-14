@@ -34,10 +34,10 @@ class Guarda2 : public GameObject{
         void NotifyCollision(GameObject& other);
         bool Is(std::string type);
         bool IsDead();
+        void PushMovimento(int mov); //para andar no automatico
         // int MaiorDistancia(Vec2 gaia_t_pos);
         // void AcharComodo();
         // void SetPause(bool pausar);
-        // void PushMovimento(int mov);
 
         //Usadas para o Algoritmo A*
         int CalcularCaminho(Vec2 gaia_t_pos, TileMap* t_map);
@@ -68,7 +68,7 @@ class Guarda2 : public GameObject{
 
         //////////////////////// int andar_n_tiles;
         // int contador_fuga;
-        // bool mov_automatico;
+        bool mov_automatico; //usada para andar no automatico
 
 
         //std::vector<int> movimentos;

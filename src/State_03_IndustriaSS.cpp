@@ -2,13 +2,13 @@
 
 //State_03_IndustriaSS* State_03_IndustriaSS::instance = nullptr;
 
-State_03_IndustriaSS::State_03_IndustriaSS(StateData data):bg("img/background.jpg"){
+State_03_IndustriaSS::State_03_IndustriaSS(StateData data):bg("img/telas/background.jpg"){
     if(!musica1.IsOpen()){
-        musica1.Open("audio/musicas/musica fase2 layer 1.ogg");
+        musica1.Open("audio/02_industria/musica fase2 layer 1.ogg");
         musica1.Play(-1);
     }
 
-    pause1.Open("img/pause1.png");
+    pause1.Open("img/telas/pause1.png");
     pause1.SetScaleX((float)Game::GetInstance().GetWindowWidth()/pause1.GetWidth());
     pause1.SetScaleY((float)Game::GetInstance().GetWindowHeight()/pause1.GetHeight());
 
@@ -21,10 +21,10 @@ State_03_IndustriaSS::State_03_IndustriaSS(StateData data):bg("img/background.jp
 
     bg.SetScaleX((float)Game::GetInstance().GetWindowWidth()/bg.GetWidth());
     bg.SetScaleY((float)Game::GetInstance().GetWindowHeight()/bg.GetHeight());
-    tile_set = new TileSet(12, 11, 152, "img/tile_set.png");
-    tile_map = new TileMap("map/State_03_IndustriaSS.txt", tile_set);
+    tile_set = new TileSet(12, 11, 152, "img/tiles/tile_set.png");
+    tile_map = new TileMap("map/02_industria/State_03_IndustriaSS.txt", tile_set);
 
-    press_f.Open("img/tecla_f.png");
+    press_f.Open("img/teclas/tecla_f.png");
     float scale = (float)(Game::GetInstance().GetWindowWidth()/3)/press_f.GetWidth();
     press_f.SetScaleX(scale);
     press_f.SetScaleY(scale);
@@ -69,6 +69,8 @@ void State_03_IndustriaSS::Update(float dt){
         gaia_pos = Gaia::player->GetPos();
     }
 
+    //data.PrintData();
+
     data.gaia_t_pos_antiga.x = data.gaia_t_pos.x;
     data.gaia_t_pos_antiga.y = data.gaia_t_pos.y;
     data.gaia_t_pos = tile_map->FindTile(gaia_pos.x, gaia_pos.y);
@@ -82,7 +84,6 @@ void State_03_IndustriaSS::Update(float dt){
 
     Camera::Update(dt);
     tempo_falas.Update(dt);
-
 
     //inicializar os comodos, colocar os inimigos e etc
     if(entrou_no_comodo){
@@ -162,8 +163,8 @@ void State_03_IndustriaSS::Update(float dt){
             tempo_esteira.Update(dt);
             if(tempo_esteira.Get() > 0.1){
                 tempo_esteira.Restart();
-                for(unsigned j = 0; j < tile_map->GetHeight(); j++){
-                    for(unsigned i = 0; i < tile_map->GetWidth(); i++){
+                for(int j = 0; j < tile_map->GetHeight(); j++){
+                    for(int i = 0; i < tile_map->GetWidth(); i++){
                         tile_info = tile_map->GetTileInfo(14,i,j);
                         if(tile_info >= 25 && tile_info <= 52){
                             if(tile_info == 27 || tile_info == 30 || tile_info == 33 || tile_info == 36 ||
@@ -179,11 +180,12 @@ void State_03_IndustriaSS::Update(float dt){
             }
         }
         else{
-            som_esteira.Stop();
+            if(som_esteira.IsOpen())
+                som_esteira.Stop();
         }
 
         //verifica inventario
-        for(int i = 0; i< data.inventario.size(); i++){
+        for(unsigned i = 0; i< data.inventario.size(); i++){
             if(data.inventario[i] == StateData::CARTAO_ACESSO){
                 data.p_deposito = true;
             }
@@ -192,7 +194,7 @@ void State_03_IndustriaSS::Update(float dt){
             }
         }
 
-        if(gaia_direcao == NE){
+        if(gaia_direcao == NE){ ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
         //esta atras do controle da esteira
         if(gaia_direcao == NE && tile_map->GetTileInfo(data.gaia_comodo+2, data.gaia_t_pos.x, data.gaia_t_pos.y-1) == 88){
@@ -242,55 +244,55 @@ void State_03_IndustriaSS::Update(float dt){
         if(!data.fala_velho){
             switch(track){
                 case 0:
-                    if(Falar(0.1, "audio/fase2/003.wav")){
+                    if(Falar(0.1, "audio/02_industria/003.wav")){
                         track = 1;
                     }
                     break;
 
                 case 1:
-                    if(Falar(0.2, "audio/fase2/004.wav")){
+                    if(Falar(0.2, "audio/02_industria/004.wav")){
                         track = 2;
                     }
                     break;
 
                 case 2:
-                    if(Falar(0.4, "audio/fase2/005V - velho demais.wav")){
+                    if(Falar(0.4, "audio/02_industria/005V - velho demais.wav")){
                         track = 3;
                     }
                     break;
 
                 case 3:
-                    if(Falar(0.5, "audio/fase2/006G - tentou fugir.wav")){
+                    if(Falar(0.5, "audio/02_industria/006G - tentou fugir.wav")){
                         track = 4;
                     }
                     break;
 
                 case 4:
-                    if(Falar(0.5, "audio/fase2/007V - varias.wav")){
+                    if(Falar(0.5, "audio/02_industria/007V - varias.wav")){
                         track = 5;
                     }
                     break;
 
                 case 5:
-                    if(Falar(0.5, "audio/fase2/008G - algum plano.wav")){
+                    if(Falar(0.5, "audio/02_industria/008G - algum plano.wav")){
                         track = 6;
                     }
                     break;
 
                 case 6:
-                    if(Falar(0.5, "audio/fase2/009V - mapa na cabeca.wav")){
+                    if(Falar(0.5, "audio/02_industria/009V - mapa na cabeca.wav")){
                         track = 7;
                     }
                     break;
 
                 case 7:
-                    if(Falar(0.5, "audio/fase2/010G - como assim.wav")){
+                    if(Falar(0.5, "audio/02_industria/010G - como assim.wav")){
                         track = 8;
                     }
                     break;
 
                 case 8:
-                    if(Falar(0.5, "audio/fase2/011V - com ctz vc vai.wav")){
+                    if(Falar(0.5, "audio/02_industria/011V - com ctz vc vai.wav")){
                         track = 9;
                     }
                     break;
@@ -302,13 +304,13 @@ void State_03_IndustriaSS::Update(float dt){
                     break;
 
                 case 10:
-                    if(Falar(0.05, "audio/fase2/012G - ler a mente.wav")){
+                    if(Falar(0.05, "audio/02_industria/012G - ler a mente.wav")){
                         track = 11;
                     }
                     break;
 
                 case 11:
-                    if(Falar(0.5, "audio/fase2/013V - eu abrindo a mente.wav")){
+                    if(Falar(0.5, "audio/02_industria/013V - eu abrindo a mente.wav")){
                         track = 12;
                     }
                     break;
@@ -362,8 +364,10 @@ void State_03_IndustriaSS::Update(float dt){
     }
 
     if(popRequested==true){
-        musica1.Stop();
-        fala.Stop();
+        if(musica1.IsOpen())
+            musica1.Stop();
+        if(fala.IsOpen())
+            fala.Stop();
     }
 }
 
@@ -483,17 +487,13 @@ bool State_03_IndustriaSS::Falar(float delay, std::string arquivo){
             fala.Open(arquivo);
             fala.Play(0);
         }
-        if(!fala.IsPlaying()){
+        else if(!fala.IsPlaying()){
             fala.Stop();
             tempo_falas.Restart();
             return(true);
         }
     }
     return(false);
-}
-
-void State_03_IndustriaSS::PushInventario(StateData::Item item){
-    data.inventario.push_back(item);
 }
 
 void State_03_IndustriaSS::TrocarDeComodo(){
@@ -512,4 +512,8 @@ void State_03_IndustriaSS::TrocarDeComodo(){
             }
         }
     }
+}
+
+void State_03_IndustriaSS::PushInventario(StateData::Item item){
+    data.inventario.push_back(item);
 }

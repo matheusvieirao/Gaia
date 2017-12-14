@@ -9,7 +9,7 @@
 
 Velhor::Velhor(float x, float y, int comodo){
 
-    sp_levitando.Open("img/velho_levitando.png");
+    sp_levitando.Open("img/personagens/velho_levitando.png");
     sp_levitando.SetFrameTotal(12);
     sp_levitando.SetFrameStart(7);
     sp_levitando.SetFrameAnimation(6);
@@ -56,4 +56,7 @@ bool Velhor::Is(std::string type){
 
 bool Velhor::IsDead(){
     return(false);
+}
+
+void Velhor::PushMovimento(int mov){
 }

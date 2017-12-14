@@ -36,10 +36,10 @@ class State_02_IndustriaT : public State{
         void Pause();
         void Resume();
         bool Is(std::string type);
-        void PushInventario(StateData::Item item);
         //static State_02_IndustriaT& GetInstance();
         TileMap* GetTileMap();
         void TrocarDeComodo(Vec2 t_pos, Vec2 t_pos_antiga);
+        void PushInventario(StateData::Item item);
         TileMap* tile_map;
     private:
         enum StateState{JOGO, FALA};
@@ -51,7 +51,6 @@ class State_02_IndustriaT : public State{
         bool entrou_no_comodo;
         //int comodo_jogador; //0- Producao | 4- Corredor | 8- Dormitorio | 12- Corredor2 | 16- Refeitorio
         int comodo_jogador_antigo;
-        StateData data;
         int num_fala;
         int track;
         bool pause;

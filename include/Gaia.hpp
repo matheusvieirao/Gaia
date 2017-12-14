@@ -77,6 +77,7 @@ class Gaia : public GameObject{
         Rect box_anterior;
         Sound som_transparente;
         Sound som_chicote;
+        float vel;// * velocidade em pixel por segundo
 };
 
 #endif // GAIA_HPP

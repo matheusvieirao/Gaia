@@ -1,8 +1,8 @@
 #include "State_01_Historia.hpp"
 
-State_01_Historia::State_01_Historia(int parte){
-    this->parte = parte;
-    if(parte == 1){
+State_01_Historia::State_01_Historia(StateData data){
+    num_historia = data.s1_num_historia;
+    if(num_historia == 1){
         // indices de 0 a 16
         AddObject(new Animation("img/cenas/cena-1.png", true));
         AddObject(new Animation("img/cenas/cena-1-FALA.png", true));
@@ -23,7 +23,7 @@ State_01_Historia::State_01_Historia(int parte){
         AddObject(new Animation("img/cenas/cena-5-FALA3.png", true));
     }
 
-    if(parte == 2){
+    if(num_historia == 2){
         //indices de 0 a 4
         AddObject(new Animation("img/cenas/cena-7.png", true));
         AddObject(new Animation("img/cenas/cena-8.png", true));
@@ -35,7 +35,8 @@ State_01_Historia::State_01_Historia(int parte){
 }
 
 State_01_Historia::~State_01_Historia(){
-    fala.Stop();
+    if(fala.IsOpen())
+        fala.Stop();
     objectArray.clear();
 }
 
@@ -63,7 +64,7 @@ void State_01_Historia::Update(float dt){
 
 void State_01_Historia::Render(){
 
-    if(parte == 1){
+    if(num_historia == 1){
         
         if (track < 17){
             objectArray[track]->Render();
@@ -197,7 +198,7 @@ void State_01_Historia::Render(){
     }
 
 
-    if(parte == 2){
+    if(num_historia == 2){
         if (track < 4){
             objectArray[track]->Render();
         }
@@ -208,7 +209,8 @@ void State_01_Historia::Render(){
 }
 
 void State_01_Historia::Pause(){
-    fala.Stop();
+    if(fala.IsOpen())
+        fala.Stop();
 }
 
 void State_01_Historia::Resume(){
@@ -226,7 +228,7 @@ bool State_01_Historia::Falar(float delay, std::string arquivo){
             fala.Open(arquivo);
             fala.Play(0);
         }
-        if(!fala.IsPlaying()){
+        else if(!fala.IsPlaying()){
             fala.Stop();
             tempo_falas.Restart();
             return(true);

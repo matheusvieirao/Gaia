@@ -13,21 +13,27 @@ Sound::Sound(std::string file){
 }
 
 void Sound::Play(int times){
-    channel = Mix_PlayChannel(-1, chunk, times);
-    Mix_ChannelFinished(Finished);
+    if(IsOpen()){
+        channel = Mix_PlayChannel(-1, chunk, times);
+        Mix_ChannelFinished(Finished);
+    }
 }
 
 void Sound::Stop(){
-    Mix_HaltChannel(channel);
-    finished = true;
-    chunk = nullptr;
+    if(IsOpen()){
+        Mix_HaltChannel(channel);
+        finished = true;
+        chunk = nullptr;
+    }
 }
 
 void Sound::Stop(int ms){
-    Mix_FadeOutChannel(channel, ms);
-    Mix_HaltChannel(channel);
-    finished = true;
-    chunk = nullptr;
+    if(IsOpen()){
+        Mix_FadeOutChannel(channel, ms);
+        Mix_HaltChannel(channel);
+        finished = true;
+        chunk = nullptr;
+    }
 }
 
 void Sound::Open(std::string file){

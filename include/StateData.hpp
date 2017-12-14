@@ -12,6 +12,8 @@ class StateData{
         StateData(std::string nome);
         void Carregar(std::string nome);
         void PrintData();
+
+        int s1_num_historia; //1 é a historia do inicio do jogo e 2 a historia de quando zera
         Vec2 gaia_t_pos;
         Vec2 gaia_t_pos_antiga;
         Vec2 gaia_t_pos_inicio_comodo;

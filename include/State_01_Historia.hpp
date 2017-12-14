@@ -15,7 +15,7 @@
 
 class State_01_Historia : public State{
     public:
-        State_01_Historia(int parte);
+        State_01_Historia(StateData data);
         virtual ~State_01_Historia();
         void Update(float dt);
         void Render();
@@ -29,7 +29,7 @@ class State_01_Historia : public State{
         Sound fala;
         int track = 0;
         StateData data;
-        int parte;
+        int num_historia;
 
 };
 

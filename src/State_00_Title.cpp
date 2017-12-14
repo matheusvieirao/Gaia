@@ -204,7 +204,8 @@ void State_00_Title::Update(float dt){
             if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
                 //inicio fase
                 Resources::ClearResources();
-                Game::GetInstance().Push(new State_01_Historia(1));
+                data.s1_num_historia = 1;
+                Game::GetInstance().Push(new State_01_Historia(data));
                 popRequested=true;
             }
         }
@@ -234,81 +235,24 @@ void State_00_Title::Update(float dt){
                 popRequested = true;
             }
             else if(opcao2 == 2){
-/////////////////////////////                //antes da fala corredor SS
-                // data.gaia_t_pos_inicio_comodo = Vec2(14, 16);
-                // data.gaia_comodo = 4;
-                // data.gaia_hp = 10;
-                // data.p_deposito = false;
-                // data.p_corredor2 = false;
-                // data.esteira = false;
-                // data.pegou_chave_rato = false;
-                // data.ja_ficou_encurralada = 3;
-                // data.corre = false;
-                // data.ja_pressionou_f = false;
-                // data.pegou_chicote = false;
-                // data.fala_velho = false;
-                // Game::GetInstance().Push(new StateIndustriaSS(data));
-
+                data.Carregar("quase transparente");
+                Game::GetInstance().Push(new State_02_IndustriaT(data));
                 popRequested = true;
             }
             else if(opcao2 == 3){
-   /////////////////////////////             //depois de pegar o cartao
-                // data.gaia_t_pos_inicio_comodo = Vec2(25, 16);
-                // data.gaia_comodo = 4;
-                // data.gaia_hp = 10;
-                // data.corre = false;
-                // data.ja_ficou_encurralada = 3;
-                // data.fala_velho = true;
-                // data.pegou_chave_rato = true;
-                // data.ja_pressionou_f = true;
-                // data.esteira = true;
-                // data.p_deposito = true;
-                // data.p_corredor2 = true;
-                // data.pegou_chicote = false;
-                // data.inventario.push_back(StateData::CHAVE_ENERGIA);
-                // data.inventario.push_back(StateData::CARTAO_ACESSO);
-                // Game::GetInstance().Push(new StateIndustriaSS(data));
-
+                data.Carregar("depois da fala SS");
+                Game::GetInstance().Push(new State_03_IndustriaSS(data));
                 popRequested = true;
             }
             else if(opcao2 == 4){
-   /////////////////////////////             //antes do encurralamento
-                // data.gaia_t_pos_inicio_comodo.x = 15;
-                // data.gaia_t_pos_inicio_comodo.y = 15;
-                // data.gaia_comodo = 4;
-                // data.gaia_hp = 10;
-                // data.corre = false;
-                // data.ja_ficou_encurralada = 0;
-                // data.fala_velho = false;
-                // data.pegou_chave_rato = false;
-                // data.ja_pressionou_f = 0;
-                // data.esteira = false;
-                // data.p_corredor2 = false;
-                // data.p_deposito = false;
-                // data.pegou_chicote = false;
-                // Game::GetInstance().Push(new StateIndustriaT(data));
-
+                data.Carregar("galpao com chave e cartao");
+                Game::GetInstance().Push(new State_03_IndustriaSS(data));
                 popRequested = true;
 
             }
             else if(opcao2 == 5){
-                //depois da fala corredor SS
- /////////////////////////////               // data.gaia_t_pos_inicio_comodo = Vec2(25, 16);
-                // data.gaia_comodo = 4;
-                // data.gaia_hp = 10;
-                // data.p_deposito = false;
-                // data.p_corredor2 = true;
-                // data.esteira = true;
-                // data.pegou_chave_rato = true;
-                // data.ja_ficou_encurralada = 3;
-                // data.ja_pressionou_f = false;
-                // data.corre = false;
-                // data.pegou_chicote = false;
-                // data.fala_velho = true;
-                // data.inventario.push_back(StateData::CHAVE_ENERGIA);
-                // data.inventario.push_back(StateData::CARTAO_ACESSO);
-                // Game::GetInstance().Push(new StateIndustriaSS(data));
-
+                data.Carregar("cutscene 2");
+                Game::GetInstance().Push(new State_01_Historia(data));
                 popRequested = true;
             }
         }

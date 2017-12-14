@@ -258,7 +258,7 @@ void State_02_IndustriaT::Update(float dt){
                         fala.Open("audio/02_industria/001.wav");
                         fala.Play(0);
                     }
-                    if(!fala.IsPlaying()){
+                    else if(!fala.IsPlaying()){
                         fala.Stop();
                         track = 1 ;
                         tempo_falas.Restart();
@@ -271,7 +271,7 @@ void State_02_IndustriaT::Update(float dt){
                         fala.Open("audio/02_industria/002.wav");
                         fala.Play(0);
                     }
-                    if(!fala.IsPlaying()){
+                    else if(!fala.IsPlaying()){
                         fala.Stop();
                         track = 2;
                     }
@@ -326,10 +326,14 @@ void State_02_IndustriaT::Update(float dt){
     }
 
     if(popRequested == true){
-        musica1.Stop(0);
-        musica2.Stop(0);
-        musica3.Stop(0);
-        fala.Stop();
+        if(musica1.IsOpen())
+            musica1.Stop(0);
+        if(musica2.IsOpen())
+            musica2.Stop(0);
+        if(musica3.IsOpen())
+            musica3.Stop(0);
+        if(fala.IsOpen())
+            fala.Stop();
     }
 }
 
@@ -444,7 +448,7 @@ void State_02_IndustriaT::TratarEncurralamento(){
 
 void State_02_IndustriaT::InicializarComodo(int comodo){
     if(comodo == 4) { //corredor
-        Vec2 guarda_t_pos = Vec2(52, 16);
+        Vec2 guarda_t_pos = Vec2(51, 16);
         Vec2 guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
         AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a1"));
 
@@ -546,10 +550,6 @@ TileMap* State_02_IndustriaT::GetTileMap(){
     return (tile_map);
 }
 
-void State_02_IndustriaT::PushInventario(StateData::Item item){
-    data.inventario.push_back(item);
-}
-
 void State_02_IndustriaT::TrocarDeComodo(Vec2 t_pos, Vec2 t_pos_antiga){
     if(t_pos.x != t_pos_antiga.x || t_pos.y != t_pos_antiga.y){
         if(tile_map->GetTileInfo(data.gaia_comodo, t_pos.x, t_pos.y) == 13 || tile_map->GetTileInfo(data.gaia_comodo, t_pos.x, t_pos.y) == 14) { //tile rosa ou vermelho
@@ -568,3 +568,6 @@ void State_02_IndustriaT::TrocarDeComodo(Vec2 t_pos, Vec2 t_pos_antiga){
     }
 }
 
+void State_02_IndustriaT::PushInventario(StateData::Item item){
+    data.inventario.push_back(item);
+}

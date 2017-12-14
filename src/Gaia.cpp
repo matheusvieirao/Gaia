@@ -3,6 +3,8 @@
 Gaia* Gaia::player;
 
 Gaia::Gaia(float x, float y, int hp, int comodo){
+    //vel = 1;
+
     player = this;
     pause = false;
 
@@ -88,15 +90,13 @@ Gaia::~Gaia(){
 
 void Gaia::Update(float dt){
 
-    float vel = 500 * dt;// * em pixel por segundo
     InputManager& In = InputManager::GetInstance();
     dur_movimento.Update(dt);
     tempo_chicote.Update(dt);
     pos_antiga = Vec2(box.GetCenter().x, box.y+box.h-altura_pe);
     sprite_anterior = sprite_atual;
 
-
-
+    vel = 300 * dt; //default
 
     if(!pause){
         if(!modo_manual){
@@ -161,6 +161,11 @@ void Gaia::Update(float dt){
         }
         
         else if (modo_manual) {
+
+            //printa a data atual no terminal
+            if(In.IsKeyDown(SDLK_p)){
+
+            }
 
             //alterar sprite
             if(sprite_atual == ANDANDO || sprite_atual == CORRENDO){
@@ -261,8 +266,8 @@ void Gaia::Update(float dt){
             }
 
             if(sprite_atual == ANDANDO){
+                vel = 300 * dt;
                 if(sprite_anterior != sprite_atual){
-                    vel = 300 * dt;
                     int centro_x = box.GetCenter().x;
                     int centro_y = box.GetCenter().y;
                     box.w = sp_andando.GetWidth();
@@ -280,8 +285,8 @@ void Gaia::Update(float dt){
                 }
             }
             else if(sprite_atual == CORRENDO){
+                vel = 600 * dt;
                 if(sprite_anterior != sprite_atual){
-                    vel = 500 * dt;
                     int centro_x = box.GetCenter().x;
                     int centro_y = box.GetCenter().y;
                     box.w = sp_correndo.GetWidth();
@@ -337,8 +342,8 @@ void Gaia::Update(float dt){
                 }
             }
             else if(sprite_atual == CARRO){
+                vel = 800 * dt;
                 if(sprite_anterior != sprite_atual){
-                    vel = 800 * dt;
                     int centro_x = box.GetCenter().x;
                     int centro_y = box.GetCenter().y;
                     box.w = sp_carro.GetWidth();
@@ -536,7 +541,7 @@ void Gaia::Andar(int mov, float vel){
     box_anterior.h = box.h;
 
     if(t_map == nullptr){
-        Game::GetInstance().AddErro(12, "Gaia::Andar");
+        std::cout << "t_map não pode ser nullptr. Provavelmente a personagem Gaia está sendo criada em uma fase sem um tile map. - Gaia::Andar"  << std::endl;
     }
 
     if(sprite_atual == ANDANDO){
@@ -922,7 +927,7 @@ Vec2 Gaia::GetTPos(){
     Vec2 t_pos(0,0);
 
     if(t_map == nullptr){
-        Game::GetInstance().AddErro(12, "Gaia::GetTPos");
+        std::cout << ": t_map não pode ser nullptr. Provavelmente a personagem Gaia está sendo criada em uma fase sem um tile map. - Gaia::Andar"  << std::endl;
     }
     else{
         t_pos = t_map->FindTile(box.GetCenter().x, box.y+box.h-altura_pe);

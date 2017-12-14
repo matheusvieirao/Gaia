@@ -16,11 +16,6 @@ Guarda2::Guarda2(float x, float y, GuardaEstado estado_inicial, int comodo, std:
     box.w = sp.GetWidth();
     box.h = sp.GetHeight();
 
-    //box_anterior.x = box.x;
-    //box_anterior.y = box.y;
-    //box_anterior.w = box.w;
-    //box_anterior.h = box.h;
-
     comodo_atual = comodo;
     hp = 3;
     estado_atual = estado_inicial;
@@ -65,7 +60,7 @@ void Guarda2::Update(float dt){
     int tile_height = t_map->GetTileHeight();
 
     float vel_devagar = 200*dt;
-    float vel_rapido = 300*dt;float tempo_devagar = (float)(tile_height*dt)/(vel_devagar);//tempo de andar 1 tile na velocidade devagar. a conta esta simplificada, o certo seria: "(tile_height/2) / ((vel_rapido*0.5)/dt) sendo 0.5 o seno do angulo da inclinacao do tile
+    float vel_rapido = 500*dt;float tempo_devagar = (float)(tile_height*dt)/(vel_devagar);//tempo de andar 1 tile na velocidade devagar. a conta esta simplificada, o certo seria: "(tile_height/2) / ((vel_rapido*0.5)/dt) sendo 0.5 o seno do angulo da inclinacao do tile
     float tempo_rapido = (float)(tile_height*dt)/(2*vel_rapido);//tempo de andar 1 tile na velocidade rapido
 
     Vec2 gaia_pos = Gaia::player->GetPos();
@@ -287,13 +282,13 @@ void Guarda2::NotifyCollision(GameObject& other){
     if(other.Is("Guarda")){
         //durante a colisao com outros guardas, o que colidir por tras fica parado
         if(movimento_atual == NO || movimento_atual == NE || movimento_atual == N || movimento_atual == O){
-            if(box.y < other.box.y){
+            if(box.y > other.box.y){
                 box.x = box_anterior.x;
                 box.y = box_anterior.y;
             }
         }
         else if(movimento_atual == SO || movimento_atual == SE || movimento_atual == S || movimento_atual == L){
-            if(box.y > other.box.y){
+            if(box.y < other.box.y){
                 box.x = box_anterior.x;
                 box.y = box_anterior.y;
             }
@@ -515,6 +510,7 @@ void Guarda2::Andar(float vel, TileMap* t_map){
 
     //se colidir em algo
     if(tile_info == 0 || tile_info == 13 || tile_info == 14 || tile_info == 18 || tile_info == 19){
+        box = box_anterior;
         box.SubtraiVet(direcao*1.8);
         movimento_atual = PARADO;
         sp.PauseAnimation();

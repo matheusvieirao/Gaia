@@ -156,7 +156,8 @@ void State_02_IndustriaT::Update(float dt){
                     data.gaia_hp = Gaia::player->GetHP();
                     data.gaia_comodo = 4; //corredor do subsolo
                     data.gaia_t_pos_inicio_comodo = Vec2(4,14);
-                    ///////////////    Game::GetInstance().Push(new StateIndustriaSS(data));
+                    Game::GetInstance().Push(new StateIndustriaSS(data));
+                    popRequested = true;
                     }
             }
 
@@ -167,7 +168,8 @@ void State_02_IndustriaT::Update(float dt){
                 data.gaia_t_pos_inicio_comodo.x = data.gaia_t_pos.x;
                 data.gaia_t_pos_inicio_comodo.y = data.gaia_t_pos.y+2;
                 data.gaia_comodo = 12;
-                ///////////////Game::GetInstance().Push(new StateIndustriaSS(data));
+                Game::GetInstance().Push(new StateIndustriaSS(data));
+                popRequested = true;
             }
         }
 
@@ -370,7 +372,7 @@ void State_02_IndustriaT::Render(){
 
 void State_02_IndustriaT::TratarEncurralamento(){
 
-    if( (ficou_encurralada==0) && (data.gaia_t_pos.x == 11 && data.gaia_t_pos.y == 16 && (data.gaia_t_pos_antiga.x != 11 || data.gaia_t_pos_antiga.y != 16))){
+    if( (ficou_encurralada==0) && (data.gaia_t_pos.x == 6 && data.gaia_t_pos.y == 16 && (data.gaia_t_pos_antiga.x != 6 || data.gaia_t_pos_antiga.y != 16))){
         ficou_encurralada = 1; //para ela poder pisar nesse espaço depois sem andar automaticamente de novo
 
         Gaia::player->PushMovimento(PARADO);
@@ -429,11 +431,11 @@ void State_02_IndustriaT::TratarEncurralamento(){
             }
         }
     }
-    if(ficou_encurralada == 1 && tempo_encurralada.Get() > 2.5){
+    if(ficou_encurralada == 1){
         ficou_encurralada = 2;
         tempo_encurralada.Restart();
     }
-    if(ficou_encurralada == 2 && data.gaia_t_pos.x == 7 && data.gaia_t_pos.y == 16 && Gaia::player->EstaTransparente() && tempo_encurralada.Get() > 1){
+    if(ficou_encurralada == 2 && Gaia::player->EstaTransparente() && tempo_encurralada.Get() > 1){
         tempo_encurralada.Restart();
         ficou_encurralada = 3;
         estado = FALA;
@@ -448,13 +450,13 @@ void State_02_IndustriaT::InicializarComodo(int comodo){
         Vec2 guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
         AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a1"));
 
-        guarda_t_pos = Vec2(50, 16);
-        guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a2"));
+        //guarda_t_pos = Vec2(50, 16);
+        //guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
+       // AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a2"));
 
-        guarda_t_pos = Vec2(51, 15);
-        guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a3"));
+        //guarda_t_pos = Vec2(51, 15);
+        //guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
+       // AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a3"));
 
         // guarda_t_pos = Vec2(11, 15);
         // guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
@@ -552,7 +554,7 @@ void State_02_IndustriaT::PushInventario(StateData::Item item){
 
 void State_02_IndustriaT::TrocarDeComodo(Vec2 t_pos, Vec2 t_pos_antiga){
     if(t_pos.x != t_pos_antiga.x || t_pos.y != t_pos_antiga.y){
-        if(tile_map->GetTileInfo(data.gaia_comodo, t_pos.x, t_pos.y) == 13 || tile_map->GetTileInfo(data.gaia_comodo, t_pos.x, t_pos.y) == 14) { //tile rosa
+        if(tile_map->GetTileInfo(data.gaia_comodo, t_pos.x, t_pos.y) == 13 || tile_map->GetTileInfo(data.gaia_comodo, t_pos.x, t_pos.y) == 14) { //tile rosa ou vermelho
             for(int i=0; i<tile_map->GetDepth(); i=i+4){
                 if(i != data.gaia_comodo){
                     if(tile_map->GetTileInfo(i, t_pos.x, t_pos.y) != 0){

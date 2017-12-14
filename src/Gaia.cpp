@@ -159,8 +159,8 @@ void Gaia::Update(float dt){
 
             }
         }
-
-        if (modo_manual) {
+        
+        else if (modo_manual) {
 
             //alterar sprite
             if(sprite_atual == ANDANDO || sprite_atual == CORRENDO){

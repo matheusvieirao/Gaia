@@ -71,7 +71,7 @@ void Guarda::Update(float dt){
     Vec2 guarda_pos = Vec2(box.GetCenter().x, box.y+box.h-altura_pe);
     guarda_t_pos = guarda_pos.IsometricToCard(tile_width, tile_height);
     float vel_devagar = 200*dt;
-    float vel_rapido = 100*dt;
+    float vel_rapido = 400*dt;
     float tempo_devagar = (float)(tile_height*dt)/(vel_devagar);//tempo de andar 1 tile na velocidade devagar. a conta esta simplificada, o certo seria: "(tile_height/2) / ((vel_rapido*0.5)/dt) sendo 0.5 o seno do angulo da inclinacao do tile
     float tempo_rapido = (float)(tile_height*dt)/(2*vel_rapido);//tempo de andar 1 tile na velocidade rapido
 

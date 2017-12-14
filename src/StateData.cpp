@@ -19,28 +19,14 @@ StateData::StateData(){
 }
 
 StateData::StateData(std::string nome){
-    if(nome == "inicio jogo"){    
-        //gaia_t_pos_inicio_comodo = Vec2(41, 17);
-        gaia_t_pos_inicio_comodo = Vec2(48, 17);
-        gaia_comodo = 4;
-        gaia_hp = 10;
-        corre = true;
-        ja_ficou_encurralada = 0;
-        fala_velho = false;
-        pegou_chave_rato = false;
-        ja_pressionou_f = 0;
-        esteira = false;
-        p_corredor2 = false;
-        p_deposito = false;
-        pegou_chicote = false;
-    }
+    
 }
 
 
 void StateData::Carregar(std::string nome){
     if(nome == "inicio jogo"){    
         //gaia_t_pos_inicio_comodo = Vec2(41, 17);
-        gaia_t_pos_inicio_comodo = Vec2(48, 17);
+        gaia_t_pos_inicio_comodo = Vec2(12, 16);
         gaia_comodo = 4;
         gaia_hp = 10;
         corre = true;

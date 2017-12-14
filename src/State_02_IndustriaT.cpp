@@ -120,8 +120,8 @@ void State_02_IndustriaT::Update(float dt){
 
     //verificar input
     if(In.KeyPress(SDLK_ESCAPE)){
-        popRequested = true;
         Game::GetInstance().Push(new State_00_Title());
+        PopRequest();
     }
     if(In.QuitRequested()){
         quitRequested = true;
@@ -151,25 +151,23 @@ void State_02_IndustriaT::Update(float dt){
             if(tile_info == 13){
                 //tubo de ar
                 if(tile_map->GetTileInfo(data.gaia_comodo+1, data.gaia_t_pos.x, data.gaia_t_pos.y+1) == 5){
-                    popRequested = true;
                     data.ja_ficou_encurralada = ficou_encurralada;
                     data.gaia_hp = Gaia::player->GetHP();
                     data.gaia_comodo = 4; //corredor do subsolo
                     data.gaia_t_pos_inicio_comodo = Vec2(4,14);
-                    Game::GetInstance().Push(new StateIndustriaSS(data));
-                    popRequested = true;
+                    Game::GetInstance().Push(new State_03_IndustriaSS(data));
+                    PopRequest();
                     }
             }
 
             //piso azul, descer esteira
             if(tile_info == 15 ){
-                popRequested = true;
                 data.gaia_hp = Gaia::player->GetHP();
                 data.gaia_t_pos_inicio_comodo.x = data.gaia_t_pos.x;
                 data.gaia_t_pos_inicio_comodo.y = data.gaia_t_pos.y+2;
                 data.gaia_comodo = 12;
-                Game::GetInstance().Push(new StateIndustriaSS(data));
-                popRequested = true;
+                Game::GetInstance().Push(new State_03_IndustriaSS(data));
+                PopRequest();
             }
         }
 
@@ -316,10 +314,10 @@ void State_02_IndustriaT::Update(float dt){
                 }
                 fala.Play(0);
                 SDL_Delay(1800);
-                PopRequest();
                 data.gaia_hp = 10;
                 //data.comecou_jogo = true;
                 Game::GetInstance().Push(new State_02_IndustriaT(data));
+                PopRequest();
             }
             //realmente é necessário apagar a gaia aqui? #Verdps
             objectArray.erase(objectArray.begin() + i);

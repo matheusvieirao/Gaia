@@ -60,8 +60,19 @@ Guarda2::~Guarda2(){
 }
 
 void Guarda2::Update(float dt){
+    TileMap* t_map = Game::GetInstance().GetCurrentState().GetTileMap();
+    int tile_width = t_map->GetTileWidth();
+    int tile_height = t_map->GetTileHeight();
+
     float vel_devagar = 200*dt;
-    float vel_rapido = 300*dt;
+    float vel_rapido = 300*dt;float tempo_devagar = (float)(tile_height*dt)/(vel_devagar);//tempo de andar 1 tile na velocidade devagar. a conta esta simplificada, o certo seria: "(tile_height/2) / ((vel_rapido*0.5)/dt) sendo 0.5 o seno do angulo da inclinacao do tile
+    float tempo_rapido = (float)(tile_height*dt)/(2*vel_rapido);//tempo de andar 1 tile na velocidade rapido
+
+    Vec2 gaia_pos = Gaia::player->GetPos();
+    Vec2 gaia_t_pos = gaia_pos.IsometricToCard(tile_width, tile_height);
+    guarda_pos = Vec2(box.GetCenter().x, box.y+box.h-altura_pe);
+    guarda_t_pos = guarda_pos.IsometricToCard(tile_width, tile_height);
+
 
     if(Game::GetInstance().IsStateStackEmpty()){
         return;
@@ -69,18 +80,7 @@ void Guarda2::Update(float dt){
     turno_atual++;
     printf("-------------------%d--------------------\n",turno_atual);
 
-    TileMap* t_map = Game::GetInstance().GetCurrentState().GetTileMap();
-    int tile_width = t_map->GetTileWidth();
-    int tile_height = t_map->GetTileHeight();
-
-    Vec2 gaia_pos = Gaia::player->GetPos();
-    Vec2 gaia_t_pos = gaia_pos.IsometricToCard(tile_width, tile_height);
-    guarda_pos = Vec2(box.GetCenter().x, box.y+box.h-altura_pe);
-    guarda_t_pos = guarda_pos.IsometricToCard(tile_width, tile_height);
-
-    float tempo_devagar = (float)(tile_height*dt)/(vel_devagar);//tempo de andar 1 tile na velocidade devagar. a conta esta simplificada, o certo seria: "(tile_height/2) / ((vel_rapido*0.5)/dt) sendo 0.5 o seno do angulo da inclinacao do tile
-    float tempo_rapido = (float)(tile_height*dt)/(2*vel_rapido);//tempo de andar 1 tile na velocidade rapido
-
+    
     sp.Update(dt);
 
     tempo_estado.Update(dt);
@@ -123,38 +123,47 @@ void Guarda2::Update(float dt){
                 tempo_estado.Restart();
             }
         }
-/*
+
         else if(estado_atual == SAIR){
-         //   printf("SAIR\n");
+        	printf("sair\n");
+
+        	if(calcular_proximo_passo){
+        		CalcularMovimentoAtual(t_map);
+                //movimento_anterior = PARADO;
+                calcular_proximo_passo = false;
+        	}
 
             if(Gaia::player->EstaTransparente()){
-                movimento_atual = PARADO;
-                if(tempo_estado.Get() > 2){
+                if(tempo_estado.Get() > 1.5){
                     if(guarda_pos.y > gaia_pos.y){
-                        movimento_atual = SE;
+                    	caminho.clear();
+                        caminho.push_back(SE);
+                        caminho.push_back(SE);
                     }
                     else{
-                        movimento_atual = NO;
+                    	caminho.clear();
+                        caminho.push_back(NO);
+                        caminho.push_back(NO);
                     }
+                    calcular_proximo_passo = true;
                 }
             }
             else if(EstaNaVisao(gaia_t_pos)){
-                contador_fuga = 0;
+                calcular_proximo_passo = true;
                 estado_atual = PERSEGUINDO;
-                caminho.clear();
-                CalcularCaminho(gaia_t_pos, t_map);
-                CalcularMovimentoAtual();
                 tempo_estado.Restart();
             }
 
-
-            if(MaiorDistancia(gaia_t_pos) > 3 || tempo_estado.Get() > 5){
+            float dist = guarda_pos.DistanciaVets(gaia_pos);
+            if(dist > 400 || tempo_estado.Get() > 3){
                 estado_atual = DESCANSANDO_PARADO;
                 tempo_estado.Restart();
             }
 
-            Andar(vel_devagar, t_map);
-        }
+            if(movimento_atual != PARADO){
+            	Andar(vel_devagar, t_map);
+            }
+        }/*
 
         else if(estado_atual == PARADO_AUTOMATICO){
         //    printf("PARADO_AUTOMATICO\n");
@@ -188,6 +197,8 @@ void Guarda2::Update(float dt){
                 movimentos.clear();
                 mov_automatico = false;
                 estado_atual = SAIR;
+	            movimento_atual = PARADO;
+	            calcular_proximo_passo = false;
                 tempo_estado.Restart();
             }
 
@@ -215,7 +226,9 @@ void Guarda2::Update(float dt){
 
                 if(Gaia::player->EstaTransparente()){
 	                estado_atual = SAIR;
+	                movimento_atual = PARADO;
 	                tempo_estado.Restart();
+	                calcular_proximo_passo = false;
 	            }
 
 	            if(gaia_t_pos.x == guarda_t_pos.x && gaia_t_pos.y == guarda_t_pos.y){
@@ -399,7 +412,8 @@ int Guarda2::CalcularCaminho(Vec2 gaia_t_pos, TileMap* t_map){
 bool Guarda2::VerificarMapa(int x, int y, int map_width, int map_height){
     if (x>=0 && x<map_width && y>= 0 && y<map_height){
         //0 é aonde nao tem tile e 18 é o tile que nao pode ser pisado
-        if(mapa_aux[y*map_width + x] != 0 && mapa_aux[y*map_width + x] != 18){
+        int valor_mapa = mapa_aux[y*map_width + x];
+        if(valor_mapa != 0 && valor_mapa != 13 && valor_mapa != 14 && valor_mapa != 18 && valor_mapa != 19){
             mapa_aux[y*map_width + x] = 0;
             return (true);
         }
@@ -495,9 +509,6 @@ void Guarda2::Andar(float vel, TileMap* t_map){
         direcao = guarda_pos_desejada - guarda_pos;
         calcular_proximo_passo = true;
     }
-
-//    printf("guarda_t_pos_desejada x %.1f, guarda_t_pos_desejada y %.1f\n",guarda_t_pos_desejada.x,guarda_t_pos_desejada.y);
-//    printf("guarda_t_pos x %.1f, guarda_t_pos y %.1f\n",guarda_t_pos.x ,guarda_t_pos.y);
 
     box.SomaVet(direcao);
     Vec2 t_pos = t_map->FindTile(guarda_pos.x, guarda_pos.y);

@@ -47,7 +47,7 @@ class Guarda2 : public GameObject{
 
         void CalcularMovimentoAtual(TileMap* t_map);
         void Andar(float vel, TileMap* t_map); //Anda em direção a guarda_pos_desejada
-
+		
         void AndarAleatorio(TileMap* t_map);
         bool EstaNaVisao(Vec2 gaia_t_pos);
 

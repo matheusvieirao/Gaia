@@ -5,8 +5,9 @@
 State_02_IndustriaT::State_02_IndustriaT(StateData data):bg("img/telas/background.jpg"){
     //if(instance == nullptr){ //da erro se fizer isso
     //instance = this;
-
+    printf("entrou carai\n");
     if(!musica1.IsOpen()){
+        printf("aqui tbm\n");
         musica1.Open("audio/02_industria/musica fase2 layer 1.ogg");
         musica1.Play(-1);
     }
@@ -16,19 +17,15 @@ State_02_IndustriaT::State_02_IndustriaT(StateData data):bg("img/telas/backgroun
     }
     if(!musica3.IsOpen()){
         musica3.Open("audio/02_industria/musica fase2 layer 3.ogg");
-        if(data.ja_ficou_encurralada == 0  || data.pegou_chicote){
+        if(data.pegou_chave_rato){
             musica3.Play(-1);
         }
     }
 
-    pause1.Open("img/telas/pause1.png");
-    pause1.SetScaleX((float)Game::GetInstance().GetWindowWidth()/pause1.GetWidth());
-    pause1.SetScaleY((float)Game::GetInstance().GetWindowHeight()/pause1.GetHeight());
-
     num_fala = 0;
     track = 0;
     estado = JOGO;
-    pause = false;
+    esta_pausado = false;
 
     bg.SetScaleX((float)Game::GetInstance().GetWindowWidth()/bg.GetWidth());
     bg.SetScaleY((float)Game::GetInstance().GetWindowHeight()/bg.GetHeight());
@@ -81,6 +78,10 @@ State_02_IndustriaT::State_02_IndustriaT(StateData data):bg("img/telas/backgroun
 
 State_02_IndustriaT::~State_02_IndustriaT(){
     objectArray.clear();
+    printf("quitou");
+    musica1.Stop(0);
+    musica2.Stop(0);
+    musica3.Stop(0);
 }
 
 void State_02_IndustriaT::Update(float dt){
@@ -127,12 +128,15 @@ void State_02_IndustriaT::Update(float dt){
         quitRequested = true;
     }
 
-    if(In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
-        pause = !pause;
+    if(!esta_pausado){
+        if(In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
+            esta_pausado = true;
+        }
     }
+    esta_pausado = pause.Update();
 
     //jogo
-    if(estado == JOGO && !pause){
+    if(estado == JOGO && !esta_pausado){
         UpdateArray(Game::GetInstance().GetDeltaTime());
 
         if(data.gaia_t_pos.x != data.gaia_t_pos_antiga.x || data.gaia_t_pos.y != data.gaia_t_pos_antiga.y){
@@ -242,7 +246,7 @@ void State_02_IndustriaT::Update(float dt){
         }
     }
 
-    else if(estado == FALA && !pause){
+    else if(estado == FALA && !esta_pausado){
         if(In.KeyPress(SDLK_SPACE)){
             if(fala.IsOpen()){
                 fala.Stop();
@@ -367,8 +371,8 @@ void State_02_IndustriaT::Render(){
         sp_corre.Render(game_w/2-sp_corre.GetWidth()/2, game_h/2-sp_corre.GetHeight()/2, 0);
     }
 
-    if(pause){
-        pause1.Render(0,0,0);
+    if(esta_pausado){
+        pause.Render();
     }
 }
 
@@ -528,22 +532,35 @@ void State_02_IndustriaT::RenderArray(){
     }
 }
 
-//State_02_IndustriaT& State_02_IndustriaT::GetInstance(){
-//    return (*instance);
-//}
-
 bool State_02_IndustriaT::Is(std::string type){
     return(type == "State_02_IndustriaT");
 }
 
 void State_02_IndustriaT::Pause(){
+    printf("pausou");
     musica1.Stop(0);
     musica2.Stop(0);
     musica3.Stop(0);
 }
 
 void State_02_IndustriaT::Resume(){
-
+    
+    /*printf("entrou carai 2\n");
+    if(!musica1.IsOpen()){
+        printf("aqui tbm 2\n");
+        musica1.Open("audio/02_industria/musica fase2 layer 1.ogg");
+        musica1.Play(-1);
+    }
+    if(!musica2.IsOpen()){
+        musica2.Open("audio/02_industria/musica fase2 layer 2.ogg");
+        musica2.Play(-1);
+    }
+    if(!musica3.IsOpen()){
+        musica3.Open("audio/02_industria/musica fase2 layer 3.ogg");
+        if(data.pegou_chave_rato){
+            musica3.Play(-1);
+        }
+    }*/
 }
 
 TileMap* State_02_IndustriaT::GetTileMap(){

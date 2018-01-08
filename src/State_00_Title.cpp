@@ -260,7 +260,7 @@ void State_00_Title::Update(float dt){
             quitRequested = true;
         }
         if(In.KeyPress(SDLK_ESCAPE)){
-            opcao1 = 1;
+            opcao1 = 2;
             opcao2_antiga = 1;
             opcao2 = 1;
             menu_continua = false;

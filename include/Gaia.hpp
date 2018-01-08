@@ -1,6 +1,7 @@
 #ifndef GAIA_HPP
 #define GAIA_HPP
 
+#include "Pause.hpp"
 #include <vector>
 #include "GameObject.hpp"
 #include "Sprite.hpp"

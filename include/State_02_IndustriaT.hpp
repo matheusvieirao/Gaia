@@ -1,6 +1,7 @@
 #ifndef STATE_02_INDUSTRIAT_H
 #define STATE_02_INDUSTRIAT_H
 
+#include "Pause.hpp"    
 #include "Game.hpp"
 #include "InputManager.hpp"
 #include "Camera.hpp"
@@ -46,14 +47,12 @@ class State_02_IndustriaT : public State{
         StateState estado;
         //static State_02_IndustriaT* instance;
         Sprite bg;
-        Sprite pause1;
         TileSet* tile_set;
         bool entrou_no_comodo;
         //int comodo_jogador; //0- Producao | 4- Corredor | 8- Dormitorio | 12- Corredor2 | 16- Refeitorio
         int comodo_jogador_antigo;
         int num_fala;
         int track;
-        bool pause;
         Timer tempo_encurralada;
         Timer tempo_falas;
         Timer tempo_esteira;
@@ -68,6 +67,8 @@ class State_02_IndustriaT : public State{
         Sound efeito;
         Sound som_esteira;
         Sound som_ronco;
+        Pause pause;
+        bool esta_pausado;
 };
 
 #endif // STATESTAGE_H

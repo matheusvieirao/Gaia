@@ -285,7 +285,7 @@ void Gaia::Update(float dt){
                 }
             }
             else if(sprite_atual == CORRENDO){
-                vel = 600 * dt;
+                vel = 500 * dt;
                 if(sprite_anterior != sprite_atual){
                     int centro_x = box.GetCenter().x;
                     int centro_y = box.GetCenter().y;

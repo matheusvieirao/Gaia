@@ -1,12 +1,26 @@
-fullscreen
 
-State::PushInventario
+Prometi pra Carla:
+- Quando tiver em cima da esteira andar no sentido da esteira (e talvez renderizar a gaia um pouco mais alta na vertical)
+- Quando estiver no carro conseguir empurrar as caixas
+- Só atacar quando pegar a poção (do puzzle das caixas)
+- Atacar guardas
+- Guardas atacar
+- Inimigos no Refeitório e dormitório modo stealth
+- Pause
+- Save (agora só funciona o load do código, fazer ler de um txt tbm)
 
-descomentar 
-	linha 9 e 15 em State.hpp (criar StateData)
-	StateTitle (cpp e hpp)
-	State Historia l. 329
+
+bugs:
+- Quando morre a musica principal some
+- Acho que a musica que toca no terreo é a mesma do menu principal. fazer a musica parar ao sair de StateTitle se ela nao tiver parano
+- som da esteira continua quando sai do jogo
+- velocidade correndo da gaia aumentar tbm (a do guarda talvez ja esteja boa)
+- velocidade automatica da gaia: aumentar
 
 
-diferenças
-	eles usam music.Stop(); e eu music.Stop(0);
+desejos futuros:
+- fullscreen
+
+
+conferir:
+- State::PushInventario. ver se funciona direto em State (sem precisar de ser implementado no estado que herda de State)

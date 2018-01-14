@@ -1,7 +1,7 @@
 #ifndef STATE_02_INDUSTRIAT_H
 #define STATE_02_INDUSTRIAT_H
 
-#include "Pause.hpp"    
+#include "Pause2.hpp"    
 #include "Game.hpp"
 #include "InputManager.hpp"
 #include "Camera.hpp"
@@ -67,7 +67,7 @@ class State_02_IndustriaT : public State{
         Sound efeito;
         Sound som_esteira;
         Sound som_ronco;
-        Pause pause;
+        Pause2 pause;
         bool esta_pausado;
 };
 

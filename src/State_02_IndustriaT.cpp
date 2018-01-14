@@ -119,21 +119,27 @@ void State_02_IndustriaT::Update(float dt){
         }
     }
 
-    //verificar input
-    if(In.KeyPress(SDLK_ESCAPE)){
-        Game::GetInstance().Push(new State_00_Title());
-        PopRequest();
-    }
+
     if(In.QuitRequested()){
         quitRequested = true;
     }
 
+    //pause
     if(!esta_pausado){
         if(In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
-            esta_pausado = true;
+            pause.SetPause();
         }
     }
-    esta_pausado = pause.Update();
+    if(esta_pausado){ //esse if tem que estar depois do if passado.
+        pause.Update();
+    }
+    if(pause.QuitRequested()){
+        //Game::GetInstance().Push(new State_00_Title());
+        //PopRequest();
+        quitRequested = true;
+    }
+    esta_pausado = pause.IsPaused();
+
 
     //jogo
     if(estado == JOGO && !esta_pausado){

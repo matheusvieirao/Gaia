@@ -1,15 +1,18 @@
-#ifndef PAUSE_H
-#define PAUSE_H
+#ifndef PAUSE2_H
+#define PAUSE2_H
 
+#include "Game.hpp"
 #include "InputManager.hpp"
 #include "Sprite.hpp"
 
-class Pause{
+class Pause2{
 	public:
-		Pause();
-		bool Update(); //se o jogo ainda esta pausado, retorna true
+		Pause2();
+		void Update(); //se o jogo ainda esta pausado, retorna true
 		void Render();
 		bool IsPaused();
+		void SetPause();
+		bool QuitRequested();
 
 	private:
 		bool esta_pausado;
@@ -18,6 +21,7 @@ class Pause{
 		int opcao2;
 		int opcao2_antiga;
 		bool menu_continua;
+		bool quit;
 
 		Sprite sp_pause0;
 		Sprite sp_pause1;

@@ -5,22 +5,6 @@
 State_02_IndustriaT::State_02_IndustriaT(StateData data):bg("img/telas/background.jpg"){
     //if(instance == nullptr){ //da erro se fizer isso
     //instance = this;
-    printf("entrou carai\n");
-    if(!musica1.IsOpen()){
-        printf("aqui tbm\n");
-        musica1.Open("audio/02_industria/musica fase2 layer 1.ogg");
-        musica1.Play(-1);
-    }
-    if(!musica2.IsOpen()){
-        musica2.Open("audio/02_industria/musica fase2 layer 2.ogg");
-        musica2.Play(-1);
-    }
-    if(!musica3.IsOpen()){
-        musica3.Open("audio/02_industria/musica fase2 layer 3.ogg");
-        if(data.pegou_chave_rato){
-            musica3.Play(-1);
-        }
-    }
 
     num_fala = 0;
     track = 0;
@@ -78,10 +62,7 @@ State_02_IndustriaT::State_02_IndustriaT(StateData data):bg("img/telas/backgroun
 
 State_02_IndustriaT::~State_02_IndustriaT(){
     objectArray.clear();
-    printf("quitou");
-    musica1.Stop(0);
-    musica2.Stop(0);
-    musica3.Stop(0);
+    //Resources::ClearResources(); ?
 }
 
 void State_02_IndustriaT::Update(float dt){
@@ -334,17 +315,6 @@ void State_02_IndustriaT::Update(float dt){
             i--;
         }
     }
-
-    if(popRequested == true){
-        if(musica1.IsOpen())
-            musica1.Stop(0);
-        if(musica2.IsOpen())
-            musica2.Stop(0);
-        if(musica3.IsOpen())
-            musica3.Stop(0);
-        if(fala.IsOpen())
-            fala.Stop();
-    }
 }
 
 void State_02_IndustriaT::Render(){
@@ -543,30 +513,28 @@ bool State_02_IndustriaT::Is(std::string type){
 }
 
 void State_02_IndustriaT::Pause(){
-    printf("pausou");
     musica1.Stop(0);
     musica2.Stop(0);
-    musica3.Stop(0);
+    if(data.pegou_chave_rato) {
+        musica3.Stop(0);
+    }
 }
 
 void State_02_IndustriaT::Resume(){
-    
-    /*printf("entrou carai 2\n");
     if(!musica1.IsOpen()){
-        printf("aqui tbm 2\n");
         musica1.Open("audio/02_industria/musica fase2 layer 1.ogg");
-        musica1.Play(-1);
     }
     if(!musica2.IsOpen()){
         musica2.Open("audio/02_industria/musica fase2 layer 2.ogg");
-        musica2.Play(-1);
     }
     if(!musica3.IsOpen()){
         musica3.Open("audio/02_industria/musica fase2 layer 3.ogg");
-        if(data.pegou_chave_rato){
-            musica3.Play(-1);
-        }
-    }*/
+    }
+    musica1.Play(-1);
+    musica2.Play(-1);
+    if(data.pegou_chave_rato){
+        musica3.Play(-1);
+    }
 }
 
 TileMap* State_02_IndustriaT::GetTileMap(){

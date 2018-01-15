@@ -11,6 +11,7 @@
 #include "Animation.hpp"
 #include "Timer.hpp"
 #include "Sound.hpp"
+#include "Resources.hpp"
 #include "Music.hpp"
 #include "TileSet.hpp"
 #include "TileMap.hpp"

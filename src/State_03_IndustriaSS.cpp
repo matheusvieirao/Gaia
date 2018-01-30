@@ -29,24 +29,8 @@ State_03_IndustriaSS::State_03_IndustriaSS(StateData data):bg("img/telas/backgro
     press_f.SetScaleX(scale);
     press_f.SetScaleY(scale);
 
-    this->data.gaia_t_pos.x = data.gaia_t_pos_inicio_comodo.x;
-    this->data.gaia_t_pos.y = data.gaia_t_pos_inicio_comodo.y;
-    this->data.gaia_t_pos_antiga.x = data.gaia_t_pos_inicio_comodo.x;
-    this->data.gaia_t_pos_antiga.y = data.gaia_t_pos_inicio_comodo.y;
-    this->data.gaia_t_pos_inicio_comodo.x = data.gaia_t_pos_inicio_comodo.x;
-    this->data.gaia_t_pos_inicio_comodo.y = data.gaia_t_pos_inicio_comodo.y;
-    this->data.gaia_comodo = data.gaia_comodo;
-    this->data.gaia_hp = data.gaia_hp;
-    this->data.p_deposito = data.p_deposito;
-    this->data.p_corredor2 = data.p_corredor2;
-    this->data.esteira = data.esteira;
-    this->data.pegou_chave_rato = data.pegou_chave_rato;
-    this->data.ja_ficou_encurralada = data.ja_ficou_encurralada;
-    this->data.ja_pressionou_f = data.ja_pressionou_f;
-    this->data.corre = data.corre;
-    this->data.fala_velho = data.fala_velho;
-    this->data.inventario = data.inventario;
-
+    this->data.Atribuir(data);
+    
     Vec2 gaia_pe_pos = this->data.gaia_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
     gaia_pe_pos.x = gaia_pe_pos.x + tile_set->GetTileWidth()/2;
     gaia_pe_pos.y = gaia_pe_pos.y + tile_set->GetTileHeight()/2;
@@ -355,6 +339,7 @@ void State_03_IndustriaSS::Update(float dt){
                 som_morte.Play(0);
                 SDL_Delay(1800);
                 data.gaia_hp = 10;
+                data.gaia_t_pos = data.gaia_t_pos_inicio_comodo;
                 Game::GetInstance().Push(new State_03_IndustriaSS(data));
                 PopRequest();
             }

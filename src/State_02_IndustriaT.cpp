@@ -26,25 +26,9 @@ State_02_IndustriaT::State_02_IndustriaT(StateData data):bg("img/telas/backgroun
     sp_corre.SetScaleX(scale);
     sp_corre.SetScaleY(scale);
 
-    this->data.gaia_t_pos.x = data.gaia_t_pos_inicio_comodo.x;
-    this->data.gaia_t_pos.y = data.gaia_t_pos_inicio_comodo.y;
-    this->data.gaia_t_pos_antiga.x = data.gaia_t_pos_inicio_comodo.x;
-    this->data.gaia_t_pos_antiga.y = data.gaia_t_pos_inicio_comodo.y;
-    this->data.gaia_t_pos_inicio_comodo.x = data.gaia_t_pos_inicio_comodo.x;
-    this->data.gaia_t_pos_inicio_comodo.y = data.gaia_t_pos_inicio_comodo.y;
-    this->data.gaia_comodo = data.gaia_comodo;
-    this->data.gaia_hp = data.gaia_hp;
-    this->data.p_deposito = data.p_deposito;
-    this->data.p_corredor2 = data.p_corredor2;
-    this->data.esteira = data.esteira;
-    this->data.pegou_chave_rato = data.pegou_chave_rato;
-    this->data.ja_ficou_encurralada = data.ja_ficou_encurralada;
-    this->data.ja_pressionou_f = data.ja_pressionou_f;
-    this->data.corre = data.corre;
-    this->data.fala_velho = data.fala_velho;
-    this->data.inventario = data.inventario;
+    this->data.Atribuir(data); 
 
-    Vec2 gaia_pe_pos = this->data.gaia_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
+    Vec2 gaia_pe_pos = data.gaia_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
     AddObject(new Gaia(gaia_pe_pos.x, gaia_pe_pos.y, data.gaia_hp, data.gaia_comodo));
 
     Camera::Follow(Gaia::player);
@@ -105,29 +89,36 @@ void State_02_IndustriaT::Update(float dt){
         quitRequested = true;
     }
 
-    //pause
+    printf("1 ");
+    ////pause
     if(!esta_pausado){
         if(In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
             pause.SetPause();
         }
     }
     if(esta_pausado){ //esse if tem que estar depois do if passado.
-        pause.Update();
+        printf("2 ");
+        pause.Update(data);
+        printf("3 ");
     }
     if(pause.QuitRequested()){
-        //Game::GetInstance().Push(new State_00_Title());
-        //PopRequest();
-        quitRequested = true;
+        Game::GetInstance().Push(new State_00_Title());
+        PopRequest();
     }
     esta_pausado = pause.IsPaused();
 
+        printf("4 ");
 
-    //jogo
+    ////jogo
     if(estado == JOGO && !esta_pausado){
-        UpdateArray(Game::GetInstance().GetDeltaTime());
 
+        printf("5 ");
+        UpdateArray(dt); /////////////TEM UM ERRO AQUI QUANDO COMECA UM NOVO JOGO
+
+        printf("6 ");
         if(data.gaia_t_pos.x != data.gaia_t_pos_antiga.x || data.gaia_t_pos.y != data.gaia_t_pos_antiga.y){
 
+        printf("7 ");
             //pegou cartao
             if(tile_map->GetTileInfo(data.gaia_comodo+2, data.gaia_t_pos.x, data.gaia_t_pos.y) == 87){
                 tile_map->ChangeTile(data.gaia_comodo+2, data.gaia_t_pos.x, data.gaia_t_pos.y, 0);
@@ -162,6 +153,7 @@ void State_02_IndustriaT::Update(float dt){
             }
         }
 
+        printf("6 ");
         if(data.esteira && data.gaia_comodo == 0){
             if(!som_esteira.IsOpen()){
                 som_esteira.Open("audio/sons/esteira loop.ogg");
@@ -193,9 +185,10 @@ void State_02_IndustriaT::Update(float dt){
             }
         }
 
+        printf("7 ");
         if(data.gaia_comodo == 8){
             if(!som_ronco.IsOpen()){
-                som_ronco.Open("audio/sons/som_ronco.ogg");
+                som_ronco.Open("audio/sons/ronco guarda.ogg");
                 som_ronco.Play(-1);
             }
         }
@@ -207,7 +200,7 @@ void State_02_IndustriaT::Update(float dt){
 
         //se apertar esquerda para de mostrar "corre"
         if(data.corre){
-            if(In.KeyPress(SDLK_LEFT)){
+            if(In.KeyPress(SDLK_LEFT) && In.KeyPress(SDLK_s)){
                 data.corre = false;
             }
         }
@@ -306,6 +299,7 @@ void State_02_IndustriaT::Update(float dt){
                 fala.Play(0);
                 SDL_Delay(1800);
                 data.gaia_hp = 10;
+                data.gaia_t_pos = data.gaia_t_pos_inicio_comodo;
                 //data.comecou_jogo = true;
                 Game::GetInstance().Push(new State_02_IndustriaT(data));
                 PopRequest();
@@ -428,9 +422,9 @@ void State_02_IndustriaT::TratarEncurralamento(){
 
 void State_02_IndustriaT::InicializarComodo(int comodo){
     if(comodo == 4) { //corredor
-        Vec2 guarda_t_pos = Vec2(51, 16);
-        Vec2 guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a1"));
+        //Vec2 guarda_t_pos = Vec2(51, 16);
+        //Vec2 guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
+        //AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a1"));
 
         //guarda_t_pos = Vec2(50, 16);
         //guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());

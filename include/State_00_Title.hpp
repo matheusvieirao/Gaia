@@ -1,6 +1,8 @@
 #ifndef STATETITLE_H
 #define STATETITLE_H
 
+#include <fstream>
+
 #include "State.hpp"
 #include "Sprite.hpp"
 #include "Text.hpp"

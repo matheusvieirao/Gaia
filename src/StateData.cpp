@@ -6,6 +6,7 @@ StateData::StateData(){
     gaia_t_pos_antiga = Vec2(0,0);
     gaia_t_pos_inicio_comodo = Vec2(0,0);
     //comecou_jogo = true; //utilizada para atualizar o comodo pela primeira vez da inicializacao do jogo
+    state_atual = 2;
     gaia_comodo = 4;
     gaia_hp = 10;
     corre = true;
@@ -23,12 +24,33 @@ StateData::StateData(std::string nome){
     
 }
 
+void StateData::Atribuir(StateData data){
+    gaia_t_pos.x = data.gaia_t_pos.x;
+    gaia_t_pos.y = data.gaia_t_pos.y;
+    gaia_t_pos_antiga.x = data.gaia_t_pos_antiga.x;
+    gaia_t_pos_antiga.y = data.gaia_t_pos_antiga.y;
+    gaia_t_pos_inicio_comodo.x = data.gaia_t_pos_inicio_comodo.x;
+    gaia_t_pos_inicio_comodo.y = data.gaia_t_pos_inicio_comodo.y;
+    state_atual = data.state_atual;
+    gaia_comodo = data.gaia_comodo;
+    gaia_hp = data.gaia_hp;
+    p_deposito = data.p_deposito;
+    p_corredor2 = data.p_corredor2;
+    esteira = data.esteira;
+    pegou_chave_rato = data.pegou_chave_rato;
+    ja_ficou_encurralada = data.ja_ficou_encurralada;
+    ja_pressionou_f = data.ja_pressionou_f;
+    corre = data.corre;
+    fala_velho = data.fala_velho;
+    inventario = data.inventario;
+}
 
 void StateData::Carregar(std::string nome){
     if(nome == "inicio animacao"){
         s1_num_historia = 1;
         //gaia_t_pos_inicio_comodo = Vec2(41, 17);
         gaia_t_pos_inicio_comodo = Vec2(46, 16);
+        state_atual = 2;
         gaia_comodo = 4;
         gaia_hp = 10;
         corre = true;
@@ -45,6 +67,7 @@ void StateData::Carregar(std::string nome){
         s1_num_historia = 2;
         //gaia_t_pos_inicio_comodo = Vec2(41, 17);
         gaia_t_pos_inicio_comodo = Vec2(46, 16);
+        state_atual = 2;
         gaia_comodo = 4;
         gaia_hp = 10;
         corre = true;
@@ -61,6 +84,7 @@ void StateData::Carregar(std::string nome){
         s1_num_historia = 2;
         //gaia_t_pos_inicio_comodo = Vec2(41, 17);
         gaia_t_pos_inicio_comodo = Vec2(12, 16);
+        state_atual = 2;
         gaia_comodo = 4;
         gaia_hp = 10;
         corre = true;
@@ -78,6 +102,7 @@ void StateData::Carregar(std::string nome){
         gaia_t_pos_inicio_comodo = Vec2(25, 16);
         gaia_t_pos_antiga = Vec2(25,16);
         gaia_t_pos_inicio_comodo = Vec2(26,16);
+        state_atual = 3;
         gaia_comodo = 4; //corredor, nesse caso do SS
         gaia_hp = 10;
         p_deposito = false; //trancada
@@ -101,6 +126,7 @@ void StateData::Carregar(std::string nome){
         gaia_t_pos_inicio_comodo = Vec2(28, 19);
         gaia_t_pos_antiga = Vec2(28,19);
         gaia_t_pos_inicio_comodo = Vec2(27,16);
+        state_atual = 3;
         gaia_comodo = 12; //(se T Corredor2 se SS Descarga, no caso Descarga)
         gaia_hp = 10;
         p_deposito = false; //trancada
@@ -125,6 +151,7 @@ void StateData::Carregar(std::string nome){
         gaia_t_pos_inicio_comodo = Vec2(28, 19);
         gaia_t_pos_antiga = Vec2(28,19);
         gaia_t_pos_inicio_comodo = Vec2(27,16);
+        state_atual = 1;
         gaia_comodo = 12; //(se T Corredor2 se SS Descarga, no caso Descarga)
         gaia_hp = 10;
         p_deposito = false; //trancada
@@ -152,6 +179,7 @@ void StateData::PrintData(){
     std::cout << "gaia_t_pos: " << gaia_t_pos.x << ", " << gaia_t_pos.y << std::endl;
     std::cout << "gaia_t_pos_antiga: " << gaia_t_pos_antiga.x << ", " << gaia_t_pos_antiga.y << std::endl;
     std::cout << "gaia_t_pos_inicio_comodo: " << gaia_t_pos_inicio_comodo.x << ", " << gaia_t_pos_inicio_comodo.y << std::endl;
+    std::cout << "state_atual: State_0" << state_atual << "_..." << std::endl;
     if (gaia_comodo == 0){
         std::cout << "gaia_comodo: 0 (se T Produção, se SS Quarto Velho)" << std::endl;
     }

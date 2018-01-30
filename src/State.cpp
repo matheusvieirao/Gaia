@@ -47,6 +47,8 @@ bool State::QuitRequested(){
 }
 
 void State::UpdateArray(float dt){
+    printf("\nobjectArray size: %d\n",objectArray.size());
+    printf("dt: %f\n", dt);
     for (unsigned i = 0; i < objectArray.size(); i++) {
         objectArray[i]->Update(dt);
     }

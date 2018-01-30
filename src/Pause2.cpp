@@ -8,7 +8,6 @@ Pause2::Pause2() {
     esta_pausado = false;
     quit = false;
 
-
     sp_pause0.Open("img/telas/pause0.png");
     sp_pause0.SetScaleX((float)Game::GetInstance().GetWindowWidth()/sp_pause0.GetWidth());
     sp_pause0.SetScaleY((float)Game::GetInstance().GetWindowHeight()/sp_pause0.GetHeight());
@@ -47,13 +46,15 @@ Pause2::Pause2() {
 }
 
 
-void Pause2::Update() {
+void Pause2::Update(StateData data) {
     if(esta_pausado){
 
     	InputManager& In = InputManager::GetInstance();
 
     	esta_pausado = true;
 
+
+        //SELECTION
     	if(In.KeyPress(SDLK_DOWN)){
             opcao1++;
             if(opcao1>3){
@@ -169,7 +170,7 @@ void Pause2::Update() {
 
 
 
-
+        //ACTION
     	if(!menu_continua){
             if(opcao1 == 1 || opcao1 == 0){
                 if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
@@ -199,22 +200,54 @@ void Pause2::Update() {
         }
         else { //menu continua
             if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
+                
+                std::ofstream file_save;
                 if(opcao2 == 1){
-                    
+                    file_save.open("save/save1.txt");
                 }
                 else if(opcao2 == 2){
-                    
+                    file_save.open("save/save2.txt");
                 }
                 else if(opcao2 == 3){
-                    
+                    file_save.open("save/save3.txt");
                 }
                 else if(opcao2 == 4){
-                    
+                    file_save.open("save/save4.txt");
                 }
                 else if(opcao2 == 5){
-                    
+                    file_save.open("save/save5.txt");
                 }
+
+                file_save << "s1_num_historia " << data.s1_num_historia << std::endl;
+                file_save << "gaia_t_pos " << data.gaia_t_pos.x << " " << data.gaia_t_pos.y << std::endl;
+                file_save << "gaia_t_pos_antiga " << data.gaia_t_pos_antiga.x << " "  << data.gaia_t_pos_antiga.y << std::endl;
+                file_save << "gaia_t_pos_inicio_comodo " << data.gaia_t_pos_inicio_comodo.x << " "  << data.gaia_t_pos_inicio_comodo.y << std::endl;
+                file_save << "state_atual " << data.state_atual << std::endl;
+                file_save << "gaia_comodo " << data.gaia_comodo << std::endl;
+                file_save << "gaia_hp " << data.gaia_hp << std::endl;
+                file_save << "p_deposito " << data.p_deposito << std::endl;
+                file_save << "p_corredor2 " << data.p_corredor2 << std::endl;
+                file_save << "esteira " << data.esteira << std::endl;
+                file_save << "pegou_chave_rato " << data.pegou_chave_rato << std::endl;
+                file_save << "ja_ficou_encurralada " << data.ja_ficou_encurralada << std::endl;
+                file_save << "ja_pressionou_f " << data.ja_pressionou_f << std::endl;
+                file_save << "corre " << data.corre << std::endl;
+                file_save << "pegou_chicote " << data.pegou_chicote << std::endl;
+                file_save << "fala_velho " << data.fala_velho << std::endl;
+
+                int tam_inventario = data.inventario.size();
+                file_save << "tam_inventario " << tam_inventario << std::endl;
+                for(int i = 0; i < tam_inventario; i++) {
+                    file_save << data.inventario[i];
+                    if(i != tam_inventario-1){
+                        file_save << " ";
+                    }
+                }
+
+                printf("Salvo com sucesso!");
+                file_save.close();
                 menu_continua = false;
+                opcao1 = 1;
             }
             if(In.KeyPress(SDLK_ESCAPE)){
                 opcao1 = 2;

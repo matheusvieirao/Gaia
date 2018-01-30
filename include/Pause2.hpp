@@ -1,14 +1,17 @@
 #ifndef PAUSE2_H
 #define PAUSE2_H
 
+#include <fstream>
+
 #include "Game.hpp"
 #include "InputManager.hpp"
 #include "Sprite.hpp"
+#include "StateData.hpp"
 
 class Pause2{
 	public:
 		Pause2();
-		void Update(); //se o jogo ainda esta pausado, retorna true
+		void Update(StateData data); //se o jogo ainda esta pausado, retorna true
 		void Render();
 		bool IsPaused();
 		void SetPause();

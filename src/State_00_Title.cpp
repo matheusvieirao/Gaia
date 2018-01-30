@@ -81,6 +81,7 @@ State_00_Title::~State_00_Title(){
 void State_00_Title::Update(float dt){
     InputManager& In = InputManager::GetInstance();
 
+    //SELECT
     if(In.KeyPress(SDLK_DOWN)){
         opcao1++;
         if(opcao1>3){
@@ -198,7 +199,7 @@ void State_00_Title::Update(float dt){
         timer.Restart();
     }
 
-    
+    //ACTION
     if(!menu_continua){
         if(opcao1 == 1 || opcao1 == 0){
             if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
@@ -228,33 +229,58 @@ void State_00_Title::Update(float dt){
     }
     else {
         if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
+            std::ifstream file_save;
+            std::string string_aux;
+            int tam_inventario;
+            
             if(opcao2 == 1){
-                data.Carregar("inicio jogo");
-                Game::GetInstance().Push(new State_02_IndustriaT(data));
-
-                popRequested = true;
+                file_save.open("save/save1.txt");
             }
             else if(opcao2 == 2){
-                data.Carregar("quase transparente");
-                Game::GetInstance().Push(new State_02_IndustriaT(data));
-                popRequested = true;
+                file_save.open("save/save2.txt");
             }
             else if(opcao2 == 3){
-                data.Carregar("depois da fala SS");
-                Game::GetInstance().Push(new State_03_IndustriaSS(data));
-                popRequested = true;
+                file_save.open("save/save3.txt");
             }
             else if(opcao2 == 4){
-                data.Carregar("galpao com chave e cartao");
-                Game::GetInstance().Push(new State_03_IndustriaSS(data));
-                popRequested = true;
-
+                file_save.open("save/save4.txt");
             }
             else if(opcao2 == 5){
-                data.Carregar("cutscene 2");
-                Game::GetInstance().Push(new State_01_Historia(data));
-                popRequested = true;
+                file_save.open("save/save5.txt");
             }
+
+            file_save >> string_aux >> data.s1_num_historia;
+            file_save >> string_aux >> data.gaia_t_pos.x >> data.gaia_t_pos.y;
+            file_save >> string_aux >> data.gaia_t_pos_antiga.x >> data.gaia_t_pos_antiga.y;
+            file_save >> string_aux >> data.gaia_t_pos_inicio_comodo.x >> data.gaia_t_pos_inicio_comodo.y;
+            file_save >> string_aux >> data.state_atual;
+            file_save >> string_aux >> data.gaia_comodo;
+            file_save >> string_aux >> data.gaia_hp;
+            file_save >> string_aux >> data.p_deposito;
+            file_save >> string_aux >> data.p_corredor2;
+            file_save >> string_aux >> data.esteira;
+            file_save >> string_aux >> data.pegou_chave_rato;
+            file_save >> string_aux >> data.ja_ficou_encurralada;
+            file_save >> string_aux >> data.ja_pressionou_f;
+            file_save >> string_aux >> data.corre;
+            file_save >> string_aux >> data.pegou_chicote;
+            file_save >> string_aux >> data.fala_velho;
+            file_save >> string_aux >> tam_inventario;
+            for (int i = 0; i < tam_inventario; i++){
+                //colocar a parte de adcionando os itens aqui
+            }
+            file_save.close();
+
+            if(data.state_atual == 1){
+                Game::GetInstance().Push(new State_01_Historia(data));
+            }
+            else if(data.state_atual == 2){
+                Game::GetInstance().Push(new State_02_IndustriaT(data));
+            }
+            else if(data.state_atual == 2){
+                Game::GetInstance().Push(new State_03_IndustriaSS(data));
+            }
+            popRequested = true;
         }
         if(In.QuitRequested()){
             quitRequested = true;

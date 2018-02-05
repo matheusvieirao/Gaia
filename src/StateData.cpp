@@ -49,6 +49,8 @@ void StateData::Carregar(std::string nome){
     if(nome == "inicio animacao"){
         s1_num_historia = 1;
         //gaia_t_pos_inicio_comodo = Vec2(41, 17);
+        gaia_t_pos = Vec2(46, 16);
+        gaia_t_pos_antiga = Vec2(46, 16);
         gaia_t_pos_inicio_comodo = Vec2(46, 16);
         state_atual = 2;
         gaia_comodo = 4;
@@ -66,23 +68,27 @@ void StateData::Carregar(std::string nome){
     else if(nome == "inicio jogo"){    
         s1_num_historia = 2;
         //gaia_t_pos_inicio_comodo = Vec2(41, 17);
+        gaia_t_pos = Vec2(46, 16);
+        gaia_t_pos_antiga = Vec2(46, 16);
         gaia_t_pos_inicio_comodo = Vec2(46, 16);
         state_atual = 2;
         gaia_comodo = 4;
         gaia_hp = 10;
-        corre = true;
-        ja_ficou_encurralada = 0;
-        fala_velho = false;
-        pegou_chave_rato = false;
-        ja_pressionou_f = 0;
-        esteira = false;
-        p_corredor2 = false;
         p_deposito = false;
+        p_corredor2 = false;
+        esteira = false;
+        pegou_chave_rato = false;
+        ja_ficou_encurralada = 0;
+        ja_pressionou_f = 0;
+        corre = true;
         pegou_chicote = false;
+        fala_velho = false;
     }
     else if(nome == "quase transparente"){    
         s1_num_historia = 2;
         //gaia_t_pos_inicio_comodo = Vec2(41, 17);
+        gaia_t_pos = Vec2(12, 16);
+        gaia_t_pos_antiga = Vec2(12, 16);
         gaia_t_pos_inicio_comodo = Vec2(12, 16);
         state_atual = 2;
         gaia_comodo = 4;
@@ -99,7 +105,7 @@ void StateData::Carregar(std::string nome){
     }
     else if(nome == "depois da fala SS"){    
         s1_num_historia = 1;
-        gaia_t_pos_inicio_comodo = Vec2(25, 16);
+        gaia_t_pos = Vec2(25, 16);
         gaia_t_pos_antiga = Vec2(25,16);
         gaia_t_pos_inicio_comodo = Vec2(26,16);
         state_atual = 3;
@@ -123,7 +129,7 @@ void StateData::Carregar(std::string nome){
     }
     else if(nome == "galpao com chave e cartao"){    
         s1_num_historia = 1;
-        gaia_t_pos_inicio_comodo = Vec2(28, 19);
+        gaia_t_pos = Vec2(28, 19);
         gaia_t_pos_antiga = Vec2(28,19);
         gaia_t_pos_inicio_comodo = Vec2(27,16);
         state_atual = 3;
@@ -148,7 +154,7 @@ void StateData::Carregar(std::string nome){
     }
     else if(nome == "cutscene 2"){    
         s1_num_historia = 2;
-        gaia_t_pos_inicio_comodo = Vec2(28, 19);
+        gaia_t_pos = Vec2(28, 19);
         gaia_t_pos_antiga = Vec2(28,19);
         gaia_t_pos_inicio_comodo = Vec2(27,16);
         state_atual = 1;

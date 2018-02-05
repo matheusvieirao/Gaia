@@ -1,6 +1,6 @@
-s1_num_historia 1
-gaia_t_pos 35 17
-gaia_t_pos_antiga 35 17
+s1_num_historia 2
+gaia_t_pos 46 16
+gaia_t_pos_antiga 46 16
 gaia_t_pos_inicio_comodo 46 16
 state_atual 2
 gaia_comodo 4

@@ -113,7 +113,7 @@ void State_02_IndustriaT::Update(float dt){
     if(estado == JOGO && !esta_pausado){
 
         printf("5 ");
-        UpdateArray(dt); /////////////TEM UM ERRO AQUI QUANDO COMECA UM NOVO JOGO
+        UpdateArray(dt); /////////////TEM UM ERRO AQUI QUANDO COMECA UM NOVO JOGO (com guarda)
 
         printf("6 ");
         if(data.gaia_t_pos.x != data.gaia_t_pos_antiga.x || data.gaia_t_pos.y != data.gaia_t_pos_antiga.y){
@@ -422,17 +422,17 @@ void State_02_IndustriaT::TratarEncurralamento(){
 
 void State_02_IndustriaT::InicializarComodo(int comodo){
     if(comodo == 4) { //corredor
-        //Vec2 guarda_t_pos = Vec2(51, 16);
-        //Vec2 guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        //AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a1"));
+        Vec2 guarda_t_pos = Vec2(51, 16);
+        Vec2 guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
+        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a1"));
 
         //guarda_t_pos = Vec2(50, 16);
         //guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-       // AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a2"));
+        //AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a2"));
 
         //guarda_t_pos = Vec2(51, 15);
         //guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-       // AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a3"));
+        //AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a3"));
 
         // guarda_t_pos = Vec2(11, 15);
         // guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());

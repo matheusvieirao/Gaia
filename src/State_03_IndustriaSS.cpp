@@ -17,7 +17,7 @@ State_03_IndustriaSS::State_03_IndustriaSS(StateData data):bg("img/telas/backgro
     num_fala = 0;
     track = 0;
     estado = JOGO;
-    pause = false;
+    esta_pausado = false;
 
     bg.SetScaleX((float)Game::GetInstance().GetWindowWidth()/bg.GetWidth());
     bg.SetScaleY((float)Game::GetInstance().GetWindowHeight()/bg.GetHeight());
@@ -30,6 +30,7 @@ State_03_IndustriaSS::State_03_IndustriaSS(StateData data):bg("img/telas/backgro
     press_f.SetScaleY(scale);
 
     this->data.Atribuir(data);
+    this->data.state_atual = 3;
     
     Vec2 gaia_pe_pos = this->data.gaia_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
     gaia_pe_pos.x = gaia_pe_pos.x + tile_set->GetTileWidth()/2;
@@ -84,7 +85,7 @@ void State_03_IndustriaSS::Update(float dt){
         }
     }
 
-    //input
+    ////input
     if(In.KeyPress(SDLK_ESCAPE)){
         Game::GetInstance().Push(new State_00_Title());
         PopRequest();
@@ -94,12 +95,25 @@ void State_03_IndustriaSS::Update(float dt){
         quitRequested = true;
     }
 
-    if(In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
-        pause = !pause;
-    }
 
-    //jogo
-    if(estado == JOGO && !pause){
+    ////pause
+    if(!esta_pausado){
+        if(In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
+            pause.SetPause();
+        }
+    }
+    if(esta_pausado){ //esse if tem que estar depois do if passado.
+        pause.Update(data);
+    }
+    if(pause.QuitRequested()){
+        Game::GetInstance().Push(new State_00_Title());
+        PopRequest();
+    }
+    esta_pausado = pause.IsPaused();
+
+
+    ////jogo
+    if(estado == JOGO && !esta_pausado){
         UpdateArray(Game::GetInstance().GetDeltaTime());
 
         if(data.gaia_t_pos.x != data.gaia_t_pos_antiga.x || data.gaia_t_pos.y != data.gaia_t_pos_antiga.y){
@@ -217,7 +231,7 @@ void State_03_IndustriaSS::Update(float dt){
             tile_map->ChangeTile(12, 26, 22, 14);
         }
     }
-    else if(estado == FALA && !pause){
+    else if(estado == FALA && !esta_pausado){
         if(In.KeyPress(SDLK_SPACE)){
             if(fala.IsOpen()){
                 fala.Stop();
@@ -380,8 +394,8 @@ void State_03_IndustriaSS::Render(){
         press_f.Render(game_w/2-press_f.GetWidth()/2, game_h/4, 0);
     }
 
-    if(pause){
-        pause1.Render(0,0,0);
+    if(esta_pausado){
+        pause.Render();
     }
 }
 
@@ -455,6 +469,8 @@ bool State_03_IndustriaSS::Is(std::string type){
 }
 
 void State_03_IndustriaSS::Pause(){
+    if(musica1.IsOpen())
+        musica1.Stop();
 }
 
 void State_03_IndustriaSS::Resume(){

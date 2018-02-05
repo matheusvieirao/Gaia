@@ -28,7 +28,7 @@ class StateData{
         bool pegou_chave_rato; //para renderizar rato com a chave ou nao
         int ja_ficou_encurralada;
         bool ja_pressionou_f;
-        bool corre;
+        bool ja_mostrou_corre;
         bool pegou_chicote;
         bool fala_velho; //false nao falou, true ja falou
 

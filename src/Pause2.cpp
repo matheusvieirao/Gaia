@@ -231,7 +231,7 @@ void Pause2::Update(StateData data) {
                 file_save << "pegou_chave_rato " << data.pegou_chave_rato << std::endl;
                 file_save << "ja_ficou_encurralada " << data.ja_ficou_encurralada << std::endl;
                 file_save << "ja_pressionou_f " << data.ja_pressionou_f << std::endl;
-                file_save << "corre " << data.corre << std::endl;
+                file_save << "ja_mostrou_corre " << data.ja_mostrou_corre << std::endl;
                 file_save << "pegou_chicote " << data.pegou_chicote << std::endl;
                 file_save << "fala_velho " << data.fala_velho << std::endl;
 

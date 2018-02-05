@@ -27,6 +27,7 @@ State_02_IndustriaT::State_02_IndustriaT(StateData data):bg("img/telas/backgroun
     sp_corre.SetScaleY(scale);
 
     this->data.Atribuir(data); 
+    this->data.state_atual = 2;
 
     Vec2 gaia_pe_pos = data.gaia_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
     AddObject(new Gaia(gaia_pe_pos.x, gaia_pe_pos.y, data.gaia_hp, data.gaia_comodo));
@@ -89,7 +90,6 @@ void State_02_IndustriaT::Update(float dt){
         quitRequested = true;
     }
 
-    printf("1 ");
     ////pause
     if(!esta_pausado){
         if(In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
@@ -97,9 +97,7 @@ void State_02_IndustriaT::Update(float dt){
         }
     }
     if(esta_pausado){ //esse if tem que estar depois do if passado.
-        printf("2 ");
         pause.Update(data);
-        printf("3 ");
     }
     if(pause.QuitRequested()){
         Game::GetInstance().Push(new State_00_Title());
@@ -107,18 +105,14 @@ void State_02_IndustriaT::Update(float dt){
     }
     esta_pausado = pause.IsPaused();
 
-        printf("4 ");
 
     ////jogo
     if(estado == JOGO && !esta_pausado){
 
-        printf("5 ");
         UpdateArray(dt); /////////////TEM UM ERRO AQUI QUANDO COMECA UM NOVO JOGO (com guarda)
 
-        printf("6 ");
         if(data.gaia_t_pos.x != data.gaia_t_pos_antiga.x || data.gaia_t_pos.y != data.gaia_t_pos_antiga.y){
 
-        printf("7 ");
             //pegou cartao
             if(tile_map->GetTileInfo(data.gaia_comodo+2, data.gaia_t_pos.x, data.gaia_t_pos.y) == 87){
                 tile_map->ChangeTile(data.gaia_comodo+2, data.gaia_t_pos.x, data.gaia_t_pos.y, 0);
@@ -153,7 +147,6 @@ void State_02_IndustriaT::Update(float dt){
             }
         }
 
-        printf("6 ");
         if(data.esteira && data.gaia_comodo == 0){
             if(!som_esteira.IsOpen()){
                 som_esteira.Open("audio/sons/esteira loop.ogg");
@@ -185,7 +178,6 @@ void State_02_IndustriaT::Update(float dt){
             }
         }
 
-        printf("7 ");
         if(data.gaia_comodo == 8){
             if(!som_ronco.IsOpen()){
                 som_ronco.Open("audio/sons/ronco guarda.ogg");
@@ -199,9 +191,9 @@ void State_02_IndustriaT::Update(float dt){
         }
 
         //se apertar esquerda para de mostrar "corre"
-        if(data.corre){
-            if(In.KeyPress(SDLK_LEFT) && In.KeyPress(SDLK_s)){
-                data.corre = false;
+        if(!data.ja_mostrou_corre){
+            if(In.KeysPress(SDLK_LEFT, SDLK_s)){
+                data.ja_mostrou_corre = true;
             }
         }
 
@@ -337,7 +329,7 @@ void State_02_IndustriaT::Render(){
         sp_press_d.Render(game_w/2-sp_press_d.GetWidth()/2, game_h/4, 0);
     }
 
-    if(data.corre){
+    if(!data.ja_mostrou_corre){
         sp_corre.Render(game_w/2-sp_corre.GetWidth()/2, game_h/2-sp_corre.GetHeight()/2, 0);
     }
 

@@ -9,7 +9,7 @@ StateData::StateData(){
     state_atual = 2;
     gaia_comodo = 4;
     gaia_hp = 10;
-    corre = true;
+    ja_mostrou_corre = false;
     ja_ficou_encurralada = 0; // 3 se ja passou fugiu do encurralamento
     fala_velho = false;
     pegou_chave_rato = false;
@@ -40,7 +40,7 @@ void StateData::Atribuir(StateData data){
     pegou_chave_rato = data.pegou_chave_rato;
     ja_ficou_encurralada = data.ja_ficou_encurralada;
     ja_pressionou_f = data.ja_pressionou_f;
-    corre = data.corre;
+    ja_mostrou_corre = data.ja_mostrou_corre;
     fala_velho = data.fala_velho;
     inventario = data.inventario;
 }
@@ -55,7 +55,7 @@ void StateData::Carregar(std::string nome){
         state_atual = 2;
         gaia_comodo = 4;
         gaia_hp = 10;
-        corre = true;
+        ja_mostrou_corre = false;
         ja_ficou_encurralada = 0;
         fala_velho = false;
         pegou_chave_rato = false;
@@ -80,7 +80,7 @@ void StateData::Carregar(std::string nome){
         pegou_chave_rato = false;
         ja_ficou_encurralada = 0;
         ja_pressionou_f = 0;
-        corre = true;
+        ja_mostrou_corre = false;
         pegou_chicote = false;
         fala_velho = false;
     }
@@ -93,7 +93,7 @@ void StateData::Carregar(std::string nome){
         state_atual = 2;
         gaia_comodo = 4;
         gaia_hp = 10;
-        corre = true;
+        ja_mostrou_corre = true;
         ja_ficou_encurralada = 0;
         fala_velho = false;
         pegou_chave_rato = false;
@@ -122,7 +122,7 @@ void StateData::Carregar(std::string nome){
         p_corredor2 = false;
         p_deposito = false;
         pegou_chicote = false;
-        corre = false;
+        ja_mostrou_corre = true;
         pegou_chicote = false;
         fala_velho = true; //ja falou
         //inventario.push_back(CHAVE_ENERGIA);
@@ -146,7 +146,7 @@ void StateData::Carregar(std::string nome){
         p_corredor2 = false;
         p_deposito = false;
         pegou_chicote = false;
-        corre = false;
+        ja_mostrou_corre = true;
         pegou_chicote = false;
         fala_velho = true; //ja falou
         inventario.push_back(CHAVE_ENERGIA);
@@ -171,7 +171,7 @@ void StateData::Carregar(std::string nome){
         p_corredor2 = false;
         p_deposito = false;
         pegou_chicote = false;
-        corre = false;
+        ja_mostrou_corre = true;
         pegou_chicote = false;
         fala_velho = true; //ja falou
         inventario.push_back(CHAVE_ENERGIA);
@@ -228,7 +228,7 @@ void StateData::PrintData(){
     }
     std::cout << "ja_ficou_encurralada: " << ja_ficou_encurralada << std::endl;
     std::cout << "ja_pressionou_f: " << ja_pressionou_f << std::endl;
-    std::cout << "corre: " << corre << std::endl;
+    std::cout << "ja_mostrou_corre: " << ja_mostrou_corre << std::endl;
     std::cout << "pegou_chicote: " << pegou_chicote << std::endl;
     if(fala_velho){
         std::cout << "fala_velho: true (ja falou)" << std::endl;

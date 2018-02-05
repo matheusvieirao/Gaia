@@ -2,6 +2,7 @@
 
 State_01_Historia::State_01_Historia(StateData data){
     num_historia = data.s1_num_historia;
+    data.state_atual = 1;
     if(num_historia == 1){
         // indices de 0 a 16
         AddObject(new Animation("img/cenas/cena-1.png", true));

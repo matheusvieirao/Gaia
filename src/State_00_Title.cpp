@@ -262,7 +262,7 @@ void State_00_Title::Update(float dt){
             file_save >> string_aux >> data.pegou_chave_rato;
             file_save >> string_aux >> data.ja_ficou_encurralada;
             file_save >> string_aux >> data.ja_pressionou_f;
-            file_save >> string_aux >> data.corre;
+            file_save >> string_aux >> data.ja_mostrou_corre;
             file_save >> string_aux >> data.pegou_chicote;
             file_save >> string_aux >> data.fala_velho;
             file_save >> string_aux >> tam_inventario;
@@ -277,7 +277,7 @@ void State_00_Title::Update(float dt){
             else if(data.state_atual == 2){
                 Game::GetInstance().Push(new State_02_IndustriaT(data));
             }
-            else if(data.state_atual == 2){
+            else if(data.state_atual == 3){
                 Game::GetInstance().Push(new State_03_IndustriaSS(data));
             }
             popRequested = true;

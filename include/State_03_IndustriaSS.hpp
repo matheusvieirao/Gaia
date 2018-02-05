@@ -6,6 +6,7 @@
 #include "Music.hpp"
 #include "TileSet.hpp"
 #include "TileMap.hpp"
+#include "Pause2.hpp"
 #include "StateData.hpp"
 #include "State_02_IndustriaT.hpp"
 #include "Gaia.hpp"
@@ -51,13 +52,14 @@ class State_03_IndustriaSS : public State{
         bool printa_f;
         int num_fala;
         int track;
-        bool pause;
         Timer tempo_falas;
         Timer tempo_esteira;
         Sound fala;
         Sound efeito;
         Sound som_esteira;
         Sound musica1;
+        Pause2 pause;
+        bool esta_pausado;
 };
 
 #endif // State_03_IndustriaSS_HPP

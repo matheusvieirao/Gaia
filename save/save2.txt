@@ -1,7 +1,7 @@
 s1_num_historia 1
-gaia_t_pos 42 17
-gaia_t_pos_antiga 42 17
-gaia_t_pos_inicio_comodo 46 16
+gaia_t_pos 8 15
+gaia_t_pos_antiga 8 15
+gaia_t_pos_inicio_comodo 4 14
 state_atual 2
 gaia_comodo 4
 gaia_hp 10
@@ -11,7 +11,7 @@ esteira 0
 pegou_chave_rato 0
 ja_ficou_encurralada 0
 ja_pressionou_f 0
-corre 0
+ja_mostrou_corre 1
 pegou_chicote 0
 fala_velho 0
 tam_inventario 0

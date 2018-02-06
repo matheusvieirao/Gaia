@@ -17,6 +17,8 @@ void TileMap::Load(std::string file){
     char c;
     int num_aux, parar;
 
+    tile_matrix.clear();
+
     fp.open(file, std::ios::in);
     if(fp.is_open()){
         fp >> map_width >> c >> map_height >> c >> map_depth >> c ;

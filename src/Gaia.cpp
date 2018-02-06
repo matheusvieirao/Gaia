@@ -749,18 +749,20 @@ void Gaia::Andar(int mov, float vel){
             }
         }
 
-        //se tiver caixa livre empurrar, se tiver algum objeto atras da caixa ficar parado
-        if(t_info_obj >  52 && t_info_obj < 57){
+        //se o chao for o tile verde claro no tiled (que no tile_set.png é cinza) colidir ou empurrar
+        if(t_info_chao == 19){
             if(mov == SE) {
                 t_info_obj_futuro = t_map->GetTileInfo(comodo_atual+2, t_pos.x+1, t_pos.y);
                 t_info_chao_futuro = t_map->GetTileInfo(comodo_atual, t_pos.x+1, t_pos.y);
                 if(t_info_chao_futuro != 0 && t_info_obj_futuro == 0){
+                    t_map->ChangeTile(comodo_atual, t_pos.x+1, t_pos.y, 19);
+                    t_map->ChangeTile(comodo_atual, t_pos.x, t_pos.y, 7);
                     t_map->ChangeTile(comodo_atual+2, t_pos.x+1, t_pos.y, t_info_obj);
                     t_map->ChangeTile(comodo_atual+2, t_pos.x, t_pos.y, 0);
                 }
                 else{
                     box.x -= cos_angulo * vel;
-                    box.y -= sen_angulo* vel;
+                    box.y -= sen_angulo * vel;
                 }
             }
             if(mov == NE){
@@ -774,7 +776,7 @@ void Gaia::Andar(int mov, float vel){
                 }
                 else{
                     box.x -= cos_angulo * vel;
-                    box.y += sen_angulo* vel;
+                    box.y += sen_angulo * vel;
                 }
             }
             if(mov == NO){
@@ -788,7 +790,7 @@ void Gaia::Andar(int mov, float vel){
                 }
                 else{
                     box.x += cos_angulo * vel;
-                    box.y += sen_angulo* vel;
+                    box.y += sen_angulo * vel;
                 }
             }
             if(mov == SO){
@@ -802,7 +804,7 @@ void Gaia::Andar(int mov, float vel){
                 }
                 else{
                     box.x += cos_angulo * vel;
-                    box.y -= sen_angulo* vel;
+                    box.y -= sen_angulo * vel;
                 }
             }
         }

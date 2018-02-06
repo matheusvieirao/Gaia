@@ -94,7 +94,6 @@ void Gaia::Update(float dt){
     dur_movimento.Update(dt);
     tempo_chicote.Update(dt);
     pos_antiga = Vec2(box.GetCenter().x, box.y+box.h-altura_pe);
-    sprite_anterior = sprite_atual;
 
     vel = 300 * dt; //default
 
@@ -162,12 +161,7 @@ void Gaia::Update(float dt){
         
         else if (modo_manual) {
 
-            //printa a data atual no terminal
-            if(In.IsKeyDown(SDLK_p)){
-
-            }
-
-            //alterar sprite
+            ////ALTERNAR SPRITES 
             if(sprite_atual == ANDANDO || sprite_atual == CORRENDO){
                 if(In.IsKeyDown(SDLK_s)){
                     sprite_atual = CORRENDO;
@@ -257,17 +251,15 @@ void Gaia::Update(float dt){
                     }
                 }
             }
-
-
             if(sprite_atual == CARRO){
                 if(comodo_atual != 8){
                     sprite_atual = ANDANDO;
                 }
             }
 
-            if(sprite_atual == ANDANDO){
-                vel = 300 * dt;
-                if(sprite_anterior != sprite_atual){
+            //INICIALIZAR SPRITES
+            if(sprite_anterior != sprite_atual){
+                if(sprite_atual == ANDANDO){
                     int centro_x = box.GetCenter().x;
                     int centro_y = box.GetCenter().y;
                     box.w = sp_andando.GetWidth();
@@ -283,10 +275,7 @@ void Gaia::Update(float dt){
                     m_noroeste = 1+m_dur*2;
                     m_sudoeste = 1+m_dur*3;
                 }
-            }
-            else if(sprite_atual == CORRENDO){
-                vel = 500 * dt;
-                if(sprite_anterior != sprite_atual){
+                else if(sprite_atual == CORRENDO){
                     int centro_x = box.GetCenter().x;
                     int centro_y = box.GetCenter().y;
                     box.w = sp_correndo.GetWidth();
@@ -302,9 +291,7 @@ void Gaia::Update(float dt){
                     m_noroeste = 1+m_dur*2;
                     m_sudoeste = 1+m_dur*3;
                 }
-            }
-            else if(sprite_atual == CHICOTE){
-                if(sprite_anterior != sprite_atual){
+                if(sprite_atual == CHICOTE){
                     int centro_x = box.GetCenter().x;
                     int centro_y = box.GetCenter().y;
                     box.w = sp_chicote.GetWidth();
@@ -319,10 +306,28 @@ void Gaia::Update(float dt){
                     m_nordeste = 1+m_dur;
                     m_noroeste = 1+m_dur*2;
                     m_sudoeste = 1+m_dur*3;
+
+                    if(direcao == SE){
+                        sp_chicote.SetFrameStart(m_sudeste);
+                        sp_chicote.SetFrame(m_sudeste);
+                    }
+                    else if(direcao == NE){
+                        sp_chicote.SetFrameStart(m_nordeste);
+                        sp_chicote.SetFrame(m_nordeste);
+                    }
+                    else if(direcao == NO){
+                        sp_chicote.SetFrameStart(m_noroeste);
+                        sp_chicote.SetFrame(m_noroeste);
+                    }
+                    else if(direcao == SO){
+                        sp_chicote.SetFrameStart(m_sudoeste);
+                        sp_chicote.SetFrame(m_sudoeste);
+                    }
+                    else {
+                        printf("erro em escolher a direcao do chicote de Gaia\n");
+                    }
                 }
-            }
-            else if(sprite_atual == TRANSPARENTE){
-                if(sprite_anterior != sprite_atual){
+                if(sprite_atual == TRANSPARENTE){
                     som_transparente.Open("audio/sons/ficando invisivel.ogg");
                     som_transparente.Play(0);
                     int centro_x = box.GetCenter().x;
@@ -339,11 +344,30 @@ void Gaia::Update(float dt){
                     m_nordeste = 1+m_dur;
                     m_noroeste = 1+m_dur*2;
                     m_sudoeste = 1+m_dur*3;
+
+
+                    sp_transparente.SetRepetitions(1);
+                    if(direcao == SE){
+                        sp_transparente.SetFrameStart(m_sudeste);
+                        sp_transparente.SetFrame(m_sudeste);
+                    }
+                    else if(direcao == NE){
+                        sp_transparente.SetFrameStart(m_nordeste);
+                        sp_transparente.SetFrame(m_nordeste);
+                    }
+                    else if(direcao == NO){
+                        sp_transparente.SetFrameStart(m_noroeste);
+                        sp_transparente.SetFrame(m_noroeste);
+                    }
+                    else if(direcao == SO){
+                        sp_transparente.SetFrameStart(m_sudoeste);
+                        sp_transparente.SetFrame(m_sudoeste);
+                    }
+                    else {
+                        printf("Erro em escolher a direcao de ficar transparente\n");
+                    }
                 }
-            }
-            else if(sprite_atual == CARRO){
-                vel = 800 * dt;
-                if(sprite_anterior != sprite_atual){
+                if(sprite_atual == CARRO){
                     int centro_x = box.GetCenter().x;
                     int centro_y = box.GetCenter().y;
                     box.w = sp_carro.GetWidth();
@@ -353,17 +377,52 @@ void Gaia::Update(float dt){
                     altura_pe = 50;
                     altura_box_col = 60;
                     largura_box_col = 80;
+                    m_dur = sp_carro.GetAnimationDur();
+                    m_sudeste = 1; //primeiro sprite em direçao ao movimento
+                    m_nordeste = 1+m_dur;
+                    m_noroeste = 1+m_dur*2;
+                    m_sudoeste = 1+m_dur*3;
+                    
+                    if(direcao == SE){
+                        sp_carro.SetFrameStart(m_sudeste);
+                        sp_carro.SetFrame(m_sudeste);
+                    }
+                    else if(direcao == NE){
+                        sp_carro.SetFrameStart(m_nordeste);
+                        sp_carro.SetFrame(m_nordeste);
+                    }
+                    else if(direcao == NO){
+                        sp_carro.SetFrameStart(m_noroeste);
+                        sp_carro.SetFrame(m_noroeste);
+                    }
+                    else if(direcao == SO){
+                        sp_carro.SetFrameStart(m_sudoeste);
+                        sp_carro.SetFrame(m_sudoeste);
+                    }
+                    sp_carro.SetFrameAnimation(m_dur);
                 }
-                m_dur = sp_carro.GetAnimationDur();
-                m_sudeste = 1; //primeiro sprite em direçao ao movimento
-                m_nordeste = 1+m_dur;
-                m_noroeste = 1+m_dur*2;
-                m_sudoeste = 1+m_dur*3;
+            }
+
+            ////VELOCIDADES
+            if(sprite_atual == ANDANDO){
+                vel = 300 * dt;
+            }
+            else if(sprite_atual == CORRENDO){
+                vel = 500 * dt;
+            }
+            else if(sprite_atual == CHICOTE){
+                vel = 0;
+            }
+            else if(sprite_atual == TRANSPARENTE){
+                vel = 0;
+            }
+            else if(sprite_atual == CARRO){
+                vel = 800 * dt;
             }
 
 
-
-            if(sprite_atual == ANDANDO || sprite_atual == CORRENDO){
+            ////ANDAR
+            if(sprite_atual == ANDANDO || sprite_atual == CORRENDO || sprite_atual == CARRO){
                 //se parar
                 if(!In.IsKeyDown(SDLK_DOWN) && !In.IsKeyDown(SDLK_RIGHT) && !In.IsKeyDown(SDLK_UP) && !In.IsKeyDown(SDLK_LEFT)){
                     mov_anterior = PARADO;
@@ -406,92 +465,11 @@ void Gaia::Update(float dt){
                 }
             }
 
-            if(sprite_atual == CHICOTE){
-                if(sprite_anterior != sprite_atual){
-                    if(direcao == SE){
-                        sp_chicote.SetFrameStart(m_sudeste);
-                        sp_chicote.SetFrame(m_sudeste);
-                    }
-                    else if(direcao == NE){
-                        sp_chicote.SetFrameStart(m_nordeste);
-                        sp_chicote.SetFrame(m_nordeste);
-                    }
-                    else if(direcao == NO){
-                        sp_chicote.SetFrameStart(m_noroeste);
-                        sp_chicote.SetFrame(m_noroeste);
-                    }
-                    else if(direcao == SO){
-                        sp_chicote.SetFrameStart(m_sudoeste);
-                        sp_chicote.SetFrame(m_sudoeste);
-                    }
-                    else {
-                        printf("erro em escolher a direcao do chicote de Gaia\n");
-                    }
-                }
-            }
-
-            if(sprite_atual == TRANSPARENTE){
-                if(sprite_anterior != sprite_atual){
-                    sp_transparente.SetRepetitions(1);
-                    if(direcao == SE){
-                        sp_transparente.SetFrameStart(m_sudeste);
-                        sp_transparente.SetFrame(m_sudeste);
-                    }
-                    else if(direcao == NE){
-                        sp_transparente.SetFrameStart(m_nordeste);
-                        sp_transparente.SetFrame(m_nordeste);
-                    }
-                    else if(direcao == NO){
-                        sp_transparente.SetFrameStart(m_noroeste);
-                        sp_transparente.SetFrame(m_noroeste);
-                    }
-                    else if(direcao == SO){
-                        sp_transparente.SetFrameStart(m_sudoeste);
-                        sp_transparente.SetFrame(m_sudoeste);
-                    }
-                    else {
-                        printf("Erro em escolher a direcao de ficar transparente\n");
-                    }
-                }
-            }
-
-            if(sprite_atual == CARRO){
-                if(In.IsKeysDown(SDLK_DOWN, SDLK_RIGHT)){
-                    Andar(SE, vel);
-                    direcao = SE;
-                }
-                else if(In.IsKeysDown(SDLK_RIGHT, SDLK_UP)){
-                    Andar(NE, vel);
-                    direcao = NE;
-                }
-                else if(In.IsKeysDown(SDLK_UP, SDLK_LEFT)){
-                    Andar(NO, vel);
-                    direcao = NO;
-                }
-                else if(In.IsKeysDown(SDLK_LEFT, SDLK_DOWN)){
-                    Andar(SO, vel);
-                    direcao = SO;
-                }
-                else if(In.IsKeyDown(SDLK_DOWN)){
-                    Andar(SO, vel);
-                    direcao = SO;
-                }
-                else if(In.IsKeyDown(SDLK_RIGHT)){
-                    Andar(SE, vel);
-                    direcao = SE;
-                }
-                else if(In.IsKeyDown(SDLK_UP)){
-                    Andar(NE, vel);
-                    direcao = NE;
-                }
-                else if(In.IsKeyDown(SDLK_LEFT)){
-                    Andar(NO, vel);
-                    direcao = NO;
-                }
-            }
         }
     }
 
+
+    ////UPDATE SPRITE
     if(sprite_atual == ANDANDO){
         sp_andando.Update(dt);
     }
@@ -507,6 +485,8 @@ void Gaia::Update(float dt){
     else if(sprite_atual == CARRO){
         sp_carro.Update(dt);
     }
+
+    sprite_anterior = sprite_atual;
 }
 
 void Gaia::Render(){
@@ -532,7 +512,7 @@ void Gaia::Andar(int mov, float vel){
     float sen_angulo = 0.5; //30º
     //float tg_angulo = 0.577350269189625764509148780501957455647601751270126876018 ;// 30º
     TileMap* t_map = Game::GetInstance().GetCurrentState().GetTileMap();
-    int t_info;
+    int t_info_chao, t_info_obj, t_info_chao_futuro, t_info_obj_futuro;
 
 
     box_anterior.x = box.x;
@@ -556,8 +536,8 @@ void Gaia::Andar(int mov, float vel){
             box.y += sen_angulo* vel;
             //se andar em tiles vazios voltar o movimento feito (ficar parado)
             Vec2 t_pos = GetTPos();
-            t_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info == 0 || t_info ==  18 || t_info ==  19){
+            t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+            if(t_info_chao == 0 || t_info_chao ==  18 || t_info_chao ==  19){
                 box.x -= cos_angulo * vel;
                 box.y -= sen_angulo* vel;
                 sp_andando.SetFrame(m_sudeste+1);
@@ -573,8 +553,8 @@ void Gaia::Andar(int mov, float vel){
             box.x += cos_angulo * vel;
             box.y -= sen_angulo* vel;
             Vec2 t_pos = GetTPos();
-            t_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info == 0 || t_info ==  18 || t_info ==  19){
+            t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+            if(t_info_chao == 0 || t_info_chao ==  18 || t_info_chao ==  19){
                 box.x -= cos_angulo * vel;
                 box.y += sen_angulo* vel;
                 sp_andando.SetFrame(m_nordeste+1);
@@ -590,8 +570,8 @@ void Gaia::Andar(int mov, float vel){
             box.x -= cos_angulo * vel;
             box.y -= sen_angulo* vel;
             Vec2 t_pos = GetTPos();
-            t_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info == 0 || t_info ==  18 || t_info ==  19){
+            t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+            if(t_info_chao == 0 || t_info_chao ==  18 || t_info_chao ==  19){
                 box.x += cos_angulo * vel;
                 box.y += sen_angulo* vel;
                 sp_andando.SetFrame(m_noroeste+1);
@@ -607,8 +587,8 @@ void Gaia::Andar(int mov, float vel){
             box.x -= cos_angulo * vel;
             box.y += sen_angulo* vel;
             Vec2 t_pos = GetTPos();
-            t_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info == 0 || t_info ==  18 || t_info ==  19){
+            t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+            if(t_info_chao == 0 || t_info_chao ==  18 || t_info_chao ==  19){
                 box.x += cos_angulo * vel;
                 box.y -= sen_angulo* vel;
                 sp_andando.SetFrame(m_sudoeste+1);
@@ -632,8 +612,8 @@ void Gaia::Andar(int mov, float vel){
             box.y += sen_angulo* vel;
             //se andar em tiles vazios voltar o movimento feito (ficar parado)
             Vec2 t_pos = GetTPos();
-            t_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info == 0 || t_info ==  18 || t_info ==  19){
+            t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+            if(t_info_chao == 0 || t_info_chao ==  18 || t_info_chao ==  19){
                 box.x -= cos_angulo * vel;
                 box.y -= sen_angulo* vel;
                 sp_correndo.SetFrame(m_sudeste+1);
@@ -649,8 +629,8 @@ void Gaia::Andar(int mov, float vel){
             box.x += cos_angulo * vel;
             box.y -= sen_angulo* vel;
             Vec2 t_pos = GetTPos();
-            t_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info == 0 || t_info ==  18 || t_info ==  19){
+            t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+            if(t_info_chao == 0 || t_info_chao ==  18 || t_info_chao ==  19){
                 box.x -= cos_angulo * vel;
                 box.y += sen_angulo* vel;
                 sp_correndo.SetFrame(m_nordeste+1);
@@ -666,8 +646,8 @@ void Gaia::Andar(int mov, float vel){
             box.x -= cos_angulo * vel;
             box.y -= sen_angulo* vel;
             Vec2 t_pos = GetTPos();
-            t_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info == 0 || t_info ==  18 || t_info ==  19){
+            t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+            if(t_info_chao == 0 || t_info_chao ==  18 || t_info_chao ==  19){
                 box.x += cos_angulo * vel;
                 box.y += sen_angulo* vel;
                 sp_correndo.SetFrame(m_noroeste+1);
@@ -683,8 +663,8 @@ void Gaia::Andar(int mov, float vel){
             box.x -= cos_angulo * vel;
             box.y += sen_angulo* vel;
             Vec2 t_pos = GetTPos();
-            t_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info == 0 || t_info ==  18 || t_info ==  19){
+            t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+            if(t_info_chao == 0 || t_info_chao ==  18 || t_info_chao ==  19){
                 box.x += cos_angulo * vel;
                 box.y -= sen_angulo* vel;
                 sp_correndo.SetFrame(m_sudoeste+1);
@@ -698,82 +678,136 @@ void Gaia::Andar(int mov, float vel){
     }
     else if(sprite_atual == CARRO){
         sp_carro.ResumeAnimation();
+
+        ////ANDAR
         if(mov == SE){
             if(mov_anterior != SE || sprite_anterior != sprite_atual){
                 sp_carro.SetFrameStart(m_sudeste);
+                sp_carro.SetFrame(m_sudeste);
                 sp_carro.SetFrameAnimation(m_dur);
                 mov_anterior = SE;
             }
             box.x += cos_angulo * vel;
             box.y += sen_angulo* vel;
-            //se andar em tiles vazios voltar o movimento feito (ficar parado)
-            Vec2 t_pos = GetTPos();
-            t_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info == 0 || t_info ==  18 || t_info ==  19){
-                box.x -= cos_angulo * vel;
-                box.y -= sen_angulo* vel;
-                sp_carro.SetFrame(m_sudeste+1);
-                sp_carro.PauseAnimation();
-            }
         }
         else if(mov == NE){
             if(mov_anterior != NE || sprite_anterior != sprite_atual){
                 sp_carro.SetFrameStart(m_nordeste);
+                sp_carro.SetFrame(m_nordeste);
                 sp_carro.SetFrameAnimation(m_dur);
                 mov_anterior = NE;
             }
             box.x += cos_angulo * vel;
             box.y -= sen_angulo* vel;
-            Vec2 t_pos = GetTPos();
-            t_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info == 0 || t_info ==  18 || t_info ==  19){
-                box.x -= cos_angulo * vel;
-                box.y += sen_angulo* vel;
-                sp_carro.SetFrame(m_nordeste+1);
-                sp_carro.PauseAnimation();
-            }
         }
         else if(mov == NO){
             if(mov_anterior != NO || sprite_anterior != sprite_atual){
                 sp_carro.SetFrameStart(m_noroeste);
+                sp_carro.SetFrame(m_noroeste);
                 sp_carro.SetFrameAnimation(m_dur);
                 mov_anterior = NO;
             }
             box.x -= cos_angulo * vel;
             box.y -= sen_angulo* vel;
-            Vec2 t_pos = GetTPos();
-            t_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info == 0 || t_info ==  18 || t_info ==  19){
-                box.x += cos_angulo * vel;
-                box.y += sen_angulo* vel;
-                sp_carro.SetFrame(m_noroeste+1);
-                sp_carro.PauseAnimation();
-            }
         }
         else if(mov == SO){
             if(mov_anterior != SO || sprite_anterior != sprite_atual){
                 sp_carro.SetFrameStart(m_sudoeste);
+                sp_carro.SetFrame(m_sudoeste);
                 sp_carro.SetFrameAnimation(m_dur);
                 mov_anterior = SO;
-            printf("2\n");
             }
             box.x -= cos_angulo * vel;
             box.y += sen_angulo* vel;
-            Vec2 t_pos = GetTPos();
-            t_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info == 0 || t_info ==  18 || t_info ==  19){
-                box.x += cos_angulo * vel;
-                box.y -= sen_angulo* vel;
-                sp_carro.SetFrame(m_sudoeste+1);
-                sp_carro.PauseAnimation();
-            }
         }
         else if(mov == PARADO){
             mov_anterior = PARADO;
             Parar();
         }
-    }
 
+        Vec2 t_pos = GetTPos();
+        t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+        t_info_obj = t_map->GetTileInfo(comodo_atual+2, t_pos.x, t_pos.y);
+
+        //se andar em tiles vazios voltar o movimento feito (ficar parado)
+        if(t_info_chao == 0){
+            if(mov == SE) {
+                box.x -= cos_angulo * vel;
+                box.y -= sen_angulo * vel;
+            }
+            else if(mov == NE){
+                box.x -= cos_angulo * vel;
+                box.y += sen_angulo* vel;
+            }
+            else if(mov == NO){
+                box.x += cos_angulo * vel;
+                box.y += sen_angulo* vel;
+            }
+            else if(mov == SO) {
+                box.x += cos_angulo * vel;
+                box.y -= sen_angulo* vel;
+            }
+        }
+
+        //se tiver caixa livre empurrar, se tiver algum objeto atras da caixa ficar parado
+        if(t_info_obj >  52 && t_info_obj < 57){
+            if(mov == SE) {
+                t_info_obj_futuro = t_map->GetTileInfo(comodo_atual+2, t_pos.x+1, t_pos.y);
+                t_info_chao_futuro = t_map->GetTileInfo(comodo_atual, t_pos.x+1, t_pos.y);
+                if(t_info_chao_futuro != 0 && t_info_obj_futuro == 0){
+                    t_map->ChangeTile(comodo_atual+2, t_pos.x+1, t_pos.y, t_info_obj);
+                    t_map->ChangeTile(comodo_atual+2, t_pos.x, t_pos.y, 0);
+                }
+                else{
+                    box.x -= cos_angulo * vel;
+                    box.y -= sen_angulo* vel;
+                }
+            }
+            if(mov == NE){
+                t_info_obj_futuro = t_map->GetTileInfo(comodo_atual+2, t_pos.x, t_pos.y-1);
+                t_info_chao_futuro = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y-1);
+                if(t_info_chao_futuro != 0 && t_info_obj_futuro == 0){
+                    t_map->ChangeTile(comodo_atual, t_pos.x, t_pos.y-1, 19);
+                    t_map->ChangeTile(comodo_atual, t_pos.x, t_pos.y, 7);
+                    t_map->ChangeTile(comodo_atual+2, t_pos.x, t_pos.y-1, t_info_obj);
+                    t_map->ChangeTile(comodo_atual+2, t_pos.x, t_pos.y, 0);
+                }
+                else{
+                    box.x -= cos_angulo * vel;
+                    box.y += sen_angulo* vel;
+                }
+            }
+            if(mov == NO){
+                t_info_obj_futuro = t_map->GetTileInfo(comodo_atual+2, t_pos.x-1, t_pos.y);
+                t_info_chao_futuro = t_map->GetTileInfo(comodo_atual, t_pos.x-1, t_pos.y);
+                if(t_info_chao_futuro != 0 && t_info_obj_futuro == 0){
+                    t_map->ChangeTile(comodo_atual, t_pos.x-1, t_pos.y, 19);
+                    t_map->ChangeTile(comodo_atual, t_pos.x, t_pos.y, 7);
+                    t_map->ChangeTile(comodo_atual+2, t_pos.x-1, t_pos.y, t_info_obj); //ver se tem parede ou objeto
+                    t_map->ChangeTile(comodo_atual+2, t_pos.x, t_pos.y, 0);
+                }
+                else{
+                    box.x += cos_angulo * vel;
+                    box.y += sen_angulo* vel;
+                }
+            }
+            if(mov == SO){
+                t_info_obj_futuro = t_map->GetTileInfo(comodo_atual+2, t_pos.x, t_pos.y+1);
+                t_info_chao_futuro = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y+1);
+                if(t_info_chao_futuro != 0 && t_info_obj_futuro == 0){
+                    t_map->ChangeTile(comodo_atual, t_pos.x, t_pos.y+1, 19);
+                    t_map->ChangeTile(comodo_atual, t_pos.x, t_pos.y, 7);
+                    t_map->ChangeTile(comodo_atual+2, t_pos.x, t_pos.y+1, t_info_obj);
+                    t_map->ChangeTile(comodo_atual+2, t_pos.x, t_pos.y, 0);
+                }
+                else{
+                    box.x += cos_angulo * vel;
+                    box.y -= sen_angulo* vel;
+                }
+            }
+        }
+
+    }
 }
 //
 //void Gaia::Transparente(){
@@ -894,22 +928,7 @@ void Gaia::Parar(){
         }
     }
     else if(sprite_atual == CARRO){
-        if(mov == SE){
-            sp_carro.SetFrame(m_sudeste+1);
-            sp_carro.PauseAnimation();
-        }
-        else if(mov == NE){
-            sp_carro.SetFrame(m_nordeste+1);
-            sp_carro.PauseAnimation();
-        }
-        else if(mov == NO){
-            sp_carro.SetFrame(m_noroeste+1);
-            sp_carro.PauseAnimation();
-        }
-        else if(mov == SO){
-            sp_carro.SetFrame(m_sudoeste+1);
-            sp_carro.PauseAnimation();
-        }
+        
     }
 }
 

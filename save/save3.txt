@@ -1,17 +1,17 @@
 s1_num_historia 1
-gaia_t_pos 7 15
-gaia_t_pos_antiga 7 15
-gaia_t_pos_inicio_comodo 4 14
+gaia_t_pos 26 22
+gaia_t_pos_antiga 26 22
+gaia_t_pos_inicio_comodo 26 22
 state_atual 3
-gaia_comodo 4
+gaia_comodo 8
 gaia_hp 10
-p_deposito 0
+p_deposito 1
 p_corredor2 0
 esteira 0
-pegou_chave_rato 0
-ja_ficou_encurralada 0
-ja_pressionou_f 0
+pegou_chave_rato 1
+ja_ficou_encurralada 1
+ja_pressionou_f 1
 ja_mostrou_corre 1
 pegou_chicote 0
-fala_velho 0
+fala_velho 1
 tam_inventario 0

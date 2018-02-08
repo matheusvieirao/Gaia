@@ -30,10 +30,6 @@ TileMap* State::GetTileMap(){
     return (nullptr);
 }
 
-void State::PushInventario(StateData::Item item) {
-    data.inventario.push_back(item);
-}
-
 void State::SetData(std::string var, int value) {
     printf("entrou\n");
         if(var == "gaia_hp"){

@@ -21,7 +21,6 @@ class State{
         //virtual void State_00_Title(StateData::Item item);
         virtual void AddObject(GameObject* ptr);
         virtual TileMap* GetTileMap();
-        void PushInventario(StateData::Item item);
         void SetData(std::string var, int value);
         bool PopRequested();
         void PopRequest();

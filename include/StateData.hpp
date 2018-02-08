@@ -21,6 +21,7 @@ class StateData{
         Vec2 gaia_t_pos_antiga;
         Vec2 gaia_t_pos_inicio_comodo; // é utilizado para voltar a esse ponto quando morrer.
         int gaia_hp;
+        int gaia_poderes;
         
         bool p_deposito; //false trancada, true aberta (puzzle de empurrar as caixas com o carro)
         bool p_corredor2; //false trancada, true aberta
@@ -31,13 +32,13 @@ class StateData{
         bool ja_mostrou_f_esteira;
         bool ja_mostrou_f_chicote;
         
-        int ja_ficou_encurralada; //no terreo logo antes de descer pelo duto
+        int  ja_ficou_encurralada; //no terreo logo antes de descer pelo duto
         bool ja_falou_velho; //false nao falou, true ja falou
         bool ja_pegou_chave_rato; //para renderizar rato com a chave ou nao
         bool ja_pegou_chicote;
 
-        enum Item{CARTAO_ACESSO, CHAVE_ENERGIA};
-        std::vector<Item> inventario;
+        //enum Item{a,b,c};
+        //std::vector<Item> inventario;
 };
 
 #endif // STATEDATA_H

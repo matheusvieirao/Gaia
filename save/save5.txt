@@ -15,4 +15,3 @@ ja_ficou_encurralada 0
 ja_falou_velho 0
 ja_pegou_chave_rato 0
 ja_pegou_chicote 0
-tam_inventario 0

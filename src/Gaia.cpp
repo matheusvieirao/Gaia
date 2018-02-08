@@ -2,10 +2,12 @@
 
 Gaia* Gaia::player;
 
-Gaia::Gaia(float x, float y, int hp, int comodo){
-    //vel = 1;
-
+Gaia::Gaia(float x, float y, int hp, int poderes, int comodo){
     player = this;
+
+    this->hp = hp;
+    this->poderes = poderes;
+
     pause = false;
 
     sp_andando.Open("img/personagens/gaia_andando.png");
@@ -72,7 +74,6 @@ Gaia::Gaia(float x, float y, int hp, int comodo){
     modo_manual = true;
     primeiro_mov_modo_manual = false;
     dur_movimento.Restart();
-    this->hp = hp;
 //    AcharComodo();
 //    printf("%d",GetComodoAtual());//nao funciona pq o ponteiro de tile map ainda nao ta pronto
     comodo_atual = comodo;
@@ -169,10 +170,10 @@ void Gaia::Update(float dt){
                 else{
                     sprite_atual = ANDANDO;
                 }
-                if(In.KeyPress(SDLK_d)){
+                if(poderes > 0 && In.KeyPress(SDLK_d)){
                     sprite_atual = TRANSPARENTE;
                 }
-                if(In.KeyPress(SDLK_f)){
+                if(poderes > 1 && In.KeyPress(SDLK_f)){
                     sprite_atual = CHICOTE;
                     ataque_chicote = 0;
                 }
@@ -941,6 +942,10 @@ void Gaia::SetSpriteAtual(SpritesGaia sprite){
 
 Vec2 Gaia::GetPos(){
     return(Vec2(box.GetCenter().x, box.y+box.h-altura_pe));
+}
+
+void Gaia::SetPoderes(int codigo){
+    poderes = codigo;
 }
 
 Vec2 Gaia::GetTPos(){

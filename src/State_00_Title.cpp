@@ -231,7 +231,6 @@ void State_00_Title::Update(float dt){
         if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
             std::ifstream file_save;
             std::string string_aux;
-            int tam_inventario;
             
             if(opcao2 == 1){
                 file_save.open("save/save1.txt");
@@ -270,10 +269,6 @@ void State_00_Title::Update(float dt){
             file_save >> string_aux >> data.ja_falou_velho;
             file_save >> string_aux >> data.ja_pegou_chave_rato;
             file_save >> string_aux >> data.ja_pegou_chicote;
-            file_save >> string_aux >> tam_inventario;
-            for (int i = 0; i < tam_inventario; i++){
-                //colocar a parte de adcionando os itens aqui
-            }
             file_save.close();
 
             if(data.state_atual == 1){

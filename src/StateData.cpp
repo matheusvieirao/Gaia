@@ -9,7 +9,6 @@ StateData::StateData(){
     state_atual = 2;
     gaia_comodo = 4;
     gaia_hp = 10;
-    gaia_poderes = 0;
     
     ja_mostrou_corre = false;
     ja_mostrou_f_esteira = false;
@@ -29,47 +28,35 @@ StateData::StateData(std::string nome){
 }
 
 void StateData::Atribuir(StateData data){
-    s1_num_historia = data.s1_num_historia;
-    state_atual = data.state_atual;
-
-    gaia_comodo = data.gaia_comodo;
     gaia_t_pos.x = data.gaia_t_pos.x;
     gaia_t_pos.y = data.gaia_t_pos.y;
     gaia_t_pos_antiga.x = data.gaia_t_pos_antiga.x;
     gaia_t_pos_antiga.y = data.gaia_t_pos_antiga.y;
     gaia_t_pos_inicio_comodo.x = data.gaia_t_pos_inicio_comodo.x;
     gaia_t_pos_inicio_comodo.y = data.gaia_t_pos_inicio_comodo.y;
-
+    state_atual = data.state_atual;
+    gaia_comodo = data.gaia_comodo;
     gaia_hp = data.gaia_hp;
-    gaia_poderes = data.gaia_poderes;
-
     p_deposito = data.p_deposito;
     p_corredor2 = data.p_corredor2;
-
     esteira_ligada = data.esteira_ligada;
-
-    ja_mostrou_corre = data.ja_mostrou_corre;
-    ja_mostrou_f_esteira = data.ja_mostrou_f_esteira;
-    ja_mostrou_f_chicote = data.ja_mostrou_f_chicote;
-
-    ja_ficou_encurralada = data.ja_ficou_encurralada;
-    ja_falou_velho = data.ja_falou_velho;
     ja_pegou_chave_rato = data.ja_pegou_chave_rato;
-    ja_pegou_chicote = data.ja_pegou_chicote;
+    ja_ficou_encurralada = data.ja_ficou_encurralada;
+    ja_mostrou_f_esteira = data.ja_mostrou_f_esteira;
+    ja_mostrou_corre = data.ja_mostrou_corre;
+    ja_falou_velho = data.ja_falou_velho;
+    inventario = data.inventario;
 }
 
 void StateData::Carregar(std::string nome){
     if(nome == "inicio jogo"){    
         s1_num_historia = 2;
         state_atual = 2;
-
         gaia_comodo = 4;
         gaia_t_pos = Vec2(46, 16);
         gaia_t_pos_antiga = Vec2(46, 16);
         gaia_t_pos_inicio_comodo = Vec2(46, 16);
-
         gaia_hp = 10;
-        gaia_poderes = 0;
 
         p_deposito = false;
         p_corredor2 = false;
@@ -85,6 +72,115 @@ void StateData::Carregar(std::string nome){
         ja_pegou_chave_rato = false;
         ja_pegou_chicote = false;
     }
+    /*else if(nome == "inicio animacao"){
+        s1_num_historia = 1;
+        //gaia_t_pos_inicio_comodo = Vec2(41, 17);
+        gaia_t_pos = Vec2(46, 16);
+        gaia_t_pos_antiga = Vec2(46, 16);
+        gaia_t_pos_inicio_comodo = Vec2(46, 16);
+        state_atual = 2;
+        gaia_comodo = 4;
+        gaia_hp = 10;
+        ja_mostrou_corre = false;
+        ja_ficou_encurralada = 0;
+        ja_falou_velho = false;
+        ja_pegou_chave_rato = false;
+        ja_mostrou_f_esteira = 0;
+        esteira_ligada = false;
+        p_corredor2 = false;
+        p_deposito = false;
+        ja_pegou_chicote = false;
+    }
+    else if(nome == "quase transparente"){    
+        s1_num_historia = 2;
+        //gaia_t_pos_inicio_comodo = Vec2(41, 17);
+        gaia_t_pos = Vec2(12, 16);
+        gaia_t_pos_antiga = Vec2(12, 16);
+        gaia_t_pos_inicio_comodo = Vec2(12, 16);
+        state_atual = 2;
+        gaia_comodo = 4;
+        gaia_hp = 10;
+        ja_mostrou_corre = true;
+        ja_ficou_encurralada = 0;
+        ja_falou_velho = false;
+        ja_pegou_chave_rato = false;
+        ja_mostrou_f_esteira = 0;
+        esteira_ligada = false;
+        p_corredor2 = false;
+        p_deposito = false;
+        ja_pegou_chicote = false;
+    }
+    else if(nome == "depois da fala SS"){    
+        s1_num_historia = 1;
+        gaia_t_pos = Vec2(25, 16);
+        gaia_t_pos_antiga = Vec2(25,16);
+        gaia_t_pos_inicio_comodo = Vec2(26,16);
+        state_atual = 3;
+        gaia_comodo = 4; //corredor, nesse caso do SS
+        gaia_hp = 10;
+        p_deposito = false; //trancada
+        p_corredor2 = false; //trancada
+        esteira_ligada = false; //desligada
+        ja_pegou_chave_rato = false;
+        ja_ficou_encurralada = 3;
+        ja_mostrou_f_esteira = false;
+        esteira_ligada = false;
+        p_corredor2 = false;
+        p_deposito = false;
+        ja_pegou_chicote = false;
+        ja_mostrou_corre = true;
+        ja_pegou_chicote = false;
+        ja_falou_velho = true; //ja falou
+        //inventario.push_back(CHAVE_ENERGIA);
+    }
+    else if(nome == "galpao com chave e cartao"){    
+        s1_num_historia = 1;
+        gaia_t_pos = Vec2(28, 19);
+        gaia_t_pos_antiga = Vec2(28,19);
+        gaia_t_pos_inicio_comodo = Vec2(27,16);
+        state_atual = 3;
+        gaia_comodo = 12; //(se T Corredor2 se SS Descarga, no caso Descarga)
+        gaia_hp = 10;
+        p_deposito = false; //trancada
+        p_corredor2 = false; //trancada
+        esteira_ligada = false; //desligada
+        ja_pegou_chave_rato = false;
+        ja_ficou_encurralada = 3;
+        ja_mostrou_f_esteira = false;
+        esteira_ligada = false;
+        p_corredor2 = false;
+        p_deposito = false;
+        ja_pegou_chicote = false;
+        ja_mostrou_corre = true;
+        ja_pegou_chicote = false;
+        ja_falou_velho = true; //ja falou
+        inventario.push_back(CHAVE_ENERGIA);
+        inventario.push_back(CARTAO_ACESSO);
+    }
+    else if(nome == "cutscene 2"){    
+        s1_num_historia = 2;
+        gaia_t_pos = Vec2(28, 19);
+        gaia_t_pos_antiga = Vec2(28,19);
+        gaia_t_pos_inicio_comodo = Vec2(27,16);
+        state_atual = 1;
+        gaia_comodo = 12; //(se T Corredor2 se SS Descarga, no caso Descarga)
+        gaia_hp = 10;
+        p_deposito = false; //trancada
+        p_corredor2 = false; //trancada
+        esteira_ligada = false; //desligada
+        ja_pegou_chave_rato = false;
+        ja_ficou_encurralada = 3;
+        ja_mostrou_f_esteira = false;
+        esteira_ligada = false;
+        p_corredor2 = false;
+        p_deposito = false;
+        ja_pegou_chicote = false;
+        ja_mostrou_corre = true;
+        ja_pegou_chicote = false;
+        ja_falou_velho = true; //ja falou
+        inventario.push_back(CHAVE_ENERGIA);
+        inventario.push_back(CARTAO_ACESSO);
+    }*/
 }
 
 void StateData::PrintData(){
@@ -143,4 +239,15 @@ void StateData::PrintData(){
     else{
         std::cout << "ja_falou_velho: false (nao falou)" << std::endl;
     }
+
+    printf("Inventario: ");
+    for(unsigned i = 0; i < inventario.size(); i++){
+        if(inventario[i] == CARTAO_ACESSO){
+            printf("CARTAO_ACESSO, ");
+        }
+        else if(inventario[i] == CHAVE_ENERGIA){
+            printf("CHAVE_ENERGIA, ");
+        }
+    }
+    printf("\n");
 }

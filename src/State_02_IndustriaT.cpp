@@ -30,7 +30,7 @@ State_02_IndustriaT::State_02_IndustriaT(StateData data):bg("img/telas/backgroun
     this->data.state_atual = 2;
 
     Vec2 gaia_pe_pos = data.gaia_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-    AddObject(new Gaia(gaia_pe_pos.x, gaia_pe_pos.y, data.gaia_hp, data.gaia_poderes, data.gaia_comodo));
+    AddObject(new Gaia(gaia_pe_pos.x, gaia_pe_pos.y, data.gaia_hp, data.gaia_comodo));
 
     Camera::Follow(Gaia::player);
     quitRequested = false;
@@ -402,20 +402,15 @@ void State_02_IndustriaT::TratarEncurralamento(){
         }
     }
     if(ficou_encurralada == 1){
-
         ficou_encurralada = 2;
         tempo_encurralada.Restart();
     }
-    if(ficou_encurralada == 2){
-        Gaia::player->SetPoderes(1); //atribui o poder de ficar transparente para gaia
-        data.gaia_poderes = 1;
-        if (Gaia::player->EstaTransparente() && tempo_encurralada.Get() > 1){
-            tempo_encurralada.Restart();
-            ficou_encurralada = 3;
-            estado = FALA;
-            num_fala = 1;
-            tempo_falas.Restart();
-        }
+    if(ficou_encurralada == 2 && Gaia::player->EstaTransparente() && tempo_encurralada.Get() > 1){
+        tempo_encurralada.Restart();
+        ficou_encurralada = 3;
+        estado = FALA;
+        num_fala = 1;
+        tempo_falas.Restart();
     }
 }
 

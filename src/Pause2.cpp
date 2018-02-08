@@ -240,6 +240,15 @@ void Pause2::Update(StateData data) {
                 file_save << "ja_pegou_chave_rato " << data.ja_pegou_chave_rato << std::endl;
                 file_save << "ja_pegou_chicote " << data.ja_pegou_chicote << std::endl;
 
+                int tam_inventario = data.inventario.size();
+                file_save << "tam_inventario " << tam_inventario << std::endl;
+                for(int i = 0; i < tam_inventario; i++) {
+                    file_save << data.inventario[i];
+                    if(i != tam_inventario-1){
+                        file_save << " ";
+                    }
+                }
+
                 std::cout << "Salvo com sucesso!" << std::endl;
                 file_save.close();
                 menu_continua = false;

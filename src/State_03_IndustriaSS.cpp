@@ -32,7 +32,7 @@ State_03_IndustriaSS::State_03_IndustriaSS(StateData data):bg("img/telas/backgro
     Vec2 gaia_pe_pos = this->data.gaia_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
     gaia_pe_pos.x = gaia_pe_pos.x + tile_set->GetTileWidth()/2;
     gaia_pe_pos.y = gaia_pe_pos.y + tile_set->GetTileHeight()/2;
-    AddObject(new Gaia(gaia_pe_pos.x, gaia_pe_pos.y, data.gaia_hp, data.gaia_poderes, data.gaia_comodo));
+    AddObject(new Gaia(gaia_pe_pos.x, gaia_pe_pos.y, data.gaia_hp, data.gaia_comodo));
 
     Camera::Follow(Gaia::player);
     quitRequested = false;
@@ -176,6 +176,16 @@ void State_03_IndustriaSS::Update(float dt){
         else{
             if(som_esteira.IsOpen())
                 som_esteira.Stop();
+        }
+
+        //verifica inventario
+        for(unsigned i = 0; i< data.inventario.size(); i++){
+            if(data.inventario[i] == StateData::CARTAO_ACESSO){
+                data.p_deposito = true;
+            }
+            if(data.inventario[i] == StateData::CHAVE_ENERGIA){
+                data.ja_pegou_chave_rato = true;
+            }
         }
 
         //esta atras do controle da esteira
@@ -491,12 +501,7 @@ void State_03_IndustriaSS::TrocarDeComodo(){
                     if(tile_map->GetTileInfo(i, data.gaia_t_pos.x, data.gaia_t_pos.y) != 0){
                         //se saiu do deposito pra descarga
                         if(data.gaia_comodo == 8 && i == 12){
-                            tile_map->Load("map/02_industria/State_03_IndustriaSS.txt"); //recarrega o mapa pro carro e as caixas voltarem pro lugar
-                            //avisa gaia que ela pode usar o chicote agora
-                            if(data.ja_pegou_chicote){
-                                data.gaia_poderes = 2;
-                                Gaia::player->SetPoderes(2);
-                            }
+                            tile_map->Load("map/02_industria/State_03_IndustriaSS.txt");
                         }
                         data.gaia_comodo = i;
                         data.gaia_t_pos_inicio_comodo.x = data.gaia_t_pos.x;

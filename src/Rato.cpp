@@ -626,7 +626,7 @@ void Rato::NotifyCollision(GameObject& other){
     if(other.Is("Gaia")){
         if(chave==true){
             chave = false;
-            Game::GetInstance().GetCurrentState().PushInventario(StateData::CHAVE_ENERGIA);
+            Game::GetInstance().GetCurrentState().SetData("ja_pegou_chave_rato", true);
             if(!som_item.IsOpen())
                 som_item.Open("audio/sons/got item.ogg");
             som_item.Play(0);

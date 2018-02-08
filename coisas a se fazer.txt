@@ -21,6 +21,3 @@ bugs:
 desejos futuros:
 - fullscreen
 
-
-conferir:
-- State::PushInventario. ver se funciona direto em State (sem precisar de ser implementado no estado que herda de State)

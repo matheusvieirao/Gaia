@@ -34,32 +34,33 @@ class State_03_IndustriaSS : public State{
         //static State_03_IndustriaSS& GetInstance();
         TileMap* GetTileMap();
         void TrocarDeComodo();
-        void PushInventario(StateData::Item item);
 
         TileMap* tile_map;
     private:
         enum StateState{JOGO, FALA};
         StateState estado;
-        //static State_03_IndustriaSS* instance;
-        Sprite bg;
-        Sprite press_f;
-        Sprite pause1;
         TileSet* tile_set;
+        Sprite bg;
+
+        Pause2 pause;
+        bool esta_pausado;
+
+        bool printa_f;
+        Sprite press_f;
+
         //int comodo_jogador; //0- Quarto Velho | 4- Corredor | 8- Deposito | 12- Descarga
         int comodo_jogador_antigo;
-        StateData data;
         bool entrou_no_comodo;
-        bool printa_f;
         int num_fala;
         int track;
+        
         Timer tempo_falas;
         Timer tempo_esteira;
+
         Sound fala;
         Sound efeito;
         Sound som_esteira;
         Sound musica1;
-        Pause2 pause;
-        bool esta_pausado;
 };
 
 #endif // State_03_IndustriaSS_HPP

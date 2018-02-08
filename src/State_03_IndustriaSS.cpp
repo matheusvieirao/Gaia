@@ -8,16 +8,13 @@ State_03_IndustriaSS::State_03_IndustriaSS(StateData data):bg("img/telas/backgro
         musica1.Play(-1);
     }
 
-    pause1.Open("img/telas/pause1.png");
-    pause1.SetScaleX((float)Game::GetInstance().GetWindowWidth()/pause1.GetWidth());
-    pause1.SetScaleY((float)Game::GetInstance().GetWindowHeight()/pause1.GetHeight());
-
     //if(instance == nullptr) //da erro se fizer isso ----------
     //instance = this;
     num_fala = 0;
     track = 0;
     estado = JOGO;
     esta_pausado = false;
+    printa_f = false;
 
     bg.SetScaleX((float)Game::GetInstance().GetWindowWidth()/bg.GetWidth());
     bg.SetScaleY((float)Game::GetInstance().GetWindowHeight()/bg.GetHeight());
@@ -53,8 +50,6 @@ void State_03_IndustriaSS::Update(float dt){
     if(Gaia::player != nullptr){
         gaia_pos = Gaia::player->GetPos();
     }
-
-    //data.PrintData();
 
     data.gaia_t_pos_antiga.x = data.gaia_t_pos.x;
     data.gaia_t_pos_antiga.y = data.gaia_t_pos.y;
@@ -122,13 +117,14 @@ void State_03_IndustriaSS::Update(float dt){
                 data.gaia_hp = Gaia::player->GetHP();
                 data.gaia_t_pos_inicio_comodo.x = data.gaia_t_pos.x;
                 data.gaia_t_pos_inicio_comodo.y = data.gaia_t_pos.y-2;
+                data.gaia_t_pos.y = data.gaia_t_pos.y-2; // #verdps ver se programa nao crasha com essa linha
                 data.gaia_comodo = 0;
                 Game::GetInstance().Push(new State_02_IndustriaT(data));
                 PopRequest();
             }
 
             //fala com velhinho
-            if(!data.fala_velho && data.gaia_t_pos.x == 16){
+            if(!data.ja_falou_velho && data.gaia_t_pos.x == 16){
                 Vec2 velho_t_pos(17,15);
                 Vec2 velho_pe_pos = velho_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
                 velho_pe_pos.x = velho_pe_pos.x + tile_set->GetTileWidth()/2;
@@ -138,26 +134,26 @@ void State_03_IndustriaSS::Update(float dt){
                 tempo_falas.Restart();
             }
 
-            //bebidinha
+            //tile da poçao do chicote
             if(tile_map->GetTileInfo(data.gaia_comodo+2, data.gaia_t_pos.x, data.gaia_t_pos.y) == 89){
                 tile_map->ChangeTile(data.gaia_comodo+2, data.gaia_t_pos.x, data.gaia_t_pos.y, 0);
                 efeito.Open("audio/sons/got item.ogg");
                 efeito.Play(0);
-                data.inventario.push_back(StateData::BEBIDINHA);
-
+                data.ja_pegou_chicote = true;
             }
 
-            //carrinho
+            //entrar no carrinho
             if(tile_map->GetTileInfo(data.gaia_comodo+2, data.gaia_t_pos.x, data.gaia_t_pos.y) == 90){
                 tile_map->ChangeTile(data.gaia_comodo+2, data.gaia_t_pos.x, data.gaia_t_pos.y, 0);
                 Gaia::player->SetSpriteAtual(Gaia::CARRO);
             }
         }
 
-        if(data.esteira && data.gaia_comodo == 12){
-            som_esteira.Open("audio/sons/esteira loop.ogg");
-            som_esteira.Play(-1);
-            int tile_info;
+        if(data.esteira_ligada && data.gaia_comodo == 12){
+            if(!som_esteira.IsOpen()){
+                som_esteira.Open("audio/sons/esteira loop.ogg");
+                som_esteira.Play(-1);
+            }
             tempo_esteira.Update(dt);
             if(tempo_esteira.Get() > 0.1){
                 tempo_esteira.Restart();
@@ -188,36 +184,36 @@ void State_03_IndustriaSS::Update(float dt){
                 data.p_deposito = true;
             }
             if(data.inventario[i] == StateData::CHAVE_ENERGIA){
-                data.pegou_chave_rato = true;
+                data.ja_pegou_chave_rato = true;
             }
         }
 
-        if(gaia_direcao == NE){ ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        }
         //esta atras do controle da esteira
         if(gaia_direcao == NE && tile_map->GetTileInfo(data.gaia_comodo+2, data.gaia_t_pos.x, data.gaia_t_pos.y-1) == 88){
-            printa_f = true;
-            if(In.KeyPress(SDLK_f)){
-                if(data.pegou_chave_rato == true){
-                    if(data.esteira == true){
-                        efeito.Open("audio/sons/desliga esteira.ogg");
-                        data.esteira = false;
+            if(data.ja_pegou_chave_rato == true) {
+                if(!data.ja_mostrou_f_esteira){
+                        printa_f = true;
+                }
+                if(In.KeyPress(SDLK_f)){
+                    if(!data.esteira_ligada){
+                        efeito.Open("audio/sons/liga esteira.ogg");
+                        data.esteira_ligada = true;
+                        data.ja_mostrou_f_esteira = true;
+                        printa_f = false;
                     }
                     else{
-                        efeito.Open("audio/sons/liga esteira.ogg");
-                        data.esteira = true;
+                        efeito.Open("audio/sons/desliga esteira.ogg");
+                        data.esteira_ligada = false;
                     }
                     efeito.Play(0);
                 }
-                data.ja_pressionou_f = true;
-                printa_f = false;
             }
         }
         else{
             printa_f = false;
         }
 
-        if(!data.esteira){
+        if(!data.esteira_ligada){
             tile_map->ChangeTile(12, 33, 15, 0);
         }
         else{
@@ -239,7 +235,7 @@ void State_03_IndustriaSS::Update(float dt){
             track++;
         }
 
-        if(!data.fala_velho){
+        if(!data.ja_falou_velho){
             switch(track){
                 case 0:
                     if(Falar(0.1, "audio/02_industria/003.wav")){
@@ -316,7 +312,7 @@ void State_03_IndustriaSS::Update(float dt){
                 case 12:
                     estado = JOGO;
                     track = 0;
-                    data.fala_velho = true;
+                    data.ja_falou_velho = true;
                     break;
             }
         }
@@ -390,7 +386,7 @@ void State_03_IndustriaSS::Render(){
         Collision::DrawHitbox(box2);
     }
 
-    if(printa_f && data.ja_pressionou_f == false){
+    if(printa_f){
         press_f.Render(game_w/2-press_f.GetWidth()/2, game_h/4, 0);
     }
 
@@ -404,7 +400,7 @@ void State_03_IndustriaSS::InicializarComodo(int comodo){
     if(comodo == 12){
         int num = rand() % 4;
         //29,17  43,28
-        if(data.pegou_chave_rato==false){
+        if(data.ja_pegou_chave_rato==false){
             Vec2 rato_pe_pos = Vec2(28, 17).CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
             rato_pe_pos.x = rato_pe_pos.x + tile_set->GetTileWidth()/2;
             rato_pe_pos.y = rato_pe_pos.y + tile_set->GetTileHeight()/2;
@@ -517,8 +513,4 @@ void State_03_IndustriaSS::TrocarDeComodo(){
             }
         }
     }
-}
-
-void State_03_IndustriaSS::PushInventario(StateData::Item item){
-    data.inventario.push_back(item);
 }

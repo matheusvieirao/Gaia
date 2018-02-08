@@ -20,8 +20,9 @@ class State{
         virtual bool Is(std::string type) = 0;
         //virtual void State_00_Title(StateData::Item item);
         virtual void AddObject(GameObject* ptr);
-        virtual void PushInventario(StateData::Item item);
         virtual TileMap* GetTileMap();
+        void PushInventario(StateData::Item item);
+        void SetData(std::string var, int value);
         bool PopRequested();
         void PopRequest();
         bool QuitRequested();

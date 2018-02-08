@@ -22,16 +22,54 @@ void State::AddObject(GameObject* ptr) {
     objectArray.emplace_back(ptr);
 }
 
-void State::PushInventario(StateData::Item item) {
-    data.inventario.push_back(item);
-}
-
 bool State::Is(std::string type){
     return(type == "State");
 }
 
 TileMap* State::GetTileMap(){
     return (nullptr);
+}
+
+void State::PushInventario(StateData::Item item) {
+    data.inventario.push_back(item);
+}
+
+void State::SetData(std::string var, int value) {
+    printf("entrou\n");
+        if(var == "gaia_hp"){
+            data.gaia_hp = value;
+        }
+        else if(var == "p_deposito"){
+            data.p_deposito = value;
+        }
+        else if(var == "p_corredor2"){
+            data.p_corredor2 = value;
+        }
+        else if(var == "esteira_ligada"){
+            data.esteira_ligada = value;
+        }
+        else if(var == "ja_mostrou_corre"){
+            data.ja_mostrou_corre = value;
+        }
+        else if(var == "ja_mostrou_f_esteira"){
+            data.ja_mostrou_f_esteira = value;
+        }
+        else if(var == "ja_mostrou_f_chicote"){
+            data.ja_mostrou_f_chicote = value;
+        }
+        else if(var == "ja_ficou_encurralada"){
+            data.ja_ficou_encurralada = value;
+        }
+        else if(var == "ja_falou_velho"){
+            data.ja_falou_velho = value;
+        }
+        else if(var == "ja_pegou_chave_rato"){
+            printf("ja_pegou_chave_rato\n");
+            data.ja_pegou_chave_rato = value;
+        }
+        else if(var == "ja_pegou_chicote"){
+            data.ja_pegou_chicote = value;
+        }
 }
 
 bool State::PopRequested(){

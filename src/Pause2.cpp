@@ -219,21 +219,26 @@ void Pause2::Update(StateData data) {
                 }
 
                 file_save << "s1_num_historia " << data.s1_num_historia << std::endl;
+                file_save << "state_atual " << data.state_atual << std::endl;
+                file_save << "gaia_comodo " << data.gaia_comodo << std::endl;
                 file_save << "gaia_t_pos " << data.gaia_t_pos.x << " " << data.gaia_t_pos.y << std::endl;
                 file_save << "gaia_t_pos_antiga " << data.gaia_t_pos_antiga.x << " "  << data.gaia_t_pos_antiga.y << std::endl;
                 file_save << "gaia_t_pos_inicio_comodo " << data.gaia_t_pos_inicio_comodo.x << " "  << data.gaia_t_pos_inicio_comodo.y << std::endl;
-                file_save << "state_atual " << data.state_atual << std::endl;
-                file_save << "gaia_comodo " << data.gaia_comodo << std::endl;
                 file_save << "gaia_hp " << data.gaia_hp << std::endl;
+
                 file_save << "p_deposito " << data.p_deposito << std::endl;
                 file_save << "p_corredor2 " << data.p_corredor2 << std::endl;
-                file_save << "esteira " << data.esteira << std::endl;
-                file_save << "pegou_chave_rato " << data.pegou_chave_rato << std::endl;
-                file_save << "ja_ficou_encurralada " << data.ja_ficou_encurralada << std::endl;
-                file_save << "ja_pressionou_f " << data.ja_pressionou_f << std::endl;
+
+                file_save << "esteira_ligada " << data.esteira_ligada << std::endl;
+                
                 file_save << "ja_mostrou_corre " << data.ja_mostrou_corre << std::endl;
-                file_save << "pegou_chicote " << data.pegou_chicote << std::endl;
-                file_save << "fala_velho " << data.fala_velho << std::endl;
+                file_save << "ja_mostrou_f_esteira " << data.ja_mostrou_f_esteira << std::endl;
+                file_save << "ja_mostrou_f_chicote " << data.ja_mostrou_f_chicote << std::endl;
+
+                file_save << "ja_ficou_encurralada " << data.ja_ficou_encurralada << std::endl;
+                file_save << "ja_falou_velho " << data.ja_falou_velho << std::endl;
+                file_save << "ja_pegou_chave_rato " << data.ja_pegou_chave_rato << std::endl;
+                file_save << "ja_pegou_chicote " << data.ja_pegou_chicote << std::endl;
 
                 int tam_inventario = data.inventario.size();
                 file_save << "tam_inventario " << tam_inventario << std::endl;
@@ -244,7 +249,7 @@ void Pause2::Update(StateData data) {
                     }
                 }
 
-                printf("Salvo com sucesso!");
+                std::cout << "Salvo com sucesso!" << std::endl;
                 file_save.close();
                 menu_continua = false;
                 opcao1 = 1;

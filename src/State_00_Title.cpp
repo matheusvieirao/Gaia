@@ -250,21 +250,26 @@ void State_00_Title::Update(float dt){
             }
 
             file_save >> string_aux >> data.s1_num_historia;
+            file_save >> string_aux >> data.state_atual;
+            file_save >> string_aux >> data.gaia_comodo;
             file_save >> string_aux >> data.gaia_t_pos.x >> data.gaia_t_pos.y;
             file_save >> string_aux >> data.gaia_t_pos_antiga.x >> data.gaia_t_pos_antiga.y;
             file_save >> string_aux >> data.gaia_t_pos_inicio_comodo.x >> data.gaia_t_pos_inicio_comodo.y;
-            file_save >> string_aux >> data.state_atual;
-            file_save >> string_aux >> data.gaia_comodo;
             file_save >> string_aux >> data.gaia_hp;
+
             file_save >> string_aux >> data.p_deposito;
             file_save >> string_aux >> data.p_corredor2;
-            file_save >> string_aux >> data.esteira;
-            file_save >> string_aux >> data.pegou_chave_rato;
-            file_save >> string_aux >> data.ja_ficou_encurralada;
-            file_save >> string_aux >> data.ja_pressionou_f;
+
+            file_save >> string_aux >> data.esteira_ligada;
+            
             file_save >> string_aux >> data.ja_mostrou_corre;
-            file_save >> string_aux >> data.pegou_chicote;
-            file_save >> string_aux >> data.fala_velho;
+            file_save >> string_aux >> data.ja_mostrou_f_esteira;
+            file_save >> string_aux >> data.ja_mostrou_f_chicote;
+
+            file_save >> string_aux >> data.ja_ficou_encurralada;
+            file_save >> string_aux >> data.ja_falou_velho;
+            file_save >> string_aux >> data.ja_pegou_chave_rato;
+            file_save >> string_aux >> data.ja_pegou_chicote;
             file_save >> string_aux >> tam_inventario;
             for (int i = 0; i < tam_inventario; i++){
                 //colocar a parte de adcionando os itens aqui

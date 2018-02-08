@@ -9,15 +9,18 @@ StateData::StateData(){
     state_atual = 2;
     gaia_comodo = 4;
     gaia_hp = 10;
+    
     ja_mostrou_corre = false;
+    ja_mostrou_f_esteira = false;
+    ja_mostrou_f_chicote = false;
+
     ja_ficou_encurralada = 0; // 3 se ja passou fugiu do encurralamento
-    fala_velho = false;
-    pegou_chave_rato = false;
-    ja_pressionou_f = false;
-    esteira = false; // false - desligada
+    ja_falou_velho = false;
+    ja_pegou_chave_rato = false;
+    esteira_ligada = false; // false - desligada
     p_corredor2 = false; // false - trancada
     p_deposito = false; //false - trancada
-    pegou_chicote = false;
+    ja_pegou_chicote = false;
 }
 
 StateData::StateData(std::string nome){
@@ -36,17 +39,40 @@ void StateData::Atribuir(StateData data){
     gaia_hp = data.gaia_hp;
     p_deposito = data.p_deposito;
     p_corredor2 = data.p_corredor2;
-    esteira = data.esteira;
-    pegou_chave_rato = data.pegou_chave_rato;
+    esteira_ligada = data.esteira_ligada;
+    ja_pegou_chave_rato = data.ja_pegou_chave_rato;
     ja_ficou_encurralada = data.ja_ficou_encurralada;
-    ja_pressionou_f = data.ja_pressionou_f;
+    ja_mostrou_f_esteira = data.ja_mostrou_f_esteira;
     ja_mostrou_corre = data.ja_mostrou_corre;
-    fala_velho = data.fala_velho;
+    ja_falou_velho = data.ja_falou_velho;
     inventario = data.inventario;
 }
 
 void StateData::Carregar(std::string nome){
-    if(nome == "inicio animacao"){
+    if(nome == "inicio jogo"){    
+        s1_num_historia = 2;
+        state_atual = 2;
+        gaia_comodo = 4;
+        gaia_t_pos = Vec2(46, 16);
+        gaia_t_pos_antiga = Vec2(46, 16);
+        gaia_t_pos_inicio_comodo = Vec2(46, 16);
+        gaia_hp = 10;
+
+        p_deposito = false;
+        p_corredor2 = false;
+
+        esteira_ligada = false;
+
+        ja_mostrou_corre = false;
+        ja_mostrou_f_esteira = false;
+        ja_mostrou_f_chicote = false;
+
+        ja_ficou_encurralada = 0;
+        ja_falou_velho = false;
+        ja_pegou_chave_rato = false;
+        ja_pegou_chicote = false;
+    }
+    /*else if(nome == "inicio animacao"){
         s1_num_historia = 1;
         //gaia_t_pos_inicio_comodo = Vec2(41, 17);
         gaia_t_pos = Vec2(46, 16);
@@ -57,32 +83,13 @@ void StateData::Carregar(std::string nome){
         gaia_hp = 10;
         ja_mostrou_corre = false;
         ja_ficou_encurralada = 0;
-        fala_velho = false;
-        pegou_chave_rato = false;
-        ja_pressionou_f = 0;
-        esteira = false;
+        ja_falou_velho = false;
+        ja_pegou_chave_rato = false;
+        ja_mostrou_f_esteira = 0;
+        esteira_ligada = false;
         p_corredor2 = false;
         p_deposito = false;
-        pegou_chicote = false;
-    }
-    else if(nome == "inicio jogo"){    
-        s1_num_historia = 2;
-        //gaia_t_pos_inicio_comodo = Vec2(41, 17);
-        gaia_t_pos = Vec2(46, 16);
-        gaia_t_pos_antiga = Vec2(46, 16);
-        gaia_t_pos_inicio_comodo = Vec2(46, 16);
-        state_atual = 2;
-        gaia_comodo = 4;
-        gaia_hp = 10;
-        p_deposito = false;
-        p_corredor2 = false;
-        esteira = false;
-        pegou_chave_rato = false;
-        ja_ficou_encurralada = 0;
-        ja_pressionou_f = 0;
-        ja_mostrou_corre = false;
-        pegou_chicote = false;
-        fala_velho = false;
+        ja_pegou_chicote = false;
     }
     else if(nome == "quase transparente"){    
         s1_num_historia = 2;
@@ -95,13 +102,13 @@ void StateData::Carregar(std::string nome){
         gaia_hp = 10;
         ja_mostrou_corre = true;
         ja_ficou_encurralada = 0;
-        fala_velho = false;
-        pegou_chave_rato = false;
-        ja_pressionou_f = 0;
-        esteira = false;
+        ja_falou_velho = false;
+        ja_pegou_chave_rato = false;
+        ja_mostrou_f_esteira = 0;
+        esteira_ligada = false;
         p_corredor2 = false;
         p_deposito = false;
-        pegou_chicote = false;
+        ja_pegou_chicote = false;
     }
     else if(nome == "depois da fala SS"){    
         s1_num_historia = 1;
@@ -113,18 +120,17 @@ void StateData::Carregar(std::string nome){
         gaia_hp = 10;
         p_deposito = false; //trancada
         p_corredor2 = false; //trancada
-        esteira = false; //desligada
-        pegou_chave_rato = false;
+        esteira_ligada = false; //desligada
+        ja_pegou_chave_rato = false;
         ja_ficou_encurralada = 3;
-        ja_pressionou_f = false;
-        ja_pressionou_f = false;
-        esteira = false;
+        ja_mostrou_f_esteira = false;
+        esteira_ligada = false;
         p_corredor2 = false;
         p_deposito = false;
-        pegou_chicote = false;
+        ja_pegou_chicote = false;
         ja_mostrou_corre = true;
-        pegou_chicote = false;
-        fala_velho = true; //ja falou
+        ja_pegou_chicote = false;
+        ja_falou_velho = true; //ja falou
         //inventario.push_back(CHAVE_ENERGIA);
     }
     else if(nome == "galpao com chave e cartao"){    
@@ -137,18 +143,17 @@ void StateData::Carregar(std::string nome){
         gaia_hp = 10;
         p_deposito = false; //trancada
         p_corredor2 = false; //trancada
-        esteira = false; //desligada
-        pegou_chave_rato = false;
+        esteira_ligada = false; //desligada
+        ja_pegou_chave_rato = false;
         ja_ficou_encurralada = 3;
-        ja_pressionou_f = false;
-        ja_pressionou_f = false;
-        esteira = false;
+        ja_mostrou_f_esteira = false;
+        esteira_ligada = false;
         p_corredor2 = false;
         p_deposito = false;
-        pegou_chicote = false;
+        ja_pegou_chicote = false;
         ja_mostrou_corre = true;
-        pegou_chicote = false;
-        fala_velho = true; //ja falou
+        ja_pegou_chicote = false;
+        ja_falou_velho = true; //ja falou
         inventario.push_back(CHAVE_ENERGIA);
         inventario.push_back(CARTAO_ACESSO);
     }
@@ -162,22 +167,20 @@ void StateData::Carregar(std::string nome){
         gaia_hp = 10;
         p_deposito = false; //trancada
         p_corredor2 = false; //trancada
-        esteira = false; //desligada
-        pegou_chave_rato = false;
+        esteira_ligada = false; //desligada
+        ja_pegou_chave_rato = false;
         ja_ficou_encurralada = 3;
-        ja_pressionou_f = false;
-        ja_pressionou_f = false;
-        esteira = false;
+        ja_mostrou_f_esteira = false;
+        esteira_ligada = false;
         p_corredor2 = false;
         p_deposito = false;
-        pegou_chicote = false;
+        ja_pegou_chicote = false;
         ja_mostrou_corre = true;
-        pegou_chicote = false;
-        fala_velho = true; //ja falou
+        ja_pegou_chicote = false;
+        ja_falou_velho = true; //ja falou
         inventario.push_back(CHAVE_ENERGIA);
         inventario.push_back(CARTAO_ACESSO);
-        inventario.push_back(BEBIDINHA);
-    }
+    }*/
 }
 
 void StateData::PrintData(){
@@ -214,27 +217,27 @@ void StateData::PrintData(){
     else{
         std::cout << "p_corredor2: false (trancada)" << std::endl;
     }
-    if(esteira){
-        std::cout << "esteira: true (ligada)" << std::endl;
+    if(esteira_ligada){
+        std::cout << "esteira_ligada: true (ligada)" << std::endl;
     }
     else{
-        std::cout << "esteira: false (desligada)" << std::endl;
+        std::cout << "esteira_ligada: false (desligada)" << std::endl;
     }
-    if(pegou_chave_rato){
-        std::cout << "pegou_chave_rato: true (ja pegou a chave, nao renderizar a chave)" << std::endl;
+    if(ja_pegou_chave_rato){
+        std::cout << "ja_pegou_chave_rato: true (ja pegou a chave, nao renderizar a chave)" << std::endl;
     }
     else{
-        std::cout << "pegou_chave_rato: false (nao pegou a chave, renderizar a chave)" << std::endl;
+        std::cout << "ja_pegou_chave_rato: false (nao pegou a chave, renderizar a chave)" << std::endl;
     }
     std::cout << "ja_ficou_encurralada: " << ja_ficou_encurralada << std::endl;
-    std::cout << "ja_pressionou_f: " << ja_pressionou_f << std::endl;
+    std::cout << "ja_mostrou_f_esteira: " << ja_mostrou_f_esteira << std::endl;
     std::cout << "ja_mostrou_corre: " << ja_mostrou_corre << std::endl;
-    std::cout << "pegou_chicote: " << pegou_chicote << std::endl;
-    if(fala_velho){
-        std::cout << "fala_velho: true (ja falou)" << std::endl;
+    std::cout << "ja_pegou_chicote: " << ja_pegou_chicote << std::endl;
+    if(ja_falou_velho){
+        std::cout << "ja_falou_velho: true (ja falou)" << std::endl;
     }
     else{
-        std::cout << "fala_velho: false (nao falou)" << std::endl;
+        std::cout << "ja_falou_velho: false (nao falou)" << std::endl;
     }
 
     printf("Inventario: ");
@@ -244,10 +247,7 @@ void StateData::PrintData(){
         }
         else if(inventario[i] == CHAVE_ENERGIA){
             printf("CHAVE_ENERGIA, ");
-        } 
-        else if(inventario[i] == BEBIDINHA){
-            printf("BEBIDINHA, ");
-        } 
+        }
     }
     printf("\n");
 }

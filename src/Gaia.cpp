@@ -193,7 +193,7 @@ void Gaia::Update(float dt){
 
             if(sprite_atual == CHICOTE){
                 float temp = sp_chicote.GetFrameTime();
-                if(ataque_chicote==0){
+                if(ataque_chicote == 0){
                     som_chicote.Open("audio/sons/chicote doesnt hit.ogg");
                     som_chicote.Play(0);
                     ataque_chicote = 1;
@@ -205,7 +205,7 @@ void Gaia::Update(float dt){
                             ataque_chicote = 2;
                         }
                     }
-                    else {
+                    else { //passou o tempo
                         if(ataque_chicote == 2){
                             som_chicote.Open("audio/sons/chicote doesnt hit.ogg");
                             som_chicote.Play(0);

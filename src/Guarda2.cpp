@@ -11,15 +11,20 @@ Guarda2::Guarda2(float x, float y, GuardaEstado estado_inicial, int comodo, std:
     altura_pe = 19;
     largura_box_col = 78;
     altura_box_col = 40;
+
     box.x = x - sp.GetWidth()/2;
     box.y = y - sp.GetHeight() + altura_pe;
     box.w = sp.GetWidth();
     box.h = sp.GetHeight();
 
+    box_anterior.x = box.x;
+    box_anterior.y = box.y;
+    box_anterior.w = box.w;
+    box_anterior.h = box.h;
+
     comodo_atual = comodo;
     hp = 3;
     estado_atual = estado_inicial;
-
 
     movimento_anterior = PARADO;
     movimento_atual = PARADO;
@@ -246,6 +251,7 @@ void Guarda2::Update(float dt){
         }
     }
 
+    std::cout << "\nx: " << box.x << "\ny: " << box.y << std::endl;
 
     if(t_map == nullptr){
         std::cout << "t_map não pode ser nullptr. Guarda2::Update"  << std::endl;
@@ -286,6 +292,22 @@ void Guarda2::NotifyCollision(GameObject& other){
                 box.y = box_anterior.y;
             }
         }
+    }
+    else if(other.Is("Chicote")){
+        som_chicote_hit.Open("audio/sons/hit.ogg");
+        som_chicote_hit.Play(0);
+        hp--;
+
+        Vec2 direcao, direcao_anterior;
+        direcao.x = box.x;
+        direcao.y = box.y;
+        direcao_anterior.x = box_anterior.x;
+        direcao_anterior.y = box_anterior.y;
+
+        direcao = direcao.MoveTo(direcao_anterior, 10);
+
+        box.x = direcao.x;
+        box.y = direcao.y;
     }
 }
 
@@ -504,7 +526,8 @@ void Guarda2::Andar(float vel, TileMap* t_map){
 
     //se colidir em algo
     if(tile_info == 0 || tile_info == 13 || tile_info == 14 || tile_info == 18 || tile_info == 19){
-        box = box_anterior;
+        box.x = box_anterior.x;
+        box.y = box_anterior.y;
         box.SubtraiVet(direcao*1.8);
         movimento_atual = PARADO;
         sp.PauseAnimation();

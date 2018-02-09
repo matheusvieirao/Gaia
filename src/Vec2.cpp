@@ -64,6 +64,11 @@ Vec2 Vec2::Rotate(float teta) const{
     return(Vec2(x * cos(teta) - y * sin(teta),   y * cos(teta) + x * sin(teta)));
 }
 
+Vec2 Vec2::MoveTo(const Vec2& v, float mag){
+    Vec2 v_aux = v.Subtracao(*this);
+    return(Soma(v_aux.Multiplicacao(mag)));
+}
+
 //retorna o canto superior esquerdo do tile
 Vec2 Vec2::CardToIsometric(float tile_width, float tile_height) const{
     float x_novo = (x - y) * tile_width / 2;

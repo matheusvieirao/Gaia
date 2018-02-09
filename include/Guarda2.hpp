@@ -7,6 +7,7 @@
 #include "Vec2.hpp"
 #include "Celula.hpp"
 #include "State.hpp"
+#include "Sound.hpp"
 #include "Game.hpp"
 #include "Camera.hpp"
 #include "Gaia.hpp"
@@ -65,6 +66,7 @@ class Guarda2 : public GameObject{
         Timer pausa;
         GuardaEstado estado_atual;
         Rect box_anterior;
+        Sound som_chicote_hit;
 
         //////////////////////// int andar_n_tiles;
         // int contador_fuga;

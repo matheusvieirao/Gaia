@@ -225,6 +225,7 @@ void Pause2::Update(StateData data) {
                 file_save << "gaia_t_pos_antiga " << data.gaia_t_pos_antiga.x << " "  << data.gaia_t_pos_antiga.y << std::endl;
                 file_save << "gaia_t_pos_inicio_comodo " << data.gaia_t_pos_inicio_comodo.x << " "  << data.gaia_t_pos_inicio_comodo.y << std::endl;
                 file_save << "gaia_hp " << data.gaia_hp << std::endl;
+                file_save << "gaia_poderes " << data.gaia_poderes << std::endl;
 
                 file_save << "p_deposito " << data.p_deposito << std::endl;
                 file_save << "p_corredor2 " << data.p_corredor2 << std::endl;

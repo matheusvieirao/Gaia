@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "GameObject.hpp"
+#include "GaiaChicote.hpp"
 #include "Sprite.hpp"
 #include "Timer.hpp"
 #include "TileMap.hpp"
@@ -60,6 +61,7 @@ class Gaia : public GameObject{
         Sprite sp_andando;
         Sprite sp_correndo;
         Sprite sp_chicote;
+        GaiaChicote* ptr_chicote;
         Sprite sp_transparente;
         Sprite sp_carro;
         bool modo_manual;

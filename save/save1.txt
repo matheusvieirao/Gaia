@@ -5,6 +5,7 @@ gaia_t_pos 42 15
 gaia_t_pos_antiga 42 15
 gaia_t_pos_inicio_comodo 46 16
 gaia_hp 10
+gaia_poderes 0
 p_deposito 0
 p_corredor2 0
 esteira_ligada 0

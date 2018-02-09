@@ -8,6 +8,7 @@ Gaia::Gaia(float x, float y, int hp, int poderes, int comodo){
     this->hp = hp;
     this->poderes = poderes;
 
+    ptr_chicote = nullptr;
     pause = false;
 
     sp_andando.Open("img/personagens/gaia_andando.png");
@@ -178,6 +179,8 @@ void Gaia::Update(float dt){
                     ataque_chicote = 0;
                 }
             }
+
+
             if(sprite_atual == TRANSPARENTE){
                 if(In.IsKeyDown(SDLK_d)){
                     sprite_atual = TRANSPARENTE;
@@ -186,6 +189,8 @@ void Gaia::Update(float dt){
                     sprite_atual = ANDANDO;
                 }
             }
+
+
             if(sprite_atual == CHICOTE){
                 float temp = sp_chicote.GetFrameTime();
                 if(ataque_chicote==0){
@@ -213,6 +218,7 @@ void Gaia::Update(float dt){
                         }
                     }
                 }
+
                 if(ataque_chicote == 3 || ataque_chicote == 4) {
                     if(tempo_chicote.Get() < temp*2){
                         if(In.KeyPress(SDLK_f)){
@@ -232,6 +238,7 @@ void Gaia::Update(float dt){
                         }
                     }
                 }
+
                 if(ataque_chicote == 5 || ataque_chicote == 6){
                     if(tempo_chicote.Get() < temp*5){
                         if(In.KeyPress(SDLK_f)){
@@ -252,6 +259,8 @@ void Gaia::Update(float dt){
                     }
                 }
             }
+
+
             if(sprite_atual == CARRO){
                 if(comodo_atual != 8){
                     sprite_atual = ANDANDO;
@@ -293,8 +302,8 @@ void Gaia::Update(float dt){
                     m_sudoeste = 1+m_dur*3;
                 }
                 if(sprite_atual == CHICOTE){
-                    int centro_x = box.GetCenter().x;
-                    int centro_y = box.GetCenter().y;
+                    float centro_x = box.GetCenter().x;
+                    float centro_y = box.GetCenter().y;
                     box.w = sp_chicote.GetWidth();
                     box.h = sp_chicote.GetHeight();
                     box.x = centro_x-box.w/2;
@@ -311,18 +320,26 @@ void Gaia::Update(float dt){
                     if(direcao == SE){
                         sp_chicote.SetFrameStart(m_sudeste);
                         sp_chicote.SetFrame(m_sudeste);
+                        ptr_chicote = new GaiaChicote(centro_x+largura_box_col/2, centro_y+altura_box_col/2);
+                        Game::GetInstance().GetCurrentState().AddObject(ptr_chicote);
                     }
                     else if(direcao == NE){
                         sp_chicote.SetFrameStart(m_nordeste);
                         sp_chicote.SetFrame(m_nordeste);
+                        ptr_chicote = new GaiaChicote(centro_x+largura_box_col/2, centro_y-altura_box_col/2);
+                        Game::GetInstance().GetCurrentState().AddObject(ptr_chicote);
                     }
                     else if(direcao == NO){
                         sp_chicote.SetFrameStart(m_noroeste);
                         sp_chicote.SetFrame(m_noroeste);
+                        ptr_chicote = new GaiaChicote(centro_x-largura_box_col/2, centro_y-altura_box_col/2);
+                        Game::GetInstance().GetCurrentState().AddObject(ptr_chicote);
                     }
                     else if(direcao == SO){
                         sp_chicote.SetFrameStart(m_sudoeste);
                         sp_chicote.SetFrame(m_sudoeste);
+                        ptr_chicote = new GaiaChicote(centro_x-largura_box_col/2, centro_y+altura_box_col/2);
+                        Game::GetInstance().GetCurrentState().AddObject(ptr_chicote);
                     }
                     else {
                         printf("erro em escolher a direcao do chicote de Gaia\n");
@@ -466,6 +483,12 @@ void Gaia::Update(float dt){
                 }
             }
 
+            ////ATACAR
+            if(ptr_chicote != nullptr){
+                if(ataque_chicote == -1) {
+                    ptr_chicote->is_dead = true;
+                }
+            }
         }
     }
 

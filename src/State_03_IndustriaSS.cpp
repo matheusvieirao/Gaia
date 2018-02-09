@@ -140,6 +140,8 @@ void State_03_IndustriaSS::Update(float dt){
                 efeito.Open("audio/sons/got item.ogg");
                 efeito.Play(0);
                 data.ja_pegou_chicote = true;
+                data.gaia_poderes = 2;
+                Gaia::player->SetPoderes(2);
             }
 
             //entrar no carrinho
@@ -494,8 +496,6 @@ void State_03_IndustriaSS::TrocarDeComodo(){
                             tile_map->Load("map/02_industria/State_03_IndustriaSS.txt"); //recarrega o mapa pro carro e as caixas voltarem pro lugar
                             //avisa gaia que ela pode usar o chicote agora
                             if(data.ja_pegou_chicote){
-                                data.gaia_poderes = 2;
-                                Gaia::player->SetPoderes(2);
                             }
                         }
                         data.gaia_comodo = i;

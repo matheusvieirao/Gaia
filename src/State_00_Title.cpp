@@ -255,6 +255,7 @@ void State_00_Title::Update(float dt){
             file_save >> string_aux >> data.gaia_t_pos_antiga.x >> data.gaia_t_pos_antiga.y;
             file_save >> string_aux >> data.gaia_t_pos_inicio_comodo.x >> data.gaia_t_pos_inicio_comodo.y;
             file_save >> string_aux >> data.gaia_hp;
+            file_save >> string_aux >> data.gaia_poderes;
 
             file_save >> string_aux >> data.p_deposito;
             file_save >> string_aux >> data.p_corredor2;

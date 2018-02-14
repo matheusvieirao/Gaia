@@ -48,7 +48,6 @@ class State_02_IndustriaT : public State{
         //static State_02_IndustriaT* instance;
         Sprite bg;
         TileSet* tile_set;
-        bool entrou_no_comodo;
         //int comodo_jogador; //0- Producao | 4- Corredor | 8- Dormitorio | 12- Corredor2 | 16- Refeitorio
         int comodo_jogador_antigo;
         int num_fala;

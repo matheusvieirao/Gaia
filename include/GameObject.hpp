@@ -32,7 +32,6 @@ class GameObject {
         void AcharComodo();
         int GetAlturaPe();
         int GetComodoAtual();
-        void SetComodoAtual(int comodo);
         Rect box;
         int comodo_atual;
         float rotation;

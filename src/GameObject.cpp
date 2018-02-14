@@ -21,10 +21,6 @@ int GameObject::GetComodoAtual(){
     return(comodo_atual);
 }
 
-void GameObject::SetComodoAtual(int comodo){
-    comodo_atual = comodo;
-}
-
 Rect GameObject::GetBoxColisao(){
     Rect box_colisao;
 

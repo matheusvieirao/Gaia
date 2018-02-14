@@ -50,7 +50,6 @@ class State_03_IndustriaSS : public State{
 
         //int comodo_jogador; //0- Quarto Velho | 4- Corredor | 8- Deposito | 12- Descarga
         int comodo_jogador_antigo;
-        bool entrou_no_comodo;
         int num_fala;
         int track;
         

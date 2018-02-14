@@ -27,7 +27,7 @@
 
 class Gaia : public GameObject{
     public:
-        Gaia(float x, float y, int hp, int poderes, int comodo);
+        Gaia(float x, float y, StateData data);
         virtual ~Gaia();
         void Update(float dt);
         void Render();
@@ -39,9 +39,10 @@ class Gaia : public GameObject{
         int GetDirecao();
         int GetHP();
         void SetPause(bool pausar);
-        void SetPoderes(int codigo); // 0: sem poderes | 1: transparente | 2: chicote
         void PushMovimento(int mov);
         void Andar(int mov, float vel);
+        void DeslocamentoEsteira(float dt);
+        void AtualizarData(StateData data);
         //void Transparente();
         bool EstaTransparente();
         void Parar();
@@ -67,7 +68,6 @@ class Gaia : public GameObject{
         bool modo_manual;
         // GameObject::comodo_atual; // se T: 0- Producao | 4- Corredor | 8- Dormitorio | 12- Corredor2 | 16- Refeitorio
         int hp;
-        int poderes;
         Vec2 pos_antiga; // x: box.GetCenter().x | y: box.y+box.h-altura_pe);
         Vec2 pos_inicio_comodo;
         int m_dur;
@@ -76,12 +76,13 @@ class Gaia : public GameObject{
         int m_noroeste;
         int m_sudoeste;
         int direcao;
-        bool trocou_de_comodo;
+        //bool trocou_de_comodo;
         bool primeiro_mov_modo_manual;
         Rect box_anterior;
         Sound som_transparente;
         Sound som_chicote;
         float vel;// * velocidade em pixel por segundo
+        StateData data;
 };
 
 #endif // GAIA_HPP

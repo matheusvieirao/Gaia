@@ -2,11 +2,11 @@
 
 Gaia* Gaia::player;
 
-Gaia::Gaia(float x, float y, int hp, int poderes, int comodo){
+Gaia::Gaia(float x, float y, StateData data){
     player = this;
 
-    this->hp = hp;
-    this->poderes = poderes;
+    this->hp = data.gaia_hp;
+    this->data.Atribuir(data);
 
     ptr_chicote = nullptr;
     pause = false;
@@ -77,7 +77,6 @@ Gaia::Gaia(float x, float y, int hp, int poderes, int comodo){
     dur_movimento.Restart();
 //    AcharComodo();
 //    printf("%d",GetComodoAtual());//nao funciona pq o ponteiro de tile map ainda nao ta pronto
-    comodo_atual = comodo;
     pos_antiga = Vec2(x, y);
     pos_inicio_comodo = Vec2(x, y);
     //TrocarDeComodo(); //nao funciona pq o ponteiro de tile map ainda nao ta pronto
@@ -91,11 +90,11 @@ Gaia::~Gaia(){
 }
 
 void Gaia::Update(float dt){
-
     InputManager& In = InputManager::GetInstance();
     dur_movimento.Update(dt);
     tempo_chicote.Update(dt);
     pos_antiga = Vec2(box.GetCenter().x, box.y+box.h-altura_pe);
+    comodo_atual = data.gaia_comodo;
 
     vel = 300 * dt; //default
 
@@ -160,110 +159,111 @@ void Gaia::Update(float dt){
 
             }
         }
-        
+    
         else if (modo_manual) {
-
             ////ALTERNAR SPRITES 
-            if(sprite_atual == ANDANDO || sprite_atual == CORRENDO){
-                if(In.IsKeyDown(SDLK_s)){
-                    sprite_atual = CORRENDO;
-                }
-                else{
-                    sprite_atual = ANDANDO;
-                }
-                if(poderes > 0 && In.KeyPress(SDLK_d)){
-                    sprite_atual = TRANSPARENTE;
-                }
-                if(poderes > 1 && In.KeyPress(SDLK_f)){
-                    sprite_atual = CHICOTE;
-                    ataque_chicote = 0;
-                }
-            }
-
-
-            if(sprite_atual == TRANSPARENTE){
-                if(In.IsKeyDown(SDLK_d)){
-                    sprite_atual = TRANSPARENTE;
-                }
-                if(In.KeyRelease(SDLK_d)){
-                    sprite_atual = ANDANDO;
-                }
-            }
-
-
-            if(sprite_atual == CHICOTE){
-                float temp = sp_chicote.GetFrameTime();
-                if(ataque_chicote == 0){
-                    som_chicote.Open("audio/sons/chicote doesnt hit.ogg");
-                    som_chicote.Play(0);
-                    ataque_chicote = 1;
-                    tempo_chicote.Restart();
-                }
-                if(ataque_chicote == 1 || ataque_chicote == 2){
-                    if(tempo_chicote.Get() < temp*2){
-                        if(In.KeyPress(SDLK_f)){
-                            ataque_chicote = 2;
-                        }
+            if(true){
+                if(sprite_atual == ANDANDO || sprite_atual == CORRENDO){
+                    if(In.IsKeyDown(SDLK_s)){
+                        sprite_atual = CORRENDO;
                     }
-                    else { //passou o tempo
-                        if(ataque_chicote == 2){
-                            som_chicote.Open("audio/sons/chicote doesnt hit.ogg");
-                            som_chicote.Play(0);
-                            ataque_chicote = 3;
-                            tempo_chicote.Restart();
-                        }
-                        else{
-                            ataque_chicote = -1;
-                            sprite_atual = ANDANDO;
-                        }
+                    else{
+                        sprite_atual = ANDANDO;
+                    }
+                    if(data.gaia_poderes > 0 && In.KeyPress(SDLK_d)){
+                        sprite_atual = TRANSPARENTE;
+                    }
+                    if(data.gaia_poderes > 1 && In.KeyPress(SDLK_f)){
+                        sprite_atual = CHICOTE;
+                        ataque_chicote = 0;
                     }
                 }
 
-                if(ataque_chicote == 3 || ataque_chicote == 4) {
-                    if(tempo_chicote.Get() < temp*2){
-                        if(In.KeyPress(SDLK_f)){
-                            ataque_chicote = 4;
+
+                if(sprite_atual == TRANSPARENTE){
+                    if(In.IsKeyDown(SDLK_d)){
+                        sprite_atual = TRANSPARENTE;
+                    }
+                    if(In.KeyRelease(SDLK_d)){
+                        sprite_atual = ANDANDO;
+                    }
+                }
+
+
+                if(sprite_atual == CHICOTE){
+                    float temp = sp_chicote.GetFrameTime();
+                    if(ataque_chicote == 0){
+                        som_chicote.Open("audio/sons/chicote doesnt hit.ogg");
+                        som_chicote.Play(0);
+                        ataque_chicote = 1;
+                        tempo_chicote.Restart();
+                    }
+                    if(ataque_chicote == 1 || ataque_chicote == 2){
+                        if(tempo_chicote.Get() < temp*2){
+                            if(In.KeyPress(SDLK_f)){
+                                ataque_chicote = 2;
+                            }
+                        }
+                        else { //passou o tempo
+                            if(ataque_chicote == 2){
+                                som_chicote.Open("audio/sons/chicote doesnt hit.ogg");
+                                som_chicote.Play(0);
+                                ataque_chicote = 3;
+                                tempo_chicote.Restart();
+                            }
+                            else{
+                                ataque_chicote = -1;
+                                sprite_atual = ANDANDO;
+                            }
                         }
                     }
-                    else {
-                        if(ataque_chicote == 4){
-                            som_chicote.Open("audio/sons/chicote doesnt hit.ogg");
-                            som_chicote.Play(0);
-                            ataque_chicote = 5;
-                            tempo_chicote.Restart();
+
+                    if(ataque_chicote == 3 || ataque_chicote == 4) {
+                        if(tempo_chicote.Get() < temp*2){
+                            if(In.KeyPress(SDLK_f)){
+                                ataque_chicote = 4;
+                            }
                         }
-                        else{
-                            ataque_chicote = -1;
-                            sprite_atual = ANDANDO;
+                        else {
+                            if(ataque_chicote == 4){
+                                som_chicote.Open("audio/sons/chicote doesnt hit.ogg");
+                                som_chicote.Play(0);
+                                ataque_chicote = 5;
+                                tempo_chicote.Restart();
+                            }
+                            else{
+                                ataque_chicote = -1;
+                                sprite_atual = ANDANDO;
+                            }
+                        }
+                    }
+
+                    if(ataque_chicote == 5 || ataque_chicote == 6){
+                        if(tempo_chicote.Get() < temp*5){
+                            if(In.KeyPress(SDLK_f)){
+                                ataque_chicote = 6;
+                            }
+                        }
+                        else {
+                            if(ataque_chicote == 6){
+                                som_chicote.Open("audio/sons/chicote doesnt hit.ogg");
+                                som_chicote.Play(0);
+                                ataque_chicote = 1;
+                                tempo_chicote.Restart();
+                            }
+                            else{
+                                ataque_chicote = -1;
+                                sprite_atual = ANDANDO;
+                            }
                         }
                     }
                 }
 
-                if(ataque_chicote == 5 || ataque_chicote == 6){
-                    if(tempo_chicote.Get() < temp*5){
-                        if(In.KeyPress(SDLK_f)){
-                            ataque_chicote = 6;
-                        }
-                    }
-                    else {
-                        if(ataque_chicote == 6){
-                            som_chicote.Open("audio/sons/chicote doesnt hit.ogg");
-                            som_chicote.Play(0);
-                            ataque_chicote = 1;
-                            tempo_chicote.Restart();
-                        }
-                        else{
-                            ataque_chicote = -1;
-                            sprite_atual = ANDANDO;
-                        }
-                    }
-                }
-            }
 
-
-            if(sprite_atual == CARRO){
-                if(comodo_atual != 8){
-                    sprite_atual = ANDANDO;
+                if(sprite_atual == CARRO){
+                    if(comodo_atual != 8){
+                        sprite_atual = ANDANDO;
+                    }
                 }
             }
 
@@ -422,22 +422,23 @@ void Gaia::Update(float dt){
             }
 
             ////VELOCIDADES
-            if(sprite_atual == ANDANDO){
-                vel = 300 * dt;
+            if(true){
+                if(sprite_atual == ANDANDO){
+                    vel = 300 * dt;
+                }
+                else if(sprite_atual == CORRENDO){
+                    vel = 500 * dt;
+                }
+                else if(sprite_atual == CHICOTE){
+                    vel = 0;
+                }
+                else if(sprite_atual == TRANSPARENTE){
+                    vel = 0;
+                }
+                else if(sprite_atual == CARRO){
+                    vel = 800 * dt;
+                }
             }
-            else if(sprite_atual == CORRENDO){
-                vel = 500 * dt;
-            }
-            else if(sprite_atual == CHICOTE){
-                vel = 0;
-            }
-            else if(sprite_atual == TRANSPARENTE){
-                vel = 0;
-            }
-            else if(sprite_atual == CARRO){
-                vel = 800 * dt;
-            }
-
 
             ////ANDAR
             if(sprite_atual == ANDANDO || sprite_atual == CORRENDO || sprite_atual == CARRO){
@@ -481,6 +482,11 @@ void Gaia::Update(float dt){
                         direcao = NO;
                     }
                 }
+            }
+
+            ////DESLOCAMENTO DA ESTEIRA
+            if(data.esteira_ligada){
+                DeslocamentoEsteira(dt);
             }
 
             ////ATACAR
@@ -835,37 +841,52 @@ void Gaia::Andar(int mov, float vel){
 
     }
 }
-//
-//void Gaia::Transparente(){
-//    InputManager& In = InputManager::GetInstance();
-//
-//    if(In.KeyPress(SDLK_d)){
-//        sp_transparente.SetRepetitions(1);
-//        if(mov_anterior == SE){
-//            sp_transparente.SetFrameStart(m_sudeste);
-//        }
-//        else if(mov_anterior == NE){
-//            sp_transparente.SetFrameStart(m_nordeste);
-//        }
-//        else if(mov_anterior == NO){
-//            sp_transparente.SetFrameStart(m_noroeste);
-//        }
-//        else if(mov_anterior == SO){
-//            sp_transparente.SetFrameStart(m_sudoeste);
-//            printf("3\n");
-//        }
-//        else {
-//            printf("e\n");
-//            sp_transparente.SetFrameStart(sp_andando.GetFrameStart());
-//        }
-//    }
-//    if(In.IsKeyDown(SDLK_d)){
-//        sprite_atual = TRANSPARENTE;
-//    }
-//    if(In.KeyRelease(SDLK_d)){
-//        sprite_atual = ANDANDO;
-//    }
-//}
+
+void Gaia::DeslocamentoEsteira(float dt){
+    float cos_angulo = 0.866025403784438646763723170752936183471402626905190314027; //30º
+    float sen_angulo = 0.5; //30º
+    float vel = 200 * dt;
+
+    Vec2 t_pos(0,0);
+    TileMap* t_map = Game::GetInstance().GetCurrentState().GetTileMap();
+
+    if(t_map == nullptr){
+        std::cout << ": t_map não pode ser nullptr. Provavelmente a personagem Gaia está sendo criada em uma fase sem um tile map. - Gaia::DeslocamentoEsteira"  << std::endl;
+    }
+    else{
+        t_pos = t_map->FindTile(box.GetCenter().x, box.y+box.h-altura_pe);
+    }
+
+    //Vec2 t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+    int t_info_obj = t_map->GetTileInfo(comodo_atual+2, t_pos.x, t_pos.y);
+
+    //sudeste
+    if(t_info_obj > 24 && t_info_obj < 53){
+        //altura_pe = 40; #verdps ajusar altura do pe ao entrar na esteira
+        if(t_info_obj == 25 || t_info_obj == 26 || t_info_obj == 27) {
+            box.x += cos_angulo * vel;
+            box.y += sen_angulo* vel;
+        }
+        //nordeste
+        else if(t_info_obj == 28 || t_info_obj == 29 || t_info_obj == 30) {
+            box.x += cos_angulo * vel;
+            box.y -= sen_angulo* vel;
+        }
+        //noroeste
+        else if(t_info_obj == 31 || t_info_obj == 32 || t_info_obj == 33) {
+            box.x -= cos_angulo * vel;
+            box.y -= sen_angulo* vel;
+        }
+        //sudoeste
+        else if(t_info_obj == 34 || t_info_obj == 35 || t_info_obj == 36) {
+            box.x -= cos_angulo * vel;
+            box.y += sen_angulo* vel;
+        }
+    }
+    else{
+        //altura_pe = 30;
+    }
+}
 
 bool Gaia::EstaTransparente(){
     bool terminou_animacao=false;
@@ -958,17 +979,16 @@ void Gaia::Parar(){
     }
 }
 
+void Gaia::AtualizarData(StateData data){
+    this->data = data;
+}
+
 void Gaia::SetSpriteAtual(SpritesGaia sprite){
     sprite_atual = sprite;
 }
 
-
 Vec2 Gaia::GetPos(){
     return(Vec2(box.GetCenter().x, box.y+box.h-altura_pe));
-}
-
-void Gaia::SetPoderes(int codigo){
-    poderes = codigo;
 }
 
 Vec2 Gaia::GetTPos(){
@@ -1033,7 +1053,7 @@ void Gaia::PushMovimento(int mov){
 
 void Gaia::NotifyCollision(GameObject& other){
     if(other.Is("Guarda")){
-        hp = -1;
+        hp--; 
     }
     if(other.Is("Velhor")){
         box.x = box_anterior.x;
@@ -1046,10 +1066,5 @@ bool Gaia::Is(std::string type){
 }
 
 bool Gaia::IsDead(){
-    if(hp <= 0){
-        return (true);
-    }
-    else{
-        return(false);
-    }
+    return (hp <= 0);
 }

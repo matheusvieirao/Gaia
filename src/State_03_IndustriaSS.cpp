@@ -32,12 +32,12 @@ State_03_IndustriaSS::State_03_IndustriaSS(StateData data):bg("img/telas/backgro
     Vec2 gaia_pe_pos = this->data.gaia_t_pos.CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
     gaia_pe_pos.x = gaia_pe_pos.x + tile_set->GetTileWidth()/2;
     gaia_pe_pos.y = gaia_pe_pos.y + tile_set->GetTileHeight()/2;
-    AddObject(new Gaia(gaia_pe_pos.x, gaia_pe_pos.y, data.gaia_hp, data.gaia_poderes, data.gaia_comodo));
+    AddObject(new Gaia(gaia_pe_pos.x, gaia_pe_pos.y, data));
 
     Camera::Follow(Gaia::player);
     quitRequested = false;
 
-    entrou_no_comodo = true;
+    InicializarComodo(data.gaia_comodo);
 }
 
 State_03_IndustriaSS::~State_03_IndustriaSS(){
@@ -66,12 +66,8 @@ void State_03_IndustriaSS::Update(float dt){
     tempo_falas.Update(dt);
 
     //inicializar os comodos, colocar os inimigos e etc
-    if(entrou_no_comodo){
-        entrou_no_comodo = false;
-        InicializarComodo(data.gaia_comodo);
-    }
     if(data.gaia_comodo != comodo_jogador_antigo){
-        entrou_no_comodo = true;
+        InicializarComodo(data.gaia_comodo);
         for(unsigned i = 0; i < objectArray.size(); i++){
             if(objectArray[i]->GetComodoAtual() == comodo_jogador_antigo){
                 objectArray.erase(objectArray.begin() + i);
@@ -141,7 +137,7 @@ void State_03_IndustriaSS::Update(float dt){
                 efeito.Play(0);
                 data.ja_pegou_chicote = true;
                 data.gaia_poderes = 2;
-                Gaia::player->SetPoderes(2);
+                Gaia::player->AtualizarData(data);
             }
 
             //entrar no carrinho
@@ -198,6 +194,7 @@ void State_03_IndustriaSS::Update(float dt){
                         data.esteira_ligada = false;
                     }
                     efeito.Play(0);
+                    Gaia::player->AtualizarData(data);
                 }
             }
         }
@@ -501,7 +498,7 @@ void State_03_IndustriaSS::TrocarDeComodo(){
                         data.gaia_comodo = i;
                         data.gaia_t_pos_inicio_comodo.x = data.gaia_t_pos.x;
                         data.gaia_t_pos_inicio_comodo.y = data.gaia_t_pos.y;
-                        Gaia::player->SetComodoAtual(i);
+                        Gaia::player->AtualizarData(data);
                         break;
                     }
                 }

@@ -26,6 +26,7 @@ class State{
         void PopRequest();
         bool QuitRequested();
 
+        TileMap* tile_map;
     protected:
         virtual void UpdateArray(float dt);
         virtual void RenderArray();

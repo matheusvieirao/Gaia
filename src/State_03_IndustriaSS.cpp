@@ -19,6 +19,8 @@ State_03_IndustriaSS::State_03_IndustriaSS(StateData data):bg("img/telas/backgro
     bg.SetScaleX((float)Game::GetInstance().GetWindowWidth()/bg.GetWidth());
     bg.SetScaleY((float)Game::GetInstance().GetWindowHeight()/bg.GetHeight());
     tile_set = new TileSet(12, 11, 152, "img/tiles/tile_set.png");
+
+    tile_map = nullptr;
     tile_map = new TileMap("map/02_industria/State_03_IndustriaSS.txt", tile_set);
 
     press_f.Open("img/teclas/tecla_f.png");
@@ -227,78 +229,60 @@ void State_03_IndustriaSS::Update(float dt){
         if(!data.ja_falou_velho){
             switch(track){
                 case 0:
-                    if(Falar(0.1, "audio/02_industria/003.wav")){
+                    if(Falar(0.1, "audio/02_industria/005V - entao vc eh a garota.ogg")){
                         track = 1;
                     }
                     break;
 
                 case 1:
-                    if(Falar(0.2, "audio/02_industria/004.wav")){
+                    if(Falar(0.2, "audio/02_industria/006G - quem eh vc.ogg")){
                         track = 2;
                     }
                     break;
 
                 case 2:
-                    if(Falar(0.4, "audio/02_industria/005V - velho demais.wav")){
+                    if(Falar(0.4, "audio/02_industria/007V - apenas um velho trabalhador.ogg")){
                         track = 3;
                     }
                     break;
 
                 case 3:
-                    if(Falar(0.5, "audio/02_industria/006G - tentou fugir.wav")){
+                    if(Falar(0.4, "audio/02_industria/008G - ja tentou fugir.ogg")){
                         track = 4;
                     }
                     break;
 
                 case 4:
-                    if(Falar(0.5, "audio/02_industria/007V - varias.wav")){
+                    if(Falar(0.4, "audio/02_industria/009V - varias.ogg")){
                         track = 5;
                     }
                     break;
 
                 case 5:
-                    if(Falar(0.5, "audio/02_industria/008G - algum plano.wav")){
+                    if(Falar(0.4, "audio/02_industria/010G - algum plano.ogg")){
                         track = 6;
                     }
                     break;
 
                 case 6:
-                    if(Falar(0.5, "audio/02_industria/009V - mapa na cabeca.wav")){
+                    if(Falar(0.4, "audio/02_industria/011V - vc ta falando com a pessoa certa.ogg")){
                         track = 7;
                     }
                     break;
 
                 case 7:
-                    if(Falar(0.5, "audio/02_industria/010G - como assim.wav")){
+                    if(Falar(0, "audio/02_industria/012V - depois de tanto tempo eu tenho o mapa.ogg")){
                         track = 8;
                     }
                     break;
 
                 case 8:
-                    if(Falar(0.5, "audio/02_industria/011V - com ctz vc vai.wav")){
+                    if(Falar(0, "audio/02_industria/013V - agora vai ate esse local.ogg")){
                         track = 9;
                     }
                     break;
 
                 case 9:
-                    if(Falar(0.05, "audio/sons/ficando invisivel.ogg")){
-                        track = 10;
-                    }
-                    break;
-
-                case 10:
-                    if(Falar(0.05, "audio/02_industria/012G - ler a mente.wav")){
-                        track = 11;
-                    }
-                    break;
-
-                case 11:
-                    if(Falar(0.5, "audio/02_industria/013V - eu abrindo a mente.wav")){
-                        track = 12;
-                    }
-                    break;
-
-                case 12:
                     estado = JOGO;
                     track = 0;
                     data.ja_falou_velho = true;
@@ -384,40 +368,38 @@ void State_03_IndustriaSS::Render(){
     }
 }
 
+TileMap* State_03_IndustriaSS::GetTileMap(){
+    return (tile_map);
+}
+
 void State_03_IndustriaSS::InicializarComodo(int comodo){
 
     if(comodo == 12){
         int num = rand() % 4;
         //29,17  43,28
-        if(data.ja_pegou_chave_rato==false){
-            Vec2 rato_pe_pos = Vec2(28, 17).CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-            rato_pe_pos.x = rato_pe_pos.x + tile_set->GetTileWidth()/2;
-            rato_pe_pos.y = rato_pe_pos.y + tile_set->GetTileHeight()/2;
-            AddObject(new Rato(rato_pe_pos.x, rato_pe_pos.y, true));
-        }
+        
+        Vec2 rato_pe_pos = Vec2(28, 17).CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
+        rato_pe_pos.x = rato_pe_pos.x + tile_set->GetTileWidth()/2;
+        rato_pe_pos.y = rato_pe_pos.y + tile_set->GetTileHeight()/2;
+        AddObject(new Rato(rato_pe_pos.x, rato_pe_pos.y, comodo, !data.ja_pegou_chave_rato));
+        
         if(num > 0){
-            int x = (rand() % 15) + 29; // 29 <= x <= 43
-            int y = (rand() % 12) + 17; // 17 <= y <= 28
-            Vec2 rato_pe_pos = Vec2(x, y).CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
+            Vec2 rato_pe_pos = Vec2(30, 24).CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
             rato_pe_pos.x = rato_pe_pos.x + tile_set->GetTileWidth()/2;
             rato_pe_pos.y = rato_pe_pos.y + tile_set->GetTileHeight()/2;
-            AddObject(new Rato(rato_pe_pos.x, rato_pe_pos.y, false));
+            AddObject(new Rato(rato_pe_pos.x, rato_pe_pos.y, comodo, false));
         }
         if(num > 1){
-            int x = ((rand()*7) % 15) + 29; // 29 <= x <= 43
-            int y = ((rand()*7) % 12) + 17; // 17 <= y <= 28
-            Vec2 rato_pe_pos = Vec2(x, y).CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
+            Vec2 rato_pe_pos = Vec2(37, 28).CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
             rato_pe_pos.x = rato_pe_pos.x + tile_set->GetTileWidth()/2;
             rato_pe_pos.y = rato_pe_pos.y + tile_set->GetTileHeight()/2;
-            AddObject(new Rato(rato_pe_pos.x, rato_pe_pos.y, false));
+            AddObject(new Rato(rato_pe_pos.x, rato_pe_pos.y, comodo, false));
         }
         if(num > 2){
-            int x = ((rand()*17) % 15) + 29; // 29 <= x <= 43
-            int y = ((rand()*17) % 12) + 17; // 17 <= y <= 28
-            Vec2 rato_pe_pos = Vec2(x, y).CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
+            Vec2 rato_pe_pos = Vec2(37, 16).CardToIsometric(tile_set->GetTileWidth(), tile_set->GetTileHeight());
             rato_pe_pos.x = rato_pe_pos.x + tile_set->GetTileWidth()/2;
             rato_pe_pos.y = rato_pe_pos.y + tile_set->GetTileHeight()/2;
-            AddObject(new Rato(rato_pe_pos.x, rato_pe_pos.y, false));
+            AddObject(new Rato(rato_pe_pos.x, rato_pe_pos.y, comodo, false));
         }
     }
 }
@@ -460,10 +442,6 @@ void State_03_IndustriaSS::Pause(){
 
 void State_03_IndustriaSS::Resume(){
 
-}
-
-TileMap* State_03_IndustriaSS::GetTileMap(){
-    return (tile_map);
 }
 
 bool State_03_IndustriaSS::Falar(float delay, std::string arquivo){

@@ -19,7 +19,7 @@
 
 class Rato : public GameObject{
     public:
-        Rato(float x, float y, bool chave);
+        Rato(float x, float y, int comodo_atual, bool chave);
         virtual ~Rato();
         void Update(float dt);
         int AndarAleatorio(float vel, Vec2 rato_t_pos, TileMap* t_map);

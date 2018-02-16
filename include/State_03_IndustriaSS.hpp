@@ -35,7 +35,6 @@ class State_03_IndustriaSS : public State{
         TileMap* GetTileMap();
         void TrocarDeComodo();
 
-        TileMap* tile_map;
     private:
         enum StateState{JOGO, FALA};
         StateState estado;

@@ -16,10 +16,12 @@ class StateData{
 
         int s1_num_historia; //1 é a historia do inicio do jogo e 2 a historia de quando zera
         int state_atual; // 2(State_02_IndustriaT), 3(State_03_IndustriaSS)
+
         int gaia_comodo; // T: 0- Producao | 4- Corredor | 8- Dormitorio | 12- Corredor2 | 16- Refeitorio // SS: 0- Quarto Velho | 4- Corredor | 8- Deposito | 12- Descarga
         Vec2 gaia_t_pos;
         Vec2 gaia_t_pos_antiga;
         Vec2 gaia_t_pos_inicio_comodo; // é utilizado para voltar a esse ponto quando morrer.
+        
         int gaia_hp;
         int gaia_poderes;
         

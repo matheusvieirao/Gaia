@@ -146,7 +146,7 @@ void Sprite::SetScaleY(float scale){
 void Sprite::SetFrame(int frame){
     frame--;
     if(frame == frame_total){ //if que da um desconto se o programa mandar um valor de frame 1 numero maior do que o normal, mas se aparecer, corrigir no codigo o local aonde isso está sendo chamado.
-        printf("Não deveria estar entrando aqui, de uma olhadinha em Sprite::SetFrame\n");
+        std::cout << "Não deveria estar entrando aqui, de uma olhadinha em Sprite::SetFrame" << std::endl;
         frame = frame_start;
     }
 
@@ -155,7 +155,7 @@ void Sprite::SetFrame(int frame){
         SetClip(frame*frame_width, 0, frame_width, height);
     }
     else{
-        printf("Erro. %d é um valor de frame impossivel (o valor de frame deve estar entre 1 e n, sendo n o numero total de frames) (Srite::SetFrame)\n",frame);
+        std::cout << "Erro. " << frame << " é um valor de frame impossivel (o valor de frame deve estar entre 1 e n, sendo n o numero total de frames) (Srite::SetFrame)" << std::endl;
     }
 }
 

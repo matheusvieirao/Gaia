@@ -41,7 +41,6 @@ class State_02_IndustriaT : public State{
         //static State_02_IndustriaT& GetInstance();
         TileMap* GetTileMap();
         void TrocarDeComodo(Vec2 t_pos, Vec2 t_pos_antiga);
-        TileMap* tile_map;
     private:
         enum StateState{JOGO, FALA};
         StateState estado;

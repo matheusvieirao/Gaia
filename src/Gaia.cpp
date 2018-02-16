@@ -7,6 +7,7 @@ Gaia::Gaia(float x, float y, StateData data){
 
     this->hp = data.gaia_hp;
     this->data.Atribuir(data);
+    comodo_atual = data.gaia_comodo;
 
     ptr_chicote = nullptr;
     pause = false;
@@ -76,7 +77,7 @@ Gaia::Gaia(float x, float y, StateData data){
     primeiro_mov_modo_manual = false;
     dur_movimento.Restart();
 //    AcharComodo();
-//    printf("%d",GetComodoAtual());//nao funciona pq o ponteiro de tile map ainda nao ta pronto
+//    std::cout <<"%d",GetComodoAtual();//nao funciona pq o ponteiro de tile map ainda nao ta pronto
     pos_antiga = Vec2(x, y);
     pos_inicio_comodo = Vec2(x, y);
     //TrocarDeComodo(); //nao funciona pq o ponteiro de tile map ainda nao ta pronto
@@ -94,7 +95,7 @@ void Gaia::Update(float dt){
     dur_movimento.Update(dt);
     tempo_chicote.Update(dt);
     pos_antiga = Vec2(box.GetCenter().x, box.y+box.h-altura_pe);
-    comodo_atual = data.gaia_comodo;
+    //comodo_atual = data.gaia_comodo;
 
     vel = 300 * dt; //default
 
@@ -342,7 +343,7 @@ void Gaia::Update(float dt){
                         Game::GetInstance().GetCurrentState().AddObject(ptr_chicote);
                     }
                     else {
-                        printf("erro em escolher a direcao do chicote de Gaia\n");
+                        std::cout << "erro em escolher a direcao do chicote de Gaia" << std::endl;
                     }
                 }
                 if(sprite_atual == TRANSPARENTE){
@@ -382,7 +383,7 @@ void Gaia::Update(float dt){
                         sp_transparente.SetFrame(m_sudoeste);
                     }
                     else {
-                        printf("Erro em escolher a direcao de ficar transparente\n");
+                        std::cout << "Erro em escolher a direcao de ficar transparente" << std::endl;
                     }
                 }
                 if(sprite_atual == CARRO){
@@ -980,7 +981,8 @@ void Gaia::Parar(){
 }
 
 void Gaia::AtualizarData(StateData data){
-    this->data = data;
+    this->data.Atribuir(data);
+    comodo_atual = data.gaia_comodo;
 }
 
 void Gaia::SetSpriteAtual(SpritesGaia sprite){

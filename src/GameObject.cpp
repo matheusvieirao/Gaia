@@ -38,12 +38,13 @@ void GameObject::PushMovimento(int mov){
 void GameObject::AcharComodo(){
     TileMap* t_map = Game::GetInstance().GetCurrentState().GetTileMap();
 
+
     if(t_map == nullptr){
-        std::cout << "t_map não pode ser nullptr. - GameObject::AcharComodo"  << std::endl;
+        std::cout << "t_map nao pode ser nullptr. - GameObject::AcharComodo"  << std::endl;
         return;
     }
-    Vec2 t_pos = t_map->FindTile(box.GetCenter().x, box.y+box.h-altura_pe);
 
+    Vec2 t_pos = t_map->FindTile(box.GetCenter().x, box.y+box.h-altura_pe);
     for(int i=0; i<t_map->GetDepth(); i=i+4){
         if(t_map->GetTileInfo(i, t_pos.x, t_pos.y) != 0){
             comodo_atual = i;

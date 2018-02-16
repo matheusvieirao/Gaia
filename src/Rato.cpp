@@ -3,7 +3,7 @@
 #include "Gaia.hpp"
 #include "Camera.hpp"
 
-Rato::Rato(float x, float y, bool chave):sp("img/personagens/lularanha.png", 12, 1, 3, 0.2){
+Rato::Rato(float x, float y, int comodo_atual, bool chave):sp("img/personagens/lularanha.png", 12, 1, 3, 0.2){
     altura_pe = 49;
     largura_box_col = 54;
     altura_box_col = 42;
@@ -17,7 +17,7 @@ Rato::Rato(float x, float y, bool chave):sp("img/personagens/lularanha.png", 12,
         sp_chave.Open("img/itens/chave.png");
     }
 
-    AcharComodo();
+    this->comodo_atual = comodo_atual;
 
     hp = 1;
     andar_n_tiles = 1;
@@ -115,7 +115,7 @@ void Rato::Update(float dt){
     }
 
     if(t_map == nullptr){
-        std::cout << "t_map não pode ser nullptr. Rato::Update"  << std::endl;
+        std::cout << "t_map nao pode ser nullptr. Rato::Update"  << std::endl;
     }
 }
 

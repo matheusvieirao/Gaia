@@ -229,7 +229,7 @@ void State_02_IndustriaT::Update(float dt){
             if(track == 0){
                 if(tempo_falas.Get() > 0.3){
                     if(!fala.IsOpen()){
-                        fala.Open("audio/02_industria/001.wav");
+                        fala.Open("audio/02_industria/001 - nossa o que foi isso.ogg");
                         fala.Play(0);
                     }
                     else if(!fala.IsPlaying()){
@@ -240,9 +240,9 @@ void State_02_IndustriaT::Update(float dt){
                 }
             }
             if(track == 1){
-                if(tempo_falas.Get() > 0.5){
+                if(tempo_falas.Get() > 0.2){
                     if(!fala.IsOpen() ){
-                        fala.Open("audio/02_industria/002.wav");
+                        fala.Open("audio/02_industria/002 - ta mas agora pra onde ir.ogg");
                         fala.Play(0);
                     }
                     else if(!fala.IsPlaying()){
@@ -251,7 +251,31 @@ void State_02_IndustriaT::Update(float dt){
                     }
                 }
             }
-            if(track > 1){
+            if(track == 2){
+                if(tempo_falas.Get() > 0.5){
+                    if(!fala.IsOpen() ){
+                        fala.Open("audio/02_industria/003 - o duto de ar.ogg");
+                        fala.Play(0);
+                    }
+                    else if(!fala.IsPlaying()){
+                        fala.Stop();
+                        track = 3;
+                    }
+                }
+            }
+            if(track == 3){
+                if(tempo_falas.Get() > 0.5){
+                    if(!fala.IsOpen() ){
+                        fala.Open("audio/02_industria/004 - mais perigoso do que aqui nao deve ser.ogg");
+                        fala.Play(0);
+                    }
+                    else if(!fala.IsPlaying()){
+                        fala.Stop();
+                        track = 4;
+                    }
+                }
+            }
+            if(track > 3){
                 num_fala = 0;
                 estado = JOGO;
             }

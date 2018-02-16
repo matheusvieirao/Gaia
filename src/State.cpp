@@ -27,11 +27,11 @@ bool State::Is(std::string type){
 }
 
 TileMap* State::GetTileMap(){
+    std::cout <<"Entrou no State::GetTileMap e retornou nullptr" << std::endl;
     return (nullptr);
 }
 
 void State::SetData(std::string var, int value) {
-    printf("entrou\n");
         if(var == "gaia_hp"){
             data.gaia_hp = value;
         }
@@ -60,7 +60,6 @@ void State::SetData(std::string var, int value) {
             data.ja_falou_velho = value;
         }
         else if(var == "ja_pegou_chave_rato"){
-            printf("ja_pegou_chave_rato\n");
             data.ja_pegou_chave_rato = value;
         }
         else if(var == "ja_pegou_chicote"){

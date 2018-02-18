@@ -455,22 +455,29 @@ void State_02_IndustriaT::InicializarComodo(int comodo){
         guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
         AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a3"));
 
+        Guarda2::GuardaEstado estado_guarda;
+        if(!data.ja_ficou_encurralada){
+            estado_guarda = Guarda2::PARADO_AUTOMATICO;
+        }
+        else{
+            estado_guarda = Guarda2::DESCANSANDO_PARADO;
+        }
+
         guarda_t_pos = Vec2(11, 15);
         guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PARADO_AUTOMATICO, comodo, "b1"));
+        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, estado_guarda, comodo, "b1"));
 
         guarda_t_pos = Vec2(11, 17);
         guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PARADO_AUTOMATICO, comodo, "b2"));
+        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, estado_guarda, comodo, "b2"));
 
         guarda_t_pos = Vec2(3, 15);
         guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PARADO_AUTOMATICO, comodo, "c1"));
+        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, estado_guarda, comodo, "c1"));
 
         guarda_t_pos = Vec2(3, 17);
         guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PARADO_AUTOMATICO, comodo, "c2"));
-
+        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, estado_guarda, comodo, "c2"));
     }
 }
 

@@ -902,76 +902,75 @@ bool Gaia::EstaTransparente(){
 
 void Gaia::Parar(){
     mov_anterior = PARADO;
-    int mov = GetDirecao();
 
     if(sprite_atual == ANDANDO){
-        if(mov == SE){
+        if(direcao == SE){
             sp_andando.SetFrame(m_sudeste+1);
             sp_andando.PauseAnimation();
         }
-        else if(mov == NE){
+        else if(direcao == NE){
             sp_andando.SetFrame(m_nordeste+1);
             sp_andando.PauseAnimation();
         }
-        else if(mov == NO){
+        else if(direcao == NO){
             sp_andando.SetFrame(m_noroeste+1);
             sp_andando.PauseAnimation();
         }
-        else if(mov == SO){
+        else if(direcao == SO){
             sp_andando.SetFrame(m_sudoeste+1);
             sp_andando.PauseAnimation();
         }
     }
     else if(sprite_atual == CORRENDO){
-        if(mov == SE){
+        if(direcao == SE){
             sp_correndo.SetFrame(m_sudeste+1);
             sp_correndo.PauseAnimation();
         }
-        else if(mov == NE){
+        else if(direcao == NE){
             sp_correndo.SetFrame(m_nordeste+1);
             sp_correndo.PauseAnimation();
         }
-        else if(mov == NO){
+        else if(direcao == NO){
             sp_correndo.SetFrame(m_noroeste+1);
             sp_correndo.PauseAnimation();
         }
-        else if(mov == SO){
+        else if(direcao == SO){
             sp_correndo.SetFrame(m_sudoeste+1);
             sp_correndo.PauseAnimation();
         }
     }
     else if(sprite_atual == CHICOTE){
-        if(mov == SE){
+        if(direcao == SE){
             sp_chicote.SetFrame(m_sudeste+1);
             sp_chicote.PauseAnimation();
         }
-        else if(mov == NE){
+        else if(direcao == NE){
             sp_chicote.SetFrame(m_nordeste+1);
             sp_chicote.PauseAnimation();
         }
-        else if(mov == NO){
+        else if(direcao == NO){
             sp_chicote.SetFrame(m_noroeste+1);
             sp_chicote.PauseAnimation();
         }
-        else if(mov == SO){
+        else if(direcao == SO){
             sp_chicote.SetFrame(m_sudoeste+1);
             sp_chicote.PauseAnimation();
         }
     }
     else if(sprite_atual == TRANSPARENTE){
-        if(mov == SE){
+        if(direcao == SE){
             sp_transparente.SetFrame(m_sudeste+1);
             sp_transparente.PauseAnimation();
         }
-        else if(mov == NE){
+        else if(direcao == NE){
             sp_transparente.SetFrame(m_nordeste+1);
             sp_transparente.PauseAnimation();
         }
-        else if(mov == NO){
+        else if(direcao == NO){
             sp_transparente.SetFrame(m_noroeste+1);
             sp_transparente.PauseAnimation();
         }
-        else if(mov == SO){
+        else if(direcao == SO){
             sp_transparente.SetFrame(m_sudoeste+1);
             sp_transparente.PauseAnimation();
         }
@@ -1010,7 +1009,9 @@ Vec2 Gaia::GetTPos(){
 int Gaia::GetDirecao(){
     int frame_start;
 
-    if(sprite_atual == ANDANDO){
+    return(direcao);
+
+    /*if(sprite_atual == ANDANDO){
         frame_start = sp_andando.GetFrameStart();
     }
     else if(sprite_atual == CORRENDO){
@@ -1040,7 +1041,7 @@ int Gaia::GetDirecao(){
     }
     else {
         return(direcao);
-    }
+    }*/
 }
 
 int Gaia::GetHP(){

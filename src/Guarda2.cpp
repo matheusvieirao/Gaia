@@ -5,7 +5,7 @@ int turno_atual = 0; //usado no debug para se ver em qual loop o programa se enc
 Guarda2::Guarda2(float x, float y, GuardaEstado estado_inicial, int comodo, std::string nome):sp("img/personagens/guarda_andando.png", 16, 1, 4, 0.2){
     tempo_estado.Restart();
     this->nome = nome;
-    //mov_automatico = false;
+    mov_automatico = false;
     pause = false;
 
     altura_pe = 19;
@@ -29,14 +29,11 @@ Guarda2::Guarda2(float x, float y, GuardaEstado estado_inicial, int comodo, std:
     movimento_anterior = PARADO;
     movimento_atual = PARADO;
     
+
     if(estado_atual == PERSEGUINDO){
         calcular_proximo_passo = true; //para entrar no primeiro loop de calcular o caminho entre o guarda e a gaia
-    }
-    //movimento_atual = NO;
-
-    /*if(estado_atual == PERSEGUINDO){
-        movimento_atual = PARADO;
-        contador_fuga = 99;
+        //movimento_atual = PARADO;
+        //contador_fuga = 99;
     }
     else if(estado_atual == PARADO_AUTOMATICO){
         movimento_atual = PARADO;
@@ -53,7 +50,7 @@ Guarda2::Guarda2(float x, float y, GuardaEstado estado_inicial, int comodo, std:
             sp.SetFrame(2);
         }
         sp.PauseAnimation();
-    }*/
+    }
 }
 
 Guarda2::~Guarda2(){
@@ -66,7 +63,7 @@ void Guarda2::Update(float dt){
 
     float vel_devagar = 200*dt;
     float vel_rapido = 450*dt;float tempo_devagar = (float)(tile_height*dt)/(vel_devagar);//tempo de andar 1 tile na velocidade devagar. a conta esta simplificada, o certo seria: "(tile_height/2) / ((vel_rapido*0.5)/dt) sendo 0.5 o seno do angulo da inclinacao do tile
-    //float tempo_rapido = (float)(tile_height*dt)/(2*vel_rapido);//tempo de andar 1 tile na velocidade rapido
+    float tempo_rapido = (float)(tile_height*dt)/(2*vel_rapido);//tempo de andar 1 tile na velocidade rapido
 
     Vec2 gaia_pos = Gaia::player->GetPos();
     Vec2 gaia_t_pos = gaia_pos.IsometricToCard(tile_width, tile_height);
@@ -179,46 +176,62 @@ void Guarda2::Update(float dt){
                 tempo_estado.Restart();
             }
 
-        }/*
+        }
 
         else if(estado_atual == PARADO_AUTOMATICO){
             if(mov_automatico){
                 estado_atual = MOVIMENTO_AUTOMATICO;
-                movimento_atual = movimentos.back();
-                movimentos.pop_back();
-                tempo_estado.Restart();
+                calcular_proximo_passo = true;
+                if(caminho.empty()){
+                    std::cout << "O guarda esta querendo entrar no movimento automatico mas nao foi colocado nenhum movimento dele com PushMovimento e o caminho tá empty. Guarda2::Update estado atual == PARADO_AUTOMATICO\n" << std::endl;
+                }
+                else{
+                    movimento_atual = caminho.back();
+                    caminho.pop_back();
+                    tempo_estado.Restart();
+                }
             }
         }
+
 
         else if(estado_atual == MOVIMENTO_AUTOMATICO){
             vel_rapido = 500 * dt;
-            tempo_rapido = (float)tile_height/((vel_rapido)/dt);
+            tempo_rapido = (float)tile_height/((2*vel_rapido)/dt);
 
-            if(tempo_estado.Get() > tempo_rapido*0.973){
-                if(movimentos.size()!=0){
-                    movimento_atual = movimentos.back();
-                    movimentos.pop_back();
-                    tempo_estado.Restart();
+            if(calcular_proximo_passo){
+                calcular_proximo_passo = false;
+                if(caminho.size()!=0){
+                    CalcularMovimentoAtual(t_map);
                 }
                 else{
                     mov_automatico = false;
+                    estado_atual = SAIR;
                     movimento_atual = PARADO;
-                    tempo_estado.Restart();
                 }
-            }
-
-            if(Gaia::player->EstaTransparente()){
-                movimentos.clear();
-                mov_automatico = false;
-                estado_atual = SAIR;
-	            movimento_atual = PARADO;
-	            calcular_proximo_passo = false;
                 tempo_estado.Restart();
             }
 
-            Andar(vel_rapido, t_map);
+
+            if(movimento_atual == PARADO){
+                if(tempo_estado.Get() > vel_rapido / 20){
+                    calcular_proximo_passo = true;
+                    tempo_estado.Restart();
+                }
+            }
+            else{
+                Andar(vel_rapido, t_map);
+            }
+
+            if(Gaia::player->EstaTransparente()){
+                caminho.clear();
+                mov_automatico = false;
+                estado_atual = SAIR;
+                movimento_atual = PARADO;
+                calcular_proximo_passo = false;
+                tempo_estado.Restart();
+            }
         }
-*/
+
         //talvez pensar num modo do guarda sair do modo perseguindo se a distancia for mt grande  
         else if(estado_atual == PERSEGUINDO){
             tempo_estado.Restart();
@@ -318,7 +331,7 @@ bool Guarda2::IsDead(){
 }
 
 void Guarda2::PushMovimento(int mov){
-    caminho.clear();
+    //caminho.clear();
     caminho.push_back(mov);
     mov_automatico = true;
 }
@@ -486,83 +499,91 @@ void Guarda2::CalcularMovimentoAtual(TileMap* t_map){
             guarda_t_pos_desejada.x = guarda_t_pos.x-1;
             guarda_t_pos_desejada.y = guarda_t_pos.y;
         }
+        else if(movimento_atual == PARADO){
+            guarda_t_pos_desejada.x = guarda_t_pos.x;
+            guarda_t_pos_desejada.y = guarda_t_pos.y;
+        }
+
         guarda_pos_desejada = guarda_t_pos_desejada.CardToIsometricCenter(t_map->GetTileWidth(), t_map->GetTileHeight()); //retorna o ponto no centro do tile
     }
 }
 
+//tem que chamar CalcularMovimentoAtual() para calcular "guarda_pos_desejada" antes de chamar Andar()
 void Guarda2::Andar(float vel, TileMap* t_map){
     int m_dur = 4; //quantos frames de animaçao tem em cada movimento
     int m_sudeste = 1; //o primeiro frame andando em direcao sudeste
     int m_nordeste = 5;
     int m_noroeste = 9;
     int m_sudoeste = 13;
-
     Vec2 direcao;
 
-    sp.ResumeAnimation();
-    box_anterior.x = box.x;
-    box_anterior.y = box.y;
+    if(movimento_atual != PARADO){
 
-    guarda_pos.x = box.GetCenter().x;
-    guarda_pos.y = box.y + box.h - altura_pe;
+        sp.ResumeAnimation(); // #verdps se continuar dando erro 18/02
+        box_anterior.x = box.x;
+        box_anterior.y = box.y;
 
-    direcao = guarda_pos_desejada - guarda_pos;
-    float distancia_falta = guarda_pos_desejada.DistanciaVets(guarda_pos);
-    direcao = direcao.Normalizado();
-    direcao = direcao * vel;
-    float distancia_a_percorrer = direcao.Magnitude();
+        guarda_pos.x = box.GetCenter().x;
+        guarda_pos.y = box.y + box.h - altura_pe;
 
-    //se for passar, so andar ate o limite
-    if(distancia_a_percorrer >= distancia_falta){
         direcao = guarda_pos_desejada - guarda_pos;
-        calcular_proximo_passo = true;
-    }
+        float distancia_falta = guarda_pos_desejada.DistanciaVets(guarda_pos);
+        direcao = direcao.Normalizado();
+        direcao = direcao * vel;
+        float distancia_a_percorrer = direcao.Magnitude();
 
-    box.SomaVet(direcao);
-    Vec2 t_pos = t_map->FindTile(guarda_pos.x, guarda_pos.y);
-    int tile_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-
-    //se colidir em algo
-    if(tile_info == 0 || tile_info == 13 || tile_info == 14 || tile_info == 18 || tile_info == 19){
-        box.x = box_anterior.x;
-        box.y = box_anterior.y;
-        box.SubtraiVet(direcao*1.8);
-        movimento_atual = PARADO;
-        sp.PauseAnimation();
-    }
-
-    if(calcular_proximo_passo){
-        movimento_atual = PARADO;
-    }
-
-
-    //Animação
-    if(movimento_atual == SE){
-        if(movimento_anterior != SE){
-            sp.SetFrameStart(m_sudeste);
-            sp.SetFrameAnimation(m_dur);
-            movimento_anterior = SE;
+        //se for passar, so andar ate o limite
+        if(distancia_a_percorrer >= distancia_falta){
+            direcao = guarda_pos_desejada - guarda_pos;
+            calcular_proximo_passo = true;
         }
-    }
-    else if(movimento_atual == NE){
-        if(movimento_anterior != NE){
-            sp.SetFrameStart(m_nordeste);
-            sp.SetFrameAnimation(m_dur);
-            movimento_anterior = NE;
+
+        box.SomaVet(direcao);
+        Vec2 t_pos = t_map->FindTile(guarda_pos.x, guarda_pos.y);
+        int tile_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+
+        //se colidir em algo
+        if(tile_info == 0 || tile_info == 13 || tile_info == 14 || tile_info == 18 || tile_info == 19){
+            box.x = box_anterior.x;
+            box.y = box_anterior.y;
+            box.SubtraiVet(direcao*1.8);
+            movimento_atual = PARADO;
+            sp.PauseAnimation();
         }
-    }
-    else if(movimento_atual == NO){
-        if(movimento_anterior != NO){
-            sp.SetFrameStart(m_noroeste);
-            sp.SetFrameAnimation(m_dur);
-            movimento_anterior = NO;
+
+        if(calcular_proximo_passo){
+            movimento_atual = PARADO;
         }
-    }
-    else if(movimento_atual == SO){
-        if(movimento_anterior != SO){
-            sp.SetFrameStart(m_sudoeste);
-            sp.SetFrameAnimation(m_dur);
-            movimento_anterior = SO;
+
+
+        //Animação
+        if(movimento_atual == SE){
+            if(movimento_anterior != SE){
+                sp.SetFrameStart(m_sudeste);
+                sp.SetFrameAnimation(m_dur);
+                movimento_anterior = SE;
+            }
+        }
+        else if(movimento_atual == NE){
+            if(movimento_anterior != NE){
+                sp.SetFrameStart(m_nordeste);
+                sp.SetFrameAnimation(m_dur);
+                movimento_anterior = NE;
+            }
+        }
+        else if(movimento_atual == NO){
+            if(movimento_anterior != NO){
+                sp.SetFrameStart(m_noroeste);
+                sp.SetFrameAnimation(m_dur);
+                movimento_anterior = NO;
+            }
+        }
+        else if(movimento_atual == SO){
+            if(movimento_anterior != SO){
+                sp.SetFrameStart(m_sudoeste);
+                sp.SetFrameAnimation(m_dur);
+                movimento_anterior = SO;
+            }
         }
     }
 }

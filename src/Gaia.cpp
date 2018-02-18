@@ -100,6 +100,7 @@ void Gaia::Update(float dt){
     vel = 300 * dt; //default
 
     if(!pause){
+        vel = 450 * dt;
         if(!modo_manual){
             if(primeiro_mov_modo_manual){
                 mov_atual = vet_mov.back();
@@ -1055,7 +1056,9 @@ void Gaia::PushMovimento(int mov){
 
 void Gaia::NotifyCollision(GameObject& other){
     if(other.Is("Guarda")){
-        hp--; 
+        if(!EstaTransparente()){
+            hp--; 
+        }
     }
     if(other.Is("Velhor")){
         box.x = box_anterior.x;

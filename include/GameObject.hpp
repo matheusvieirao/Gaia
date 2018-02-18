@@ -27,7 +27,7 @@ class GameObject {
         virtual bool Is(std::string type) = 0;
         virtual bool IsDead() = 0;
         virtual Rect GetBoxColisao();
-        void PushMovimento(int mov);
+        virtual void PushMovimento(int mov);
         void SetPause(bool pausar);
         void AcharComodo();
         int GetAlturaPe();

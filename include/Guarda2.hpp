@@ -46,6 +46,7 @@ class Guarda2 : public GameObject{
         bool VerificarMapa(int x, int y, int map_width, int map_height);
         void InserirOrdenado(int x, int y, Celula *cel_aux);
 
+        bool TileAndavel(Vec2 pos); //recebe uma posicao (sem ser a posicao do tile, a posicao original do box) e ve se nesse tile o personagem pode andar
         void CalcularMovimentoAtual(TileMap* t_map);
         void Andar(float vel, TileMap* t_map); //Anda em direção a guarda_pos_desejada
 		

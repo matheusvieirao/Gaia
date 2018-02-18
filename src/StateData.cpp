@@ -64,9 +64,9 @@ void StateData::Carregar(std::string nome){
         state_atual = 2;
 
         gaia_comodo = 4;
-        gaia_t_pos = Vec2(46, 16);
-        gaia_t_pos_antiga = Vec2(46, 16);
-        gaia_t_pos_inicio_comodo = Vec2(46, 16);
+        gaia_t_pos = Vec2(43, 16);
+        gaia_t_pos_antiga = Vec2(43, 16);
+        gaia_t_pos_inicio_comodo = Vec2(43, 16);
 
         gaia_hp = 10;
         gaia_poderes = 0;

@@ -305,6 +305,7 @@ void Guarda2::NotifyCollision(GameObject& other){
         }
     }
     else if(other.Is("Chicote")){
+
         som_chicote_hit.Open("audio/sons/hit.ogg");
         som_chicote_hit.Play(0);
         hp--;
@@ -315,10 +316,18 @@ void Guarda2::NotifyCollision(GameObject& other){
         direcao_anterior.x = box_anterior.x;
         direcao_anterior.y = box_anterior.y;
 
-        direcao = direcao.MoveTo(direcao_anterior, 10);
-
-        box.x = direcao.x;
-        box.y = direcao.y;
+        int modulo = 10;
+        while(modulo > 0){
+            direcao = direcao.MoveTo(direcao_anterior, modulo);
+            if(TileAndavel(direcao)){
+                box.x = direcao.x;
+                box.y = direcao.y;
+                modulo = -1;
+            }
+            else{
+                modulo--;
+            }
+        }
     }
 }
 
@@ -478,6 +487,22 @@ void Guarda2::InserirOrdenado(int x, int y, Celula* cel_aux){
     }
 }
 
+bool Guarda2::TileAndavel(Vec2 pos){
+    TileMap* t_map = Game::GetInstance().GetCurrentState().GetTileMap();
+    Vec2 t_pos = t_map->FindTile(pos.x, pos.y);
+    int tile_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+
+    if(t_map == nullptr){
+        printf("ERROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO AH\n");
+    }
+    //se colidir em algo
+    if(tile_info == 0 || tile_info == 13 || tile_info == 14 || tile_info == 18 || tile_info == 19){
+        return(false);
+    }
+    else{
+        return(true);
+    }
+}
 
 void Guarda2::CalcularMovimentoAtual(TileMap* t_map){
     if(caminho.size() > 0){
@@ -539,11 +564,9 @@ void Guarda2::Andar(float vel, TileMap* t_map){
         }
 
         box.SomaVet(direcao);
-        Vec2 t_pos = t_map->FindTile(guarda_pos.x, guarda_pos.y);
-        int tile_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
 
         //se colidir em algo
-        if(tile_info == 0 || tile_info == 13 || tile_info == 14 || tile_info == 18 || tile_info == 19){
+        if(!TileAndavel(guarda_pos)){
             box.x = box_anterior.x;
             box.y = box_anterior.y;
             box.SubtraiVet(direcao*1.8);

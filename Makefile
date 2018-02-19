@@ -27,10 +27,13 @@ DEP_PATH = dep
 CPP_FILES = $(wildcard $(SRC_PATH)/*.cpp)
 OBJ_FILES = $(addprefix $(BIN_PATH)/,$(notdir $(CPP_FILES:.cpp=.o)))
 DEP_FILES = $(wildcard $(DEP_PATH)/*.d)
+#no momento eu to tendo que compilar o rc manualmente mesmo com o comando "windres icon.rc -O coff -o icon.res" e colocando o res na pasta bin pq nao sei fazer makefile direito
+RC_FILES = $(wildcard $(SRC_PATH)/*.rc) 
+RES_FILES = $(addprefix $(BIN_PATH)/,$(notdir $(RC_FILES:.rc=.res))) 
 
 # Nome do executável final
 # MODIFIQUE AQUI NOMEANDO COM SEU NOME E MATRÍCULA
-EXEC = JOGO
+EXEC = GAIA
 
 # ---------------------------------------------------------------------------- #
 # Caso o Sistema Operacional seja Windows, modifica-se as seguintes variáveis: #
@@ -72,7 +75,7 @@ endif
 # Regra default:
 all: $(EXEC)
 # Regra de criação do executável final:
-$(EXEC): $(OBJ_FILES)
+$(EXEC): $(OBJ_FILES) $(RES_FILES)
 	$(CC) -o $@ $^ $(LIBS)
 
 # Regra de inferência para criação dos objetos de compilação:

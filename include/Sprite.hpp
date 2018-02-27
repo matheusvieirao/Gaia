@@ -102,6 +102,7 @@ class Sprite {
         void SetClip(int x, int y, int w, int h);
         void Update(float dt);
         void Render(int x, int y, float angle = 0);
+        void RenderBox(int x, int y);
         int GetWidth();
         int GetHeight();
         int GetFrameStart();

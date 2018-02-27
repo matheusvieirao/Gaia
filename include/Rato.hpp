@@ -22,7 +22,7 @@ class Rato : public GameObject{
         Rato(float x, float y, int comodo_atual, bool chave);
         virtual ~Rato();
         void Update(float dt);
-        int AndarAleatorio(float vel, Vec2 rato_t_pos, TileMap* t_map);
+        int AndarAleatorio(Vec2 rato_t_pos, TileMap* t_map);
         void Andar(float vel, TileMap* t_map);
         void PararParaTras();
         int CalcularFulga(Vec2 rato_t_pos, Vec2 gaia_t_pos, TileMap* t_map);

@@ -1007,11 +1007,11 @@ Vec2 Gaia::GetTPos(){
 }
 
 int Gaia::GetDirecao(){
+    return(direcao);
+    /*
     int frame_start;
 
-    return(direcao);
-
-    /*if(sprite_atual == ANDANDO){
+    if(sprite_atual == ANDANDO){
         frame_start = sp_andando.GetFrameStart();
     }
     else if(sprite_atual == CORRENDO){

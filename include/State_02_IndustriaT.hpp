@@ -19,7 +19,8 @@
 #include "State_00_Title.hpp"
 #include "Collision.hpp"
 #include "Gaia.hpp"
-#include "Guarda2.hpp"
+#include "Guarda.hpp"
+#include "GuardaObservador.hpp"
 #include "State_03_IndustriaSS.hpp"
 
 //enum mov{ S, SE, L, NE, N, NO, O, SO, PARADO};

@@ -54,7 +54,7 @@ void Rato::Update(float dt){
     if(estado_atual == DESCANSANDO_PARADO){
         mod_maior_distancia = MaiorDistancia(rato_t_pos, gaia_t_pos);
         if(tempo_estado.Get() > tempo_devagar){
-            andar_n_tiles = AndarAleatorio(dt*vel_devagar, rato_t_pos, t_map);
+            andar_n_tiles = AndarAleatorio(rato_t_pos, t_map);
             estado_atual = DESCANSANDO_ANDANDO;
             tempo_estado.Restart();
         }
@@ -119,7 +119,7 @@ void Rato::Update(float dt){
     }
 }
 
-int Rato::AndarAleatorio(float vel, Vec2 rato_t_pos, TileMap* t_map){
+int Rato::AndarAleatorio(Vec2 rato_t_pos, TileMap* t_map){
     int direcao;
     int i = 0;
     bool direcao_errada = true;

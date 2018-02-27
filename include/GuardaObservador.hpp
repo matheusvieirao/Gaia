@@ -1,5 +1,5 @@
-#ifndef GUARDA2_H
-#define GUARDA2_H
+#ifndef GUARDAOBSERVADOR_H
+#define GUARDAOBSERVADOR_H
 
 #include "GameObject.hpp"
 #include "Sprite.hpp"
@@ -11,6 +11,7 @@
 #include "Game.hpp"
 #include "Camera.hpp"
 #include "Gaia.hpp"
+#include "Collision.hpp"
 #include <iostream>
 #include <math.h>
 
@@ -24,11 +25,11 @@
 #define SO  8
 #define PARADO 9
 
-class Guarda2 : public GameObject{
+class GuardaObservador : public GameObject{
     public:
-        enum GuardaEstado{DESCANSANDO_PARADO, DESCANSANDO_ANDANDO, PERSEGUINDO, ATACANDO, PARADO_AUTOMATICO, MOVIMENTO_AUTOMATICO, SAIR};
-        Guarda2(float x, float y, GuardaEstado estado_inicial, int gaia_comodo, std::string nome);
-        virtual ~Guarda2();
+        enum GuardaObservadorEstado{VIGILIA_PARADO, VIGILIA_ANDANDO, PERSEGUINDO, ATACANDO};
+        GuardaObservador(std::vector<Vec2> coord, int gaia_comodo, TileMap* t_map);
+        virtual ~GuardaObservador();
         void Update(float dt);
         void Render();
         int GetAlturaPe();
@@ -48,33 +49,18 @@ class Guarda2 : public GameObject{
 
         bool TileAndavel(Vec2 pos); //recebe uma posicao (sem ser a posicao do tile, a posicao original do box) e ve se nesse tile o personagem pode andar
         void CalcularMovimentoAtual(TileMap* t_map);
-        void Andar(float vel, TileMap* t_map); //Anda em direção a guarda_pos_desejada
+        void Andar(float vel); //Anda em direção a guarda_pos_desejada
 		
-        void AndarAleatorio(TileMap* t_map);
         bool EstaNaVisao(Vec2 gaia_t_pos);
-
-        /////////////////////////// void EncontraNoMesmoTile(Vec2 gaia_pos, Vec2 guarda_pos);
-        // void DrawRectangle(int x1, int y1, int x2, int y2);
-        // void DrawRectangleX(int x1, int y1, int x2, int y2);
-        // void DrawRectangle(Vec2 v);
-        // void DrawRectangleX(Vec2 v);
 
     private:
         Sprite sp;
-        std::string nome;
         int hp;
         Timer tempo_estado;
         Timer pausa;
-        GuardaEstado estado_atual;
+        GuardaObservadorEstado estado_atual;
         Rect box_anterior;
         Sound som_chicote_hit;
-
-        //////////////////////// int andar_n_tiles;
-        // int contador_fuga;
-        bool mov_automatico; //usada para andar no automatico
-
-
-        //std::vector<int> movimentos;
 
         //Variaveis utilizadas para o algoritmo de busca A*, (CalcularCaminho, QuantoFalta, VerificarMapa, InserirOrdenado)
         std::vector<Celula*> celulas; 
@@ -94,7 +80,9 @@ class Guarda2 : public GameObject{
 
         bool acabou_de_entrar_no_estado;
 
-
+        //usadas no estado de vigilia
+        std::vector<Vec2> coord_vet; //vetor com todos os pontos em que o observador passa durante a vigilia. os pontos sao percorridos em ordem e dps voltam ao inicio (ex: 0, 1, 2, 3, 0, 1...)
+        int coord_vigilia_atual;
 };
 
-#endif // GUARDA_H
+#endif // GUARDAOBSERVADOR_H

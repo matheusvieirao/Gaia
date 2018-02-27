@@ -98,6 +98,25 @@ void Sprite::Render(int x, int y, float angle) {
     SDL_RenderCopyEx(Game::GetInstance().GetRenderer(), texture, &clip_rect, &dstrect, angle, nullptr, SDL_FLIP_NONE);
 }
 
+void Sprite::RenderBox(int x, int y) {
+    printf("renderhitbox\n");
+    SDL_Rect dstrect;
+    dstrect.x = x;
+    dstrect.y = y;
+    dstrect.w = clip_rect.w * scale_x;
+    dstrect.h = clip_rect.h * scale_y;
+
+
+
+    SDL_RenderDrawLine(Game::GetInstance().GetRenderer(), dstrect.x, dstrect.y, dstrect.x+dstrect.w, dstrect.y);
+    SDL_RenderDrawLine(Game::GetInstance().GetRenderer(), dstrect.x+dstrect.w, dstrect.y, dstrect.x+dstrect.w, dstrect.y+dstrect.h);
+    SDL_RenderDrawLine(Game::GetInstance().GetRenderer(), dstrect.x+dstrect.w, dstrect.y+dstrect.h, dstrect.x, dstrect.y+dstrect.h);
+    SDL_RenderDrawLine(Game::GetInstance().GetRenderer(), dstrect.x, dstrect.y+dstrect.h, dstrect.x, dstrect.y);
+
+    SDL_RenderDrawLine(Game::GetInstance().GetRenderer(), dstrect.x, dstrect.y, dstrect.x+dstrect.w, dstrect.y+dstrect.h);
+    SDL_RenderDrawLine(Game::GetInstance().GetRenderer(), dstrect.x+dstrect.w, dstrect.y, dstrect.x, dstrect.y+dstrect.h);
+}
+
 void Sprite::PauseAnimation(){
     pause = true;
 }

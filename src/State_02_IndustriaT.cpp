@@ -445,39 +445,96 @@ void State_02_IndustriaT::InicializarComodo(int comodo){
     if(comodo == 4) { //corredor
         Vec2 guarda_t_pos = Vec2(50, 17);
         Vec2 guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a1"));
+        AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PERSEGUINDO, comodo, "a1"));
 
         guarda_t_pos = Vec2(48, 16);
         guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a2"));
+        AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PERSEGUINDO, comodo, "a2"));
 
         guarda_t_pos = Vec2(50, 15);
         guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, Guarda2::PERSEGUINDO, comodo, "a3"));
+        AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PERSEGUINDO, comodo, "a3"));
 
-        Guarda2::GuardaEstado estado_guarda;
+        Guarda::GuardaEstado estado_guarda;
         if(!data.ja_ficou_encurralada){
-            estado_guarda = Guarda2::PARADO_AUTOMATICO;
+            estado_guarda = Guarda::PARADO_AUTOMATICO;
         }
         else{
-            estado_guarda = Guarda2::DESCANSANDO_PARADO;
+            estado_guarda = Guarda::DESCANSANDO_PARADO;
         }
 
         guarda_t_pos = Vec2(11, 15);
         guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, estado_guarda, comodo, "b1"));
+        AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, estado_guarda, comodo, "b1"));
 
         guarda_t_pos = Vec2(11, 17);
         guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, estado_guarda, comodo, "b2"));
+        AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, estado_guarda, comodo, "b2"));
 
         guarda_t_pos = Vec2(3, 15);
         guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, estado_guarda, comodo, "c1"));
+        AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, estado_guarda, comodo, "c1"));
 
         guarda_t_pos = Vec2(3, 17);
         guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        AddObject(new Guarda2(guarda_pe_pos.x, guarda_pe_pos.y, estado_guarda, comodo, "c2"));
+        AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, estado_guarda, comodo, "c2"));
+    }
+    else if(comodo == 16) { //refeitorio
+        std::vector<Vec2> v_guarda_t_pos;
+
+        v_guarda_t_pos.push_back(Vec2(54,18));
+        v_guarda_t_pos.push_back(Vec2(54,26));
+        AddObject(new GuardaObservador(v_guarda_t_pos, comodo, tile_map));
+
+        v_guarda_t_pos.clear();
+        v_guarda_t_pos.push_back(Vec2(50,23));
+        v_guarda_t_pos.push_back(Vec2(50,21));
+        AddObject(new GuardaObservador(v_guarda_t_pos, comodo, tile_map));
+
+        v_guarda_t_pos.clear();
+        v_guarda_t_pos.push_back(Vec2(54,28));
+        v_guarda_t_pos.push_back(Vec2(50,28));
+        AddObject(new GuardaObservador(v_guarda_t_pos, comodo, tile_map));
+
+        v_guarda_t_pos.clear();
+        v_guarda_t_pos.push_back(Vec2(45,21));
+        v_guarda_t_pos.push_back(Vec2(45,27));
+        AddObject(new GuardaObservador(v_guarda_t_pos, comodo, tile_map));
+
+        v_guarda_t_pos.clear();
+        v_guarda_t_pos.push_back(Vec2(42,27));
+        v_guarda_t_pos.push_back(Vec2(42,21));
+        AddObject(new GuardaObservador(v_guarda_t_pos, comodo, tile_map));
+
+    }
+    else if(comodo == 8){ //dormitorio
+        std::vector<Vec2> v_guarda_t_pos;
+
+        v_guarda_t_pos.clear();
+        v_guarda_t_pos.push_back(Vec2(33,27));
+        v_guarda_t_pos.push_back(Vec2(33,22));
+        v_guarda_t_pos.push_back(Vec2(28,22));
+        v_guarda_t_pos.push_back(Vec2(28,27));
+        AddObject(new GuardaObservador(v_guarda_t_pos, comodo, tile_map));
+
+        v_guarda_t_pos.clear();
+        v_guarda_t_pos.push_back(Vec2(28,22));
+        v_guarda_t_pos.push_back(Vec2(28,27));
+        v_guarda_t_pos.push_back(Vec2(33,27));
+        v_guarda_t_pos.push_back(Vec2(33,22));
+        AddObject(new GuardaObservador(v_guarda_t_pos, comodo, tile_map));
+
+        v_guarda_t_pos.clear();
+        v_guarda_t_pos.push_back(Vec2(15,24));
+        v_guarda_t_pos.push_back(Vec2(24,24));
+        v_guarda_t_pos.push_back(Vec2(15,24));
+        v_guarda_t_pos.push_back(Vec2(15,22));
+        AddObject(new GuardaObservador(v_guarda_t_pos, comodo, tile_map));
+
+        v_guarda_t_pos.clear();
+        v_guarda_t_pos.push_back(Vec2(24,27));
+        v_guarda_t_pos.push_back(Vec2(17,27));
+        AddObject(new GuardaObservador(v_guarda_t_pos, comodo, tile_map));
     }
 }
 

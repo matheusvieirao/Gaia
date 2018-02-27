@@ -1,9 +1,9 @@
 s1_num_historia 1
-state_atual 2
-gaia_comodo 16
-gaia_t_pos 54 16
-gaia_t_pos_antiga 54 16
-gaia_t_pos_inicio_comodo 54 15
+state_atual 3
+gaia_comodo 12
+gaia_t_pos 29 23
+gaia_t_pos_antiga 29 23
+gaia_t_pos_inicio_comodo 32 16
 gaia_hp 10
 gaia_poderes 2
 p_deposito 1

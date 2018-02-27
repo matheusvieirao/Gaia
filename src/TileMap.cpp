@@ -97,7 +97,8 @@ void TileMap::RenderLayer(int layer, int lim_x, int lim_y, int camera_x, int cam
 
     for(j=0; j<map_height; j++){
         for(k=0; k<map_width; k++) {
-            if(k>=lim_x && j>=lim_y){
+            //if((k>=lim_x && j>=lim_y){
+            if((k>=lim_x-1 && j>=lim_y-1) && !(k>=lim_x-1 && k<=lim_x && j>=lim_y-1 && j<=lim_y)){
                 v.x = k;
                 v.y = j;
                 v = v.CardToIsometric(tile_width, tile_height);

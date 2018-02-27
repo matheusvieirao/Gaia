@@ -3,10 +3,6 @@
 //State_03_IndustriaSS* State_03_IndustriaSS::instance = nullptr;
 
 State_03_IndustriaSS::State_03_IndustriaSS(StateData data):bg("img/telas/background.jpg"){
-    if(!musica1.IsOpen()){
-        musica1.Open("audio/02_industria/musica fase2 layer 1.ogg");
-        musica1.Play(-1);
-    }
 
     //if(instance == nullptr) //da erro se fizer isso ----------
     //instance = this;
@@ -419,7 +415,7 @@ void State_03_IndustriaSS::RenderArray(){
         //se tiver um objeto na frente do jogador renderiza o objeto
         if(info_1 != 0 || info_2 != 0 || info_3 != 0 ){
             //se nao for esteira
-            if(!((info_1 >= 25 && info_1 <= 52)||(info_2 >= 25 && info_2 <= 52)||(info_3 >= 25 && info_3 <= 52))){
+            if((info_1 >= 47)||(info_2 >= 47)||(info_3 >= 47)){
                 tile_map->RenderLayer(data.gaia_comodo+2, pos.x, pos.y, Camera::pos.x, Camera::pos.y); //Renderiza a camada t_objeto que estao abaixo ou na mesma linha do personagem
     //            tile_map->RenderLayer(7, Camera::pos.x, Camera::pos.y); //Renderiza a camada t_parede_dw
             }
@@ -441,7 +437,10 @@ void State_03_IndustriaSS::Pause(){
 }
 
 void State_03_IndustriaSS::Resume(){
-
+    if(!musica1.IsOpen()){
+        musica1.Open("audio/02_industria/musica fase2 layer 1.ogg");
+        musica1.Play(-1);
+    }
 }
 
 bool State_03_IndustriaSS::Falar(float delay, std::string arquivo){

@@ -487,9 +487,9 @@ bool Guarda::TileAndavel(Vec2 pos){
     TileMap* t_map = Game::GetInstance().GetCurrentState().GetTileMap();
     Vec2 t_pos = t_map->FindTile(pos.x, pos.y);
     int tile_info = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-
+    
     if(t_map == nullptr){
-        printf("ERROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO AH\n");
+        std::cout << "t_map não pode ser nullptr. Guarda::TileAndavel"  << std::endl;
     }
     //se colidir em algo
     if(tile_info == 0 || tile_info == 13 || tile_info == 14 || tile_info == 18 || tile_info == 19){

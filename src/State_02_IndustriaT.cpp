@@ -592,9 +592,13 @@ bool State_02_IndustriaT::Is(std::string type){
 }
 
 void State_02_IndustriaT::Pause(){
-    musica1.Stop(0);
-    musica2.Stop(0);
-    if(data.ja_pegou_chave_rato) {
+    if(musica1.IsOpen()){
+        musica1.Stop(0);
+    }
+    if(musica2.IsOpen()){
+        musica2.Stop(0);
+    }
+    if(musica3.IsOpen()){
         musica3.Stop(0);
     }
 }
@@ -609,9 +613,16 @@ void State_02_IndustriaT::Resume(){
     if(!musica3.IsOpen()){
         musica3.Open("audio/02_industria/musica fase2 layer 3.ogg");
     }
-    musica1.Play(-1);
-    musica2.Play(-1);
-    if(data.ja_pegou_chave_rato){
+
+    if(!data.ja_falou_velho){ //musica agitada durante a primeira perseguição
+        musica3.Play(-1);
+    }
+    if(data.ja_falou_velho && !data.ja_pegou_chicote){ //se tiver no terreo no modo stealth, sem o chicote, sem poder atacar
+        musica2.Play(-1);
+    }
+    if(data.ja_pegou_chicote){ //quando sobe ja podendo atacar
+        musica1.Play(-1);
+        musica2.Play(-1);
         musica3.Play(-1);
     }
 }

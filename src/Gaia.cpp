@@ -294,7 +294,7 @@ void Gaia::Update(float dt){
                     box.h = sp_correndo.GetHeight();
                     box.x = centro_x-box.w/2;
                     box.y = centro_y-box.h/2;
-                    altura_pe = 50;
+                    altura_pe = 43;
                     altura_box_col = 60;
                     largura_box_col = 80;
                     m_dur = sp_correndo.GetAnimationDur();
@@ -539,12 +539,45 @@ void Gaia::Render(){
     }
 }
 
+bool Gaia::TileAndavel(){
+    //limites de 1/4 da caixa de colisao, pq a caixa inteira a gaia fica emperrando em varias quinas
+    Vec2 pos_no(box.GetCenter().x-largura_box_col/4 , box.y+box.h-altura_pe-altura_box_col/4);
+    Vec2 pos_ne(pos_no.x+largura_box_col/2, pos_no.y);
+    Vec2 pos_so(pos_no.x, pos_no.y+altura_box_col/2);
+    Vec2 pos_se(pos_ne.x, pos_so.y);
+
+    TileMap* t_map = Game::GetInstance().GetCurrentState().GetTileMap();
+
+    if(t_map == nullptr){
+        std::cout << "t_map não pode ser nullptr. - Gaia::TileAndavel"  << std::endl;
+    }
+
+    Vec2 t_pos = t_map->FindTile(pos_no.x, pos_no.y);
+    int t_info_chao1 = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+    t_pos = t_map->FindTile(pos_ne.x, pos_ne.y);
+    int t_info_chao2 = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+    t_pos = t_map->FindTile(pos_so.x, pos_so.y);
+    int t_info_chao3 = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+    t_pos = t_map->FindTile(pos_se.x, pos_se.y);
+    int t_info_chao4 = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+
+    if(t_info_chao1 == 0 || t_info_chao1 ==  18 || t_info_chao1 ==  19 ||
+        t_info_chao2 == 0 || t_info_chao2 ==  18 || t_info_chao2 ==  19 ||
+        t_info_chao3 == 0 || t_info_chao3 ==  18 || t_info_chao3 ==  19 ||
+        t_info_chao4 == 0 || t_info_chao4 ==  18 || t_info_chao4 ==  19){
+            return(false);
+    }
+    else{
+        return(true);
+    }
+}
+
 void Gaia::Andar(int mov, float vel){
     float cos_angulo = 0.866025403784438646763723170752936183471402626905190314027; //30º
     float sen_angulo = 0.5; //30º
     //float tg_angulo = 0.577350269189625764509148780501957455647601751270126876018 ;// 30º
     TileMap* t_map = Game::GetInstance().GetCurrentState().GetTileMap();
-    int t_info_chao, t_info_obj, t_info_chao_futuro, t_info_obj_futuro;
+    int t_info_obj, t_info_chao_futuro, t_info_obj_futuro;
 
 
     box_anterior.x = box.x;
@@ -567,9 +600,7 @@ void Gaia::Andar(int mov, float vel){
             box.x += cos_angulo * vel;
             box.y += sen_angulo* vel;
             //se andar em tiles vazios voltar o movimento feito (ficar parado)
-            Vec2 t_pos = GetTPos();
-            t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info_chao == 0 || t_info_chao ==  18 || t_info_chao ==  19){
+            if(!TileAndavel()){
                 box.x -= cos_angulo * vel;
                 box.y -= sen_angulo* vel;
                 sp_andando.SetFrame(m_sudeste+1);
@@ -584,9 +615,7 @@ void Gaia::Andar(int mov, float vel){
             }
             box.x += cos_angulo * vel;
             box.y -= sen_angulo* vel;
-            Vec2 t_pos = GetTPos();
-            t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info_chao == 0 || t_info_chao ==  18 || t_info_chao ==  19){
+            if(!TileAndavel()){
                 box.x -= cos_angulo * vel;
                 box.y += sen_angulo* vel;
                 sp_andando.SetFrame(m_nordeste+1);
@@ -601,9 +630,7 @@ void Gaia::Andar(int mov, float vel){
             }
             box.x -= cos_angulo * vel;
             box.y -= sen_angulo* vel;
-            Vec2 t_pos = GetTPos();
-            t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info_chao == 0 || t_info_chao ==  18 || t_info_chao ==  19){
+            if(!TileAndavel()){
                 box.x += cos_angulo * vel;
                 box.y += sen_angulo* vel;
                 sp_andando.SetFrame(m_noroeste+1);
@@ -618,9 +645,7 @@ void Gaia::Andar(int mov, float vel){
             }
             box.x -= cos_angulo * vel;
             box.y += sen_angulo* vel;
-            Vec2 t_pos = GetTPos();
-            t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info_chao == 0 || t_info_chao ==  18 || t_info_chao ==  19){
+            if(!TileAndavel()){
                 box.x += cos_angulo * vel;
                 box.y -= sen_angulo* vel;
                 sp_andando.SetFrame(m_sudoeste+1);
@@ -643,9 +668,7 @@ void Gaia::Andar(int mov, float vel){
             box.x += cos_angulo * vel;
             box.y += sen_angulo* vel;
             //se andar em tiles vazios voltar o movimento feito (ficar parado)
-            Vec2 t_pos = GetTPos();
-            t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info_chao == 0 || t_info_chao ==  18 || t_info_chao ==  19){
+            if(!TileAndavel()){
                 box.x -= cos_angulo * vel;
                 box.y -= sen_angulo* vel;
                 sp_correndo.SetFrame(m_sudeste+1);
@@ -660,9 +683,7 @@ void Gaia::Andar(int mov, float vel){
             }
             box.x += cos_angulo * vel;
             box.y -= sen_angulo* vel;
-            Vec2 t_pos = GetTPos();
-            t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info_chao == 0 || t_info_chao ==  18 || t_info_chao ==  19){
+            if(!TileAndavel()){
                 box.x -= cos_angulo * vel;
                 box.y += sen_angulo* vel;
                 sp_correndo.SetFrame(m_nordeste+1);
@@ -677,9 +698,7 @@ void Gaia::Andar(int mov, float vel){
             }
             box.x -= cos_angulo * vel;
             box.y -= sen_angulo* vel;
-            Vec2 t_pos = GetTPos();
-            t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info_chao == 0 || t_info_chao ==  18 || t_info_chao ==  19){
+            if(!TileAndavel()){
                 box.x += cos_angulo * vel;
                 box.y += sen_angulo* vel;
                 sp_correndo.SetFrame(m_noroeste+1);
@@ -694,9 +713,7 @@ void Gaia::Andar(int mov, float vel){
             }
             box.x -= cos_angulo * vel;
             box.y += sen_angulo* vel;
-            Vec2 t_pos = GetTPos();
-            t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-            if(t_info_chao == 0 || t_info_chao ==  18 || t_info_chao ==  19){
+            if(!TileAndavel()){
                 box.x += cos_angulo * vel;
                 box.y -= sen_angulo* vel;
                 sp_correndo.SetFrame(m_sudoeste+1);
@@ -757,12 +774,8 @@ void Gaia::Andar(int mov, float vel){
             Parar();
         }
 
-        Vec2 t_pos = GetTPos();
-        t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-        t_info_obj = t_map->GetTileInfo(comodo_atual+2, t_pos.x, t_pos.y);
-
         //se andar em tiles vazios voltar o movimento feito (ficar parado)
-        if(t_info_chao == 0){
+        if(!TileAndavel()){
             if(mov == SE) {
                 box.x -= cos_angulo * vel;
                 box.y -= sen_angulo * vel;
@@ -781,6 +794,10 @@ void Gaia::Andar(int mov, float vel){
             }
         }
 
+
+        Vec2 t_pos = GetTPos();
+        int t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+        t_info_obj = t_map->GetTileInfo(comodo_atual+2, t_pos.x, t_pos.y);
         //se o chao for o tile verde claro no tiled (que no tile_set.png é cinza) colidir ou empurrar
         if(t_info_chao == 19){
             if(mov == SE) {
@@ -927,7 +944,7 @@ void Gaia::Parar(){
             sp_correndo.PauseAnimation();
         }
         else if(direcao == NE){
-            sp_correndo.SetFrame(m_nordeste+1);
+            sp_correndo.SetFrame(m_nordeste+2);
             sp_correndo.PauseAnimation();
         }
         else if(direcao == NO){
@@ -935,7 +952,7 @@ void Gaia::Parar(){
             sp_correndo.PauseAnimation();
         }
         else if(direcao == SO){
-            sp_correndo.SetFrame(m_sudoeste+1);
+            sp_correndo.SetFrame(m_sudoeste+2);
             sp_correndo.PauseAnimation();
         }
     }
@@ -1059,6 +1076,11 @@ void Gaia::NotifyCollision(GameObject& other){
     if(other.Is("Guarda")){
         if(!EstaTransparente()){
             hp--; 
+        }
+    }
+    if(other.Is("GuardaObservador")){
+        if(!EstaTransparente()){
+            hp = -1; 
         }
     }
     if(other.Is("Velhor")){

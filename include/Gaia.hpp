@@ -40,6 +40,7 @@ class Gaia : public GameObject{
         int GetHP();
         void SetPause(bool pausar);
         void PushMovimento(int mov);
+        bool TileAndavel();
         void Andar(int mov, float vel);
         void DeslocamentoEsteira(float dt);
         void AtualizarData(StateData data);

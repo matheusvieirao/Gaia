@@ -37,9 +37,9 @@ Gaia::Gaia(float x, float y, StateData data){
     sp_chicote.SetScaleY(1.5);
 
     sp_carro.Open("img/personagens/gaia_carro.png");
-    sp_carro.SetFrameTotal(36);
+    sp_carro.SetFrameTotal(24);
     sp_carro.SetFrameStart(1);
-    sp_carro.SetFrameAnimation(9);
+    sp_carro.SetFrameAnimation(6);
     sp_carro.SetFrameTime(0.2);
     sp_carro.SetScaleX(1.2);
     sp_carro.SetScaleY(1.2);
@@ -394,7 +394,7 @@ void Gaia::Update(float dt){
                     box.h = sp_carro.GetHeight();
                     box.x = centro_x-box.w/2;
                     box.y = centro_y-box.h/2;
-                    altura_pe = 50;
+                    altura_pe = 150;
                     altura_box_col = 60;
                     largura_box_col = 80;
                     m_dur = sp_carro.GetAnimationDur();
@@ -774,8 +774,11 @@ void Gaia::Andar(int mov, float vel){
             Parar();
         }
 
+        Vec2 t_pos = GetTPos();
+        int t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
+        t_info_obj = t_map->GetTileInfo(comodo_atual+2, t_pos.x, t_pos.y);
         //se andar em tiles vazios voltar o movimento feito (ficar parado)
-        if(!TileAndavel()){
+        if(t_info_chao == 0){
             if(mov == SE) {
                 box.x -= cos_angulo * vel;
                 box.y -= sen_angulo * vel;
@@ -793,11 +796,6 @@ void Gaia::Andar(int mov, float vel){
                 box.y -= sen_angulo* vel;
             }
         }
-
-
-        Vec2 t_pos = GetTPos();
-        int t_info_chao = t_map->GetTileInfo(comodo_atual, t_pos.x, t_pos.y);
-        t_info_obj = t_map->GetTileInfo(comodo_atual+2, t_pos.x, t_pos.y);
         //se o chao for o tile verde claro no tiled (que no tile_set.png é cinza) colidir ou empurrar
         if(t_info_chao == 19){
             if(mov == SE) {

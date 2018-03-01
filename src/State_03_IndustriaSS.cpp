@@ -89,10 +89,14 @@ void State_03_IndustriaSS::Update(float dt){
     if(!esta_pausado){
         if(In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
             pause.SetPause();
+            Pause(); //para parar as musicas
         }
     }
     if(esta_pausado){ //esse if tem que estar depois do if passado.
         pause.Update(data);
+        if(!pause.IsPaused()){
+            Resume();
+        }
     }
     if(pause.QuitRequested()){
         Game::GetInstance().Push(new State_00_Title());
@@ -439,8 +443,18 @@ bool State_03_IndustriaSS::Is(std::string type){
 }
 
 void State_03_IndustriaSS::Pause(){
-    if(musica1.IsOpen())
+    if(musica1.IsOpen()){
         musica1.Stop();
+    }
+    if(som_esteira.IsOpen()){
+        som_esteira.Stop();
+    }
+    if(efeito.IsOpen()){ 
+        efeito.Stop();
+    }
+    if(fala.IsOpen()){ 
+        fala.Stop();
+    }
 }
 
 void State_03_IndustriaSS::Resume(){

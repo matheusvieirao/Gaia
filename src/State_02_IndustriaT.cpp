@@ -89,10 +89,14 @@ void State_02_IndustriaT::Update(float dt){
     if(!esta_pausado){
         if(In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
             pause.SetPause();
+            Pause();
         }
     }
-    if(esta_pausado){ //esse if tem que estar depois do if passado.
+    if(esta_pausado){ //esse if tem que estar depois do if(!esta_pausado)
         pause.Update(data);
+        if(!pause.IsPaused()){
+            Resume();
+        }
     }
     if(pause.QuitRequested()){
         Game::GetInstance().Push(new State_00_Title());
@@ -603,6 +607,18 @@ void State_02_IndustriaT::Pause(){
     }
     if(musica3.IsOpen()){
         musica3.Stop(0);
+    }
+    if(som_esteira.IsOpen()){
+        som_esteira.Stop();
+    }
+    if(som_ronco.IsOpen()){ 
+        som_ronco.Stop();
+    }
+    if(efeito.IsOpen()){ 
+        efeito.Stop();
+    }
+    if(fala.IsOpen()){ 
+        fala.Stop();
     }
 }
 

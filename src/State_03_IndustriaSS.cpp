@@ -412,13 +412,20 @@ void State_03_IndustriaSS::RenderArray(){
         int info_1 = tile_map->GetTileInfo(data.gaia_comodo+2, pos.x+1, pos.y);
         int info_2 = tile_map->GetTileInfo(data.gaia_comodo+2, pos.x, pos.y+1);
         int info_3 = tile_map->GetTileInfo(data.gaia_comodo+2, pos.x+1, pos.y+1);
+        int info_4 = tile_map->GetTileInfo(data.gaia_comodo+2, pos.x+2, pos.y+1);
+        int info_5 = tile_map->GetTileInfo(data.gaia_comodo+2, pos.x+1, pos.y+2);
+        int info_6 = tile_map->GetTileInfo(data.gaia_comodo+2, pos.x+2, pos.y+2);
+        int info_7 = tile_map->GetTileInfo(data.gaia_comodo+1, pos.x+1, pos.y+1); //para o caso parede quando a gaia cai no subsolo
         //se tiver um objeto na frente do jogador renderiza o objeto
-        if(info_1 != 0 || info_2 != 0 || info_3 != 0 ){
+        if(info_1 != 0 || info_2 != 0 || info_3 != 0 || info_4 != 0 || info_5 != 0 || info_6 != 0){
             //se nao for esteira
-            if((info_1 >= 47)||(info_2 >= 47)||(info_3 >= 47)){
+            if(info_1 >= 47 || info_2 >= 47 || info_3 >= 47 || info_4 >= 47 || info_5 >= 47 || info_6 >= 47){
                 tile_map->RenderLayer(data.gaia_comodo+2, pos.x, pos.y, Camera::pos.x, Camera::pos.y); //Renderiza a camada t_objeto que estao abaixo ou na mesma linha do personagem
     //            tile_map->RenderLayer(7, Camera::pos.x, Camera::pos.y); //Renderiza a camada t_parede_dw
             }
+        }
+        if(info_7!=0){
+            tile_map->RenderTile(data.gaia_comodo+1, pos.x+1, pos.y+1, Camera::pos.x, Camera::pos.y);
         }
     }
 }

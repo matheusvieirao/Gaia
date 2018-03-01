@@ -208,7 +208,7 @@ void State_02_IndustriaT::Update(float dt){
 
 
         //parte que a gaia entra no lugar de ficar encurralada
-        if(data.ja_ficou_encurralada < 3){
+        if(data.ja_ficou_encurralada < 4){
             TratarEncurralamento();
         }
     }
@@ -344,7 +344,7 @@ void State_02_IndustriaT::Render(){
 //        Collision::DrawHitbox(box2);
 //    }
 
-    if(data.ja_ficou_encurralada == 2){
+    if(data.ja_ficou_encurralada == 3){
         sp_press_d.Render(game_w/2-sp_press_d.GetWidth()/2, game_h/4, 0);
     }
 
@@ -424,16 +424,19 @@ void State_02_IndustriaT::TratarEncurralamento(){
         }
     }
     if(data.ja_ficou_encurralada == 1){
-
         data.ja_ficou_encurralada = 2;
         tempo_encurralada.Restart();
     }
-    if(data.ja_ficou_encurralada == 2){
+    else if(data.ja_ficou_encurralada == 2 && tempo_encurralada.Get() > 1.8){ //printa na tela "aperte D"
+        data.ja_ficou_encurralada = 3;
         data.gaia_poderes = 1;
         Gaia::player->AtualizarData(data);
+        tempo_encurralada.Restart();
+    }
+    else if(data.ja_ficou_encurralada == 3){ //começa a falar se estiver transparente
         if (Gaia::player->EstaTransparente() && tempo_encurralada.Get() > 1){
             tempo_encurralada.Restart();
-            data.ja_ficou_encurralada = 3;
+            data.ja_ficou_encurralada = 4;
             estado = FALA;
             num_fala = 1;
             tempo_falas.Restart();
@@ -564,24 +567,25 @@ void State_02_IndustriaT::ZonaF(){
 }
 
 void State_02_IndustriaT::RenderArray(){
-    Vec2 pos;
-    int info_1, info_2, info_3;
     SortArray();
-
+    Vec2 pos;
     for (unsigned i = 0; i < objectArray.size(); i++) {
-
         objectArray[i]->Render();
         pos.x = objectArray[i]->box.GetCenter().x;
         pos.y = objectArray[i]->box.y + objectArray[i]->box.h - objectArray[i]->GetAlturaPe();
         pos = pos.IsometricToCard(tile_set->GetTileWidth(), tile_set->GetTileHeight());
-        info_1 = tile_map->GetTileInfo(data.gaia_comodo+2, pos.x+1, pos.y);
-        info_2 = tile_map->GetTileInfo(data.gaia_comodo+2, pos.x, pos.y+1);
-        info_3 = tile_map->GetTileInfo(data.gaia_comodo+2, pos.x+1, pos.y+1);
+        int info_1 = tile_map->GetTileInfo(data.gaia_comodo+2, pos.x+1, pos.y);
+        int info_2 = tile_map->GetTileInfo(data.gaia_comodo+2, pos.x, pos.y+1);
+        int info_3 = tile_map->GetTileInfo(data.gaia_comodo+2, pos.x+1, pos.y+1);
+        int info_4 = tile_map->GetTileInfo(data.gaia_comodo+2, pos.x+2, pos.y+1);
+        int info_5 = tile_map->GetTileInfo(data.gaia_comodo+2, pos.x+1, pos.y+2);
+        int info_6 = tile_map->GetTileInfo(data.gaia_comodo+2, pos.x+2, pos.y+2);
         //se tiver um objeto na frente do jogador renderiza o objeto
-        if(info_1 != 0 || info_2 != 0 || info_3 != 0 ){
+        if(info_1 != 0 || info_2 != 0 || info_3 != 0 || info_4 != 0 || info_5 != 0 || info_6 != 0){
             //se nao for esteira
-            if(!((info_1 >= 25 && info_1 <= 52)||(info_2 >= 25 && info_2 <= 52)||(info_3 >= 25 && info_3 <= 52))){
+            if(info_1 >= 47 || info_2 >= 47 || info_3 >= 47 || info_4 >= 47 || info_5 >= 47 || info_6 >= 47){
                 tile_map->RenderLayer(data.gaia_comodo+2, pos.x, pos.y, Camera::pos.x, Camera::pos.y); //Renderiza a camada t_objeto que estao abaixo ou na mesma linha do personagem
+    //            tile_map->RenderLayer(7, Camera::pos.x, Camera::pos.y); //Renderiza a camada t_parede_dw
             }
         }
     }

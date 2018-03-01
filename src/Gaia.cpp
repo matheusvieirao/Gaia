@@ -394,7 +394,7 @@ void Gaia::Update(float dt){
                     box.h = sp_carro.GetHeight();
                     box.x = centro_x-box.w/2;
                     box.y = centro_y-box.h/2;
-                    altura_pe = 150;
+                    altura_pe = 150 ;
                     altura_box_col = 60;
                     largura_box_col = 80;
                     m_dur = sp_carro.GetAnimationDur();
@@ -686,7 +686,7 @@ void Gaia::Andar(int mov, float vel){
             if(!TileAndavel()){
                 box.x -= cos_angulo * vel;
                 box.y += sen_angulo* vel;
-                sp_correndo.SetFrame(m_nordeste+1);
+                sp_correndo.SetFrame(m_nordeste+2);
                 sp_correndo.PauseAnimation();
             }
         }
@@ -716,7 +716,7 @@ void Gaia::Andar(int mov, float vel){
             if(!TileAndavel()){
                 box.x += cos_angulo * vel;
                 box.y -= sen_angulo* vel;
-                sp_correndo.SetFrame(m_sudoeste+1);
+                sp_correndo.SetFrame(m_sudoeste+2);
                 sp_correndo.PauseAnimation();
             }
         }
@@ -1023,40 +1023,6 @@ Vec2 Gaia::GetTPos(){
 
 int Gaia::GetDirecao(){
     return(direcao);
-    /*
-    int frame_start;
-
-    if(sprite_atual == ANDANDO){
-        frame_start = sp_andando.GetFrameStart();
-    }
-    else if(sprite_atual == CORRENDO){
-        frame_start = sp_correndo.GetFrameStart();
-    }
-    else if(sprite_atual == CHICOTE){
-        frame_start = sp_chicote.GetFrameStart();
-    }
-    else if(sprite_atual == TRANSPARENTE){
-        frame_start = sp_transparente.GetFrameStart();
-    }
-    else if(sprite_atual == CARRO){
-        frame_start = sp_carro.GetFrameStart();
-    }
-
-    if(frame_start == m_nordeste){
-        return(NE);
-    }
-    else if(frame_start == m_noroeste){
-        return(NO);
-    }
-    else if(frame_start == m_sudeste){
-        return(SE);
-    }
-    else if(frame_start == m_sudoeste){
-        return(SO);
-    }
-    else {
-        return(direcao);
-    }*/
 }
 
 int Gaia::GetHP(){

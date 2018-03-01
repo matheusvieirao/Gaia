@@ -201,33 +201,28 @@ void State_00_Title::Update(float dt){
 
     //ACTION
     if(!menu_continua){
-        if(opcao1 == 1 || opcao1 == 0){
-            if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
+        if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
+            if(opcao1 == 1 || opcao1 == 0){
                 //inicio fase
-                Resources::ClearResources();
                 data.s1_num_historia = 1;
                 Game::GetInstance().Push(new State_01_Historia(data));
                 popRequested=true;
             }
-        }
-        else if(opcao1 == 2){
-            if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
+            else if(opcao1 == 2){
                 opcao1 = -1;
                 if(!menu_continua){
                     menu_continua = true;
                 }
             }
-        }
-        else if(opcao1 == 3){
-            if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
+            else if(opcao1 == 3){
                 quitRequested = true;
             }
         }
-        if(In.KeyPress(SDLK_ESCAPE) || In.QuitRequested()){
+        if(In.KeyPress(SDLK_ESCAPE)){
             quitRequested = true;
         }
     }
-    else {
+    else { //menu continua
         if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
             std::ifstream file_save;
             std::string string_aux;
@@ -283,15 +278,16 @@ void State_00_Title::Update(float dt){
             }
             popRequested = true;
         }
-        if(In.QuitRequested()){
-            quitRequested = true;
-        }
         if(In.KeyPress(SDLK_ESCAPE)){
             opcao1 = 2;
             opcao2_antiga = 1;
             opcao2 = 1;
             menu_continua = false;
         }
+    }
+
+    if(In.QuitRequested()){
+        quitRequested = true;
     }
 }
 

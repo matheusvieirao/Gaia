@@ -1,35 +1,38 @@
 #include "State_01_Historia.hpp"
 
 State_01_Historia::State_01_Historia(StateData data){
+    printf("criou historia\n");
     num_historia = data.s1_num_historia;
     data.state_atual = 1;
+    printf("__%d__%d__\n",data.s1_num_historia,vet_anim.size());
+
     if(num_historia == 1){
         // indices de 0 a 16
-        AddObject(new Animation("img/cenas/cena-1.png", true));
-        AddObject(new Animation("img/cenas/cena-1-FALA.png", true));
-        AddObject(new Animation("img/cenas/cena-2.png", true));
-        AddObject(new Animation("img/cenas/cena-2-FALA2.png", true));
-        AddObject(new Animation("img/cenas/cena-3.png", true));
-        AddObject(new Animation("img/cenas/cena-4.png", true));
-        AddObject(new Animation("img/cenas/cena-4-FALA1.png", true));
-        AddObject(new Animation("img/cenas/cena-4-FALA2.png", true));
-        AddObject(new Animation("img/cenas/cena-4-FALA3.png", true));
-        AddObject(new Animation("img/cenas/cena-4-FALA4.png", true));
-        AddObject(new Animation("img/cenas/cena-4-FALA5.png", true));
-        AddObject(new Animation("img/cenas/cena-4-FALA6.png", true));
-        AddObject(new Animation("img/cenas/cena-4-FALA7.png", true));
-        AddObject(new Animation("img/cenas/cena-5.png", true));
-        AddObject(new Animation("img/cenas/cena-5-FALA1.png", true));
-        AddObject(new Animation("img/cenas/cena-5-FALA2.png", true));
-        AddObject(new Animation("img/cenas/cena-5-FALA3.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-1.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-1-FALA.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-2.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-2-FALA2.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-3.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-4.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-4-FALA1.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-4-FALA2.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-4-FALA3.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-4-FALA4.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-4-FALA5.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-4-FALA6.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-4-FALA7.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-5.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-5-FALA1.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-5-FALA2.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-5-FALA3.png", true));
     }
 
     if(num_historia == 2){
         //indices de 0 a 4
-        AddObject(new Animation("img/cenas/cena-7.png", true));
-        AddObject(new Animation("img/cenas/cena-8.png", true));
-        AddObject(new Animation("img/cenas/cena-9.png", true));
-        AddObject(new Animation("img/cenas/cena-10.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-7.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-8.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-9.png", true));
+        vet_anim.push_back(Animation("img/cenas/cena-10.png", true));
     }
     track = 0;
     tempo_falas.Restart();
@@ -38,13 +41,17 @@ State_01_Historia::State_01_Historia(StateData data){
 State_01_Historia::~State_01_Historia(){
     if(fala.IsOpen())
         fala.Stop();
-    objectArray.clear();
+    vet_anim.clear();
 }
 
 void State_01_Historia::Update(float dt){
     InputManager& In = InputManager::GetInstance();
 
     tempo_falas.Update(dt);
+
+    if(In.KeyPress(SDLK_m)){ // #verdps só coloquei isso aqui pra debugar e pular a animacao
+        track = 16;
+    }
 
     if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
         if(fala.IsOpen()){
@@ -55,7 +62,6 @@ void State_01_Historia::Update(float dt){
     }
     if(In.KeyPress(SDLK_ESCAPE)){
         popRequested = true;
-        Resources::ClearResources();
         Game::GetInstance().Push(new State_00_Title());
     }
     if(In.QuitRequested()){
@@ -68,10 +74,11 @@ void State_01_Historia::Render(){
     if(num_historia == 1){
         
         if (track < 17){
-            objectArray[track]->Render();
+            printf("chama o renderizadoooor\n");
+            vet_anim[track].Render();
         }
         else {
-            objectArray[16]->Render();
+            vet_anim[16].Render();
         }
 
         switch(track){
@@ -201,10 +208,10 @@ void State_01_Historia::Render(){
 
     if(num_historia == 2){
         if (track < 4){
-            objectArray[track]->Render();
+            vet_anim[track].Render();
         }
         else {
-            objectArray[3]->Render();
+            vet_anim[3].Render();
         }
     }
 }

@@ -48,7 +48,6 @@ State_02_IndustriaT::State_02_IndustriaT(StateData data):bg("img/telas/backgroun
 
 State_02_IndustriaT::~State_02_IndustriaT(){
     objectArray.clear();
-    //Resources::ClearResources(); ?
 }
 
 void State_02_IndustriaT::Update(float dt){

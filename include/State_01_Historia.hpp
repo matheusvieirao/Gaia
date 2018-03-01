@@ -12,6 +12,7 @@
 #include "State_00_Title.hpp"
 #include "State_02_IndustriaT.hpp"
 #include <string>
+#include <vector>
 
 class State_01_Historia : public State{
     public:
@@ -30,6 +31,8 @@ class State_01_Historia : public State{
         int track = 0;
         StateData data;
         int num_historia;
+
+        std::vector<Animation> vet_anim;
 
 };
 

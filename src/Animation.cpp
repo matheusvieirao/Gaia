@@ -16,6 +16,8 @@ Animation::Animation(std::string spriteName, bool fullScreen){
     sp = Sprite();
     sp.Open(spriteName);
     box = Rect(0, 0, sp.GetWidth(), sp.GetHeight());
+    Camera::pos.x = 0;
+    Camera::pos.y = 0;
 
     //escalar para fullscreen
     if (fullScreen){
@@ -49,6 +51,7 @@ void Animation::Update(float dt){
 }
 
 void Animation::Render(){
+    printf("Animation::REnder\n");
     sp.Render(box.x - Camera::pos.x, box.y - Camera::pos.y, rotation);
 }
 

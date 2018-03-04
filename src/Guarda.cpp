@@ -1,6 +1,6 @@
 #include "Guarda.hpp"
 
-Guarda::Guarda(float x, float y, GuardaEstado estado_inicial, int comodo, std::string nome):sp("img/personagens/guarda_andando.png", 16, 1, 4, 0.2){
+Guarda::Guarda(float x, float y, GuardaEstado estado_inicial, int comodo, std::string nome):sp_andando("img/personagens/guarda_andando.png", 16, 1, 4, 0.2){
     tempo_estado.Restart();
     this->nome = nome;
     mov_automatico = false;
@@ -10,10 +10,10 @@ Guarda::Guarda(float x, float y, GuardaEstado estado_inicial, int comodo, std::s
     largura_box_col = 78;
     altura_box_col = 40;
 
-    box.x = x - sp.GetWidth()/2;
-    box.y = y - sp.GetHeight() + altura_pe;
-    box.w = sp.GetWidth();
-    box.h = sp.GetHeight();
+    box.x = x - sp_andando.GetWidth()/2;
+    box.y = y - sp_andando.GetHeight() + altura_pe;
+    box.w = sp_andando.GetWidth();
+    box.h = sp_andando.GetHeight();
 
     box_anterior.x = box.x;
     box_anterior.y = box.y;
@@ -36,19 +36,28 @@ Guarda::Guarda(float x, float y, GuardaEstado estado_inicial, int comodo, std::s
     else if(estado_atual == PARADO_AUTOMATICO){
         movimento_atual = PARADO;
         if(nome == "b1"){
-            sp.SetFrame(10);
+            sp_andando.SetFrame(10);
         }
         else if(nome == "b2"){
-            sp.SetFrame(10);
+            sp_andando.SetFrame(10);
         }
         else if(nome == "c1"){
-            sp.SetFrame(2);
+            sp_andando.SetFrame(2);
         }
         else if(nome == "c2"){
-            sp.SetFrame(2);
+            sp_andando.SetFrame(2);
         }
-        sp.PauseAnimation();
+        sp_andando.PauseAnimation();
     }
+
+    sp_morrendo.Open("img/personagens/guarda_morrendo.png");
+    sp_morrendo.SetFrameTotal(28);
+    sp_morrendo.SetFrameStart(1);
+    sp_morrendo.SetFrameAnimation(7);
+    sp_morrendo.SetFrameTime(0.2);
+    sp_morrendo.SetScaleX(1);
+    sp_morrendo.SetScaleY(1);
+
 }
 
 Guarda::~Guarda(){
@@ -73,14 +82,17 @@ void Guarda::Update(float dt){
         return;
     }
     
-    sp.Update(dt);
+    sp_andando.Update(dt);
     pausa.Update(dt);
 
     tempo_estado.Update(dt);
 
     if(!pause){
 
-        if(estado_atual == DESCANSANDO_PARADO){
+        if(estado_atual == VIGIANDO_PORTA){
+            //não faz nada, o guarda só fica parado vigiando a porta
+        }
+        else if(estado_atual == DESCANSANDO_PARADO){
             if(tempo_estado.Get() > tempo_devagar*0.973){
                 AndarAleatorio(t_map);
                 calcular_proximo_passo = true;
@@ -266,7 +278,12 @@ void Guarda::Update(float dt){
 }
 
 void Guarda::Render(){
-    sp.Render(box.x-Camera::pos.x, box.y-Camera::pos.y, rotation);
+    if(estado_atual == VIGIANDO_PORTA){
+        sp_morrendo.Render(box.x-Camera::pos.x, box.y-Camera::pos.y, rotation);
+    }
+    else{
+        sp_andando.Render(box.x-Camera::pos.x, box.y-Camera::pos.y, rotation);
+    }
     
     /*
     Vec2 guarda_pos_desejada;
@@ -540,7 +557,7 @@ void Guarda::Andar(float vel){
 
     if(movimento_atual != PARADO){
 
-        sp.ResumeAnimation(); // #verdps se continuar dando erro 18/02
+        sp_andando.ResumeAnimation(); // #verdps se continuar dando erro 18/02
         box_anterior.x = box.x;
         box_anterior.y = box.y;
 
@@ -567,7 +584,7 @@ void Guarda::Andar(float vel){
             box.y = box_anterior.y;
             box.SubtraiVet(direcao*1.8);
             movimento_atual = PARADO;
-            sp.PauseAnimation();
+            sp_andando.PauseAnimation();
         }
 
         if(calcular_proximo_passo){
@@ -578,29 +595,29 @@ void Guarda::Andar(float vel){
         //Animação
         if(movimento_atual == SE){
             if(movimento_anterior != SE){
-                sp.SetFrameStart(m_sudeste);
-                sp.SetFrameAnimation(m_dur);
+                sp_andando.SetFrameStart(m_sudeste);
+                sp_andando.SetFrameAnimation(m_dur);
                 movimento_anterior = SE;
             }
         }
         else if(movimento_atual == NE){
             if(movimento_anterior != NE){
-                sp.SetFrameStart(m_nordeste);
-                sp.SetFrameAnimation(m_dur);
+                sp_andando.SetFrameStart(m_nordeste);
+                sp_andando.SetFrameAnimation(m_dur);
                 movimento_anterior = NE;
             }
         }
         else if(movimento_atual == NO){
             if(movimento_anterior != NO){
-                sp.SetFrameStart(m_noroeste);
-                sp.SetFrameAnimation(m_dur);
+                sp_andando.SetFrameStart(m_noroeste);
+                sp_andando.SetFrameAnimation(m_dur);
                 movimento_anterior = NO;
             }
         }
         else if(movimento_atual == SO){
             if(movimento_anterior != SO){
-                sp.SetFrameStart(m_sudoeste);
-                sp.SetFrameAnimation(m_dur);
+                sp_andando.SetFrameStart(m_sudoeste);
+                sp_andando.SetFrameAnimation(m_dur);
                 movimento_anterior = SO;
             }
         }
@@ -752,7 +769,7 @@ bool Guarda::EstaNaVisao(Vec2 gaia_t_pos){
     int ix = guarda_t_pos.x;
     int iy = guarda_t_pos.y;
 
-    if(sp.GetFrameStart() <= 4){ //olhando pra SE
+    if(sp_andando.GetFrameStart() <= 4){ //olhando pra SE
         if((gx==ix&&gy==iy)  ||
         (gx==ix+1&&gy==iy-1) || (gx==ix+1&&gy==iy) || (gx==ix+1&&gy==iy+1) ||
         (gx==ix+2&&gy==iy-1) || (gx==ix+2&&gy==iy) || (gx==ix+2&&gy==iy+1)){
@@ -762,7 +779,7 @@ bool Guarda::EstaNaVisao(Vec2 gaia_t_pos){
             return(false);
         }
     }
-    else if(sp.GetFrameStart() <= 8){ //olhando para NE
+    else if(sp_andando.GetFrameStart() <= 8){ //olhando para NE
         if((gx==ix&&gx==iy)  ||
         (gx==ix-1&&gy==iy-1) || (gx==ix&&gy==iy-1) || (gx==ix+1&&gy==iy-1) ||
         (gx==ix-1&&gy==iy-12) || (gx==ix&&gy==iy-2) || (gx==ix+1&&gy==iy-2)){
@@ -772,7 +789,7 @@ bool Guarda::EstaNaVisao(Vec2 gaia_t_pos){
             return(false);
         }
     }
-    else if(sp.GetFrameStart() <= 12){ //olhando para NO
+    else if(sp_andando.GetFrameStart() <= 12){ //olhando para NO
         if((gx==ix&&gx==iy)  ||
         (gx==ix-1&&gy==iy-1) || (gx==ix-1&&gy==iy) || (gx==ix-1&&gy==iy+1) ||
         (gx==ix-2&&gy==iy-1) || (gx==ix-2&&gy==iy) || (gx==ix-2&&gy==iy+1)){

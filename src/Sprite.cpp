@@ -99,7 +99,6 @@ void Sprite::Render(int x, int y, float angle) {
 }
 
 void Sprite::RenderBox(int x, int y) {
-    printf("renderhitbox\n");
     SDL_Rect dstrect;
     dstrect.x = x;
     dstrect.y = y;

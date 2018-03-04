@@ -21,6 +21,7 @@
 #include "Gaia.hpp"
 #include "Guarda.hpp"
 #include "GuardaObservador.hpp"
+#include "State_01_Historia.hpp"
 #include "State_03_IndustriaSS.hpp"
 
 //enum mov{ S, SE, L, NE, N, NO, O, SO, PARADO};

@@ -125,14 +125,20 @@ void State_02_IndustriaT::Update(float dt){
             //piso roxo, mudar de comodo
             if(tile_info == 13){
                 //tubo de ar
-                if(tile_map->GetTileInfo(data.gaia_comodo+1, data.gaia_t_pos.x, data.gaia_t_pos.y+1) == 5){
+                if(data.gaia_t_pos.x == 4 && data.gaia_t_pos.y == 14){
                     data.gaia_hp = Gaia::player->GetHP();
                     data.gaia_comodo = 4; //corredor do subsolo
                     data.gaia_t_pos_inicio_comodo = Vec2(4,14);
                     data.gaia_t_pos = Vec2(4,14);
                     Game::GetInstance().Push(new State_03_IndustriaSS(data));
                     PopRequest();
-                    }
+                }
+                //saida da fabrica
+                if(data.gaia_t_pos.x == 0 && data.gaia_t_pos.y == 16) {
+                    data.s1_num_historia = 2;
+                    Game::GetInstance().Push(new State_01_Historia(data));
+                    PopRequest();
+                }
             }
 
             //piso azul, descer esteira
@@ -449,8 +455,12 @@ void State_02_IndustriaT::TratarEncurralamento(){
 
 void State_02_IndustriaT::InicializarComodo(int comodo){
     if(comodo == 4) { //corredor
-        Vec2 guarda_t_pos = Vec2(50, 17);
+        Vec2 guarda_t_pos = Vec2(1, 16);
         Vec2 guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
+        AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::VIGIANDO_PORTA, comodo, "a0"));
+
+        guarda_t_pos = Vec2(50, 17);
+        guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
         AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PERSEGUINDO, comodo, "a1"));
 
         guarda_t_pos = Vec2(48, 16);

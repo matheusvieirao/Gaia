@@ -26,7 +26,7 @@
 
 class Guarda : public GameObject{
     public:
-        enum GuardaEstado{DESCANSANDO_PARADO, DESCANSANDO_ANDANDO, PERSEGUINDO, ATACANDO, PARADO_AUTOMATICO, MOVIMENTO_AUTOMATICO};
+        enum GuardaEstado{DESCANSANDO_PARADO, DESCANSANDO_ANDANDO, PERSEGUINDO, ATACANDO, PARADO_AUTOMATICO, MOVIMENTO_AUTOMATICO, VIGIANDO_PORTA};
         Guarda(float x, float y, GuardaEstado estado_inicial, int gaia_comodo, std::string nome);
         virtual ~Guarda();
         void Update(float dt);
@@ -60,7 +60,9 @@ class Guarda : public GameObject{
         // void DrawRectangleX(Vec2 v);
 
     private:
-        Sprite sp;
+        Sprite sp_andando;
+        Sprite sp_morrendo;
+
         std::string nome;
         int hp;
         Timer tempo_estado;
@@ -93,7 +95,6 @@ class Guarda : public GameObject{
         bool calcular_proximo_passo;
 
         bool acabou_de_entrar_no_estado;
-
 
 };
 

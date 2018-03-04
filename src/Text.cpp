@@ -19,9 +19,39 @@ Text::Text(std::string fontFile, int fontSize, TextStyle style, std::string text
     }
 }
 
+Text::Text(){
+    font = Resources::GetFont("font/URW Gothic L Demi.ttf", 50);
+    fontSize = 50;
+    style = BLENDED;
+    text = "";
+    color = Color::white;
+    box.x = 0;
+    box.y = 0;
+    texture = nullptr;
+    SetBackgroundColor(0x00, 0x00, 0x00, 128);
+    if(font != nullptr){
+ //       RemakeTexture();
+    }
+}
+
 Text::~Text(){
     if(texture != nullptr){
         SDL_DestroyTexture(texture);
+    }
+}
+
+void Text::Open(std::string fontFile, int fontSize, TextStyle style, std::string text, SDL_Color color, int x, int y){
+    font = Resources::GetFont(fontFile, fontSize);
+    this->fontSize = fontSize;
+    this->style = style;
+    this->text = text;
+    this->color = color;
+    box.x = x;
+    box.y = y;
+    texture = nullptr;
+    SetBackgroundColor(0x00, 0x00, 0x00, 128);
+    if(font != nullptr){
+        RemakeTexture();
     }
 }
 
@@ -81,6 +111,14 @@ void Text::SetBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a){
     bgColor.g = g;
     bgColor.b = b;
     bgColor.a = a;
+}
+
+int Text::GetHeight(){
+    return(box.h);
+}
+
+int Text::GetWidth(){
+    return(box.w);
 }
 
 void Text::RemakeTexture(){

@@ -1,10 +1,8 @@
 #include "State_01_Historia.hpp"
 
 State_01_Historia::State_01_Historia(StateData data){
-    printf("criou historia\n");
     num_historia = data.s1_num_historia;
     data.state_atual = 1;
-    printf("__%d__%d__\n",data.s1_num_historia,vet_anim.size());
 
     if(num_historia == 1){
         // indices de 0 a 16
@@ -27,6 +25,13 @@ State_01_Historia::State_01_Historia(StateData data){
         vet_anim.push_back(Animation("img/cenas/cena-5-FALA3.png", true));
     }
 
+    fim_jogo.Open("font/URW Gothic L Demi.ttf", 77, BLENDED, "Fim", Color::white, 0, 0);
+    press_space.Open("font/URW Gothic L Demi.ttf", 50, BLENDED, "Pressione espaco para retornar ao menu", Color::white, 0, 0);
+    int game_w = Game::GetInstance().GetWindowWidth();
+    int game_h = Game::GetInstance().GetWindowHeight();
+
+    fim_jogo.SetPos(game_w-fim_jogo.GetWidth()-35, game_h-(game_h/7.5)-press_space.GetHeight()-fim_jogo.GetHeight());
+    press_space.SetPos(game_w/2, game_h-(game_h/7.5), true, true);
     if(num_historia == 2){
         //indices de 0 a 4
         vet_anim.push_back(Animation("img/cenas/cena-7.png", true));
@@ -56,8 +61,8 @@ void State_01_Historia::Update(float dt){
     if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
         if(fala.IsOpen()){
             fala.Stop();
-            tempo_falas.Restart();
         }
+        tempo_falas.Restart();
         track++;
     }
     if(In.KeyPress(SDLK_ESCAPE)){
@@ -67,20 +72,8 @@ void State_01_Historia::Update(float dt){
     if(In.QuitRequested()){
         quitRequested = true;
     }
-}
-
-void State_01_Historia::Render(){
 
     if(num_historia == 1){
-        
-        if (track < 17){
-            printf("chama o renderizadoooor\n");
-            vet_anim[track].Render();
-        }
-        else {
-            vet_anim[16].Render();
-        }
-
         switch(track){
             case 0:
                 if(Falar(0.1, "audio/01_historia/001A - bocejo.wav")){
@@ -201,7 +194,31 @@ void State_01_Historia::Render(){
 
             case 19:
                 break;
+        }
+    }
+    else if(num_historia == 2){
+        if(tempo_falas.Get() > 2.2){
+            track++;
+            tempo_falas.Restart();
+        }
+        if(track > 4){
+            if(In.KeyPress(SDLK_SPACE) || In.KeyPress(SDLK_RETURN) || In.KeyPress(SDLK_RETURN2)){
+                popRequested = true;
+                Game::GetInstance().Push(new State_00_Title());
+            }
+        }
+    }
+}
 
+void State_01_Historia::Render(){
+
+    if(num_historia == 1){
+        
+        if (track < 17){
+            vet_anim[track].Render();
+        }
+        else {
+            vet_anim[16].Render();
         }
     }
 
@@ -210,8 +227,14 @@ void State_01_Historia::Render(){
         if (track < 4){
             vet_anim[track].Render();
         }
-        else {
+        else if(track == 4){
             vet_anim[3].Render();
+            fim_jogo.Render(0,0);
+        }
+        else if(track == 5){
+            vet_anim[3].Render();
+            fim_jogo.Render(0,0);
+            press_space.Render(0,0);
         }
     }
 }

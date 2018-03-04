@@ -14,7 +14,7 @@ Rato::Rato(float x, float y, int comodo_atual, bool chave):sp("img/personagens/l
     som.Open("audio/sons/rato.ogg");
 
     if(chave){
-        sp_chave.Open("img/itens/chave.png");
+        sp_chave.Open("img/itens/chave_energia.png");
     }
 
     this->comodo_atual = comodo_atual;

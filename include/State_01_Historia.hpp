@@ -11,6 +11,8 @@
 #include "StateData.hpp"
 #include "State_00_Title.hpp"
 #include "State_02_IndustriaT.hpp"
+#include "Text.hpp"
+#include "Color.hpp"
 #include <string>
 #include <vector>
 
@@ -33,7 +35,8 @@ class State_01_Historia : public State{
         int num_historia;
 
         std::vector<Animation> vet_anim;
-
+        Text fim_jogo;
+        Text press_space;
 };
 
 #endif // STATEHISTORIA_H

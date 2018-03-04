@@ -51,7 +51,6 @@ void Animation::Update(float dt){
 }
 
 void Animation::Render(){
-    printf("Animation::REnder\n");
     sp.Render(box.x - Camera::pos.x, box.y - Camera::pos.y, rotation);
 }
 

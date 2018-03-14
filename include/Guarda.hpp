@@ -26,7 +26,7 @@
 
 class Guarda : public GameObject{
     public:
-        enum GuardaEstado{DESCANSANDO_PARADO, DESCANSANDO_ANDANDO, PERSEGUINDO, ATACANDO, PARADO_AUTOMATICO, MOVIMENTO_AUTOMATICO, VIGIANDO_PORTA};
+        enum GuardaEstado{DESCANSANDO_PARADO, DESCANSANDO_ANDANDO, PERSEGUINDO, ATACANDO, PARADO_AUTOMATICO, MOVIMENTO_AUTOMATICO, VIGIANDO_PORTA, MORRENDO};
         Guarda(float x, float y, GuardaEstado estado_inicial, int gaia_comodo, std::string nome);
         virtual ~Guarda();
         void Update(float dt);

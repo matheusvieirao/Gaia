@@ -196,7 +196,7 @@ void Sprite::SetFrameStart(int novo_frame_start){
     frame_start = novo_frame_start - 1;
     frame_animation = frame_start + duracao_animacao-1;
 
-    SetFrame(frame_start+frame_relativo+1);
+    SetFrame(novo_frame_start);
     timer.Restart();
 }
 

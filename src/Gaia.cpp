@@ -165,9 +165,11 @@ void Gaia::Update(float dt){
         else if (modo_manual) {
             ////ALTERNAR SPRITES 
             if(true){
-                if(sprite_atual == ANDANDO || sprite_atual == CORRENDO){
+                if(sprite_atual == ANDANDO){
                     if(In.IsKeyDown(SDLK_s)){
-                        sprite_atual = CORRENDO;
+                        if(In.IsKeyDown(SDLK_RIGHT)||In.IsKeyDown(SDLK_LEFT)||In.IsKeyDown(SDLK_UP)||In.IsKeyDown(SDLK_DOWN)){
+                            sprite_atual = CORRENDO;
+                        }
                     }
                     else{
                         sprite_atual = ANDANDO;
@@ -178,6 +180,12 @@ void Gaia::Update(float dt){
                     if(data.gaia_poderes > 1 && In.KeyPress(SDLK_f)){
                         sprite_atual = CHICOTE;
                         ataque_chicote = 0;
+                    }
+                }
+
+                if(sprite_atual == CORRENDO){
+                    if(In.KeyRelease(SDLK_s)){
+                        sprite_atual = ANDANDO;
                     }
                 }
 

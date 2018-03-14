@@ -54,7 +54,7 @@ Guarda::Guarda(float x, float y, GuardaEstado estado_inicial, int comodo, std::s
     sp_morrendo.SetFrameTotal(28);
     sp_morrendo.SetFrameStart(1);
     sp_morrendo.SetFrameAnimation(7);
-    sp_morrendo.SetFrameTime(0.2);
+    sp_morrendo.SetFrameTime(0.1);
     sp_morrendo.SetScaleX(1);
     sp_morrendo.SetScaleY(1);
 
@@ -82,7 +82,12 @@ void Guarda::Update(float dt){
         return;
     }
     
-    sp_andando.Update(dt);
+    if(estado_atual == MORRENDO){
+        sp_morrendo.Update(dt);
+    }
+    else{
+        sp_andando.Update(dt);
+    }
     pausa.Update(dt);
 
     tempo_estado.Update(dt);
@@ -281,6 +286,9 @@ void Guarda::Render(){
     if(estado_atual == VIGIANDO_PORTA){
         sp_morrendo.Render(box.x-Camera::pos.x, box.y-Camera::pos.y, rotation);
     }
+    else if(estado_atual == MORRENDO){
+        sp_morrendo.Render(box.x-Camera::pos.x, box.y-Camera::pos.y, rotation);
+    }
     else{
         sp_andando.Render(box.x-Camera::pos.x, box.y-Camera::pos.y, rotation);
     }
@@ -323,6 +331,22 @@ void Guarda::NotifyCollision(GameObject& other){
         som_chicote_hit.Play(0);
         hp--;
 
+        if(hp == 0){
+            estado_atual = MORRENDO;
+            if(movimento_atual == SE){
+                sp_morrendo.SetFrameStart(1);
+            }
+            else if(movimento_atual == NE){
+                sp_morrendo.SetFrameStart(8);
+            }
+            else if(movimento_atual == NO){
+                sp_morrendo.SetFrameStart(15);
+            }
+            else if(movimento_atual == SO){
+                sp_morrendo.SetFrameStart(22);
+            }
+        }
+
         Vec2 direcao, direcao_anterior;
         direcao.x = box.x;
         direcao.y = box.y;
@@ -349,7 +373,30 @@ bool Guarda::Is(std::string type){
 }
 
 bool Guarda::IsDead(){
-    return(hp<0);
+    if(hp<=0){
+        estado_atual = MORRENDO; //redundante
+        if(movimento_atual == SE){
+            if(sp_morrendo.GetFrame()==7){
+                return(true);
+            }
+        }
+        else if(movimento_atual == NE){
+            if(sp_morrendo.GetFrame()==14){
+                return(true);
+            }
+        }
+        else if(movimento_atual == NO){
+            if(sp_morrendo.GetFrame()==21){
+                return(true);
+            }
+        }
+        else if(movimento_atual == SO){
+            if(sp_morrendo.GetFrame()==28){
+                return(true);
+            }
+        }
+    }
+    return(false);
 }
 
 void Guarda::PushMovimento(int mov){

@@ -419,7 +419,6 @@ void Gaia::Update(float dt){
                         sp_carro.SetFrameStart(m_sudoeste);
                         sp_carro.SetFrame(m_sudoeste);
                     }
-                    sp_carro.SetFrameAnimation(m_dur);
                 }
             }
 
@@ -594,7 +593,6 @@ void Gaia::Andar(int mov, float vel){
         if(mov == SE){
             if(mov_anterior != SE || sprite_anterior != sprite_atual){
                 sp_andando.SetFrameStart(m_sudeste);
-                sp_andando.SetFrameAnimation(m_dur);
                 mov_anterior = SE;
             }
             box.x += cos_angulo * vel;
@@ -610,7 +608,6 @@ void Gaia::Andar(int mov, float vel){
         else if(mov == NE){
             if(mov_anterior != NE || sprite_anterior != sprite_atual){
                 sp_andando.SetFrameStart(m_nordeste);
-                sp_andando.SetFrameAnimation(m_dur);
                 mov_anterior = NE;
             }
             box.x += cos_angulo * vel;
@@ -625,7 +622,6 @@ void Gaia::Andar(int mov, float vel){
         else if(mov == NO){
             if(mov_anterior != NO || sprite_anterior != sprite_atual){
                 sp_andando.SetFrameStart(m_noroeste);
-                sp_andando.SetFrameAnimation(m_dur);
                 mov_anterior = NO;
             }
             box.x -= cos_angulo * vel;
@@ -640,7 +636,6 @@ void Gaia::Andar(int mov, float vel){
         else if(mov == SO){
             if(mov_anterior != SO || sprite_anterior != sprite_atual){
                 sp_andando.SetFrameStart(m_sudoeste);
-                sp_andando.SetFrameAnimation(m_dur);
                 mov_anterior = SO;
             }
             box.x -= cos_angulo * vel;
@@ -662,7 +657,6 @@ void Gaia::Andar(int mov, float vel){
         if(mov == SE){
             if(mov_anterior != SE || sprite_anterior != sprite_atual){
                 sp_correndo.SetFrameStart(m_sudeste);
-                sp_correndo.SetFrameAnimation(m_dur);
                 mov_anterior = SE;
             }
             box.x += cos_angulo * vel;
@@ -678,7 +672,6 @@ void Gaia::Andar(int mov, float vel){
         else if(mov == NE){
             if(mov_anterior != NE || sprite_anterior != sprite_atual){
                 sp_correndo.SetFrameStart(m_nordeste);
-                sp_correndo.SetFrameAnimation(m_dur);
                 mov_anterior = NE;
             }
             box.x += cos_angulo * vel;
@@ -693,7 +686,6 @@ void Gaia::Andar(int mov, float vel){
         else if(mov == NO){
             if(mov_anterior != NO || sprite_anterior != sprite_atual){
                 sp_correndo.SetFrameStart(m_noroeste);
-                sp_correndo.SetFrameAnimation(m_dur);
                 mov_anterior = NO;
             }
             box.x -= cos_angulo * vel;
@@ -708,7 +700,6 @@ void Gaia::Andar(int mov, float vel){
         else if(mov == SO){
             if(mov_anterior != SO || sprite_anterior != sprite_atual){
                 sp_correndo.SetFrameStart(m_sudoeste);
-                sp_correndo.SetFrameAnimation(m_dur);
                 mov_anterior = SO;
             }
             box.x -= cos_angulo * vel;
@@ -733,7 +724,6 @@ void Gaia::Andar(int mov, float vel){
             if(mov_anterior != SE || sprite_anterior != sprite_atual){
                 sp_carro.SetFrameStart(m_sudeste);
                 sp_carro.SetFrame(m_sudeste);
-                sp_carro.SetFrameAnimation(m_dur);
                 mov_anterior = SE;
             }
             box.x += cos_angulo * vel;
@@ -743,7 +733,6 @@ void Gaia::Andar(int mov, float vel){
             if(mov_anterior != NE || sprite_anterior != sprite_atual){
                 sp_carro.SetFrameStart(m_nordeste);
                 sp_carro.SetFrame(m_nordeste);
-                sp_carro.SetFrameAnimation(m_dur);
                 mov_anterior = NE;
             }
             box.x += cos_angulo * vel;
@@ -753,7 +742,6 @@ void Gaia::Andar(int mov, float vel){
             if(mov_anterior != NO || sprite_anterior != sprite_atual){
                 sp_carro.SetFrameStart(m_noroeste);
                 sp_carro.SetFrame(m_noroeste);
-                sp_carro.SetFrameAnimation(m_dur);
                 mov_anterior = NO;
             }
             box.x -= cos_angulo * vel;
@@ -763,7 +751,6 @@ void Gaia::Andar(int mov, float vel){
             if(mov_anterior != SO || sprite_anterior != sprite_atual){
                 sp_carro.SetFrameStart(m_sudoeste);
                 sp_carro.SetFrame(m_sudoeste);
-                sp_carro.SetFrameAnimation(m_dur);
                 mov_anterior = SO;
             }
             box.x -= cos_angulo * vel;

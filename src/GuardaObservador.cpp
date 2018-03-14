@@ -137,17 +137,17 @@ void GuardaObservador::Render(){
     sp.Render(box.x-Camera::pos.x, box.y-Camera::pos.y, rotation);
     //sp.RenderBox(box.x-Camera::pos.x, box.y-Camera::pos.y);
 
+    /*//Hitbox
     int x1 = box.GetCenter().x - largura_box_col/2 -Camera::pos.x;
     int y1 = box.y + box.h -altura_pe - altura_box_col/2 -Camera::pos.y;
     int x2 = x1 + largura_box_col;
     int y2 = y1 + altura_box_col;
-
     SDL_Renderer* GameRenderer = Game::GetInstance().GetRenderer();
-
     SDL_RenderDrawLine(GameRenderer, x1, y1, x1, y2);
     SDL_RenderDrawLine(GameRenderer, x1, y2, x2, y2);
     SDL_RenderDrawLine(GameRenderer, x2, y2, x2, y1);
     SDL_RenderDrawLine(GameRenderer, x2, y1, x1, y1);
+    */
 }
 
 int GuardaObservador::GetAlturaPe(){

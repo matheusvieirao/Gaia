@@ -204,6 +204,14 @@ void State_03_IndustriaSS::Update(float dt){
             printa_f = false;
         }
 
+        if(!data.ja_mostrou_f_chicote && data.ja_pegou_chicote && data.gaia_comodo == 12){
+            printa_f = true;
+            if(In.KeyPress(SDLK_f)){
+                printa_f = false;
+                data.ja_mostrou_f_chicote = true;
+            }
+        }
+
         if(!data.esteira_ligada){
             tile_map->ChangeTile(12, 33, 15, 0);
         }
@@ -352,12 +360,12 @@ void State_03_IndustriaSS::Render(){
     RenderArray(); //Renderiza Objetos
 
     //Desenha caixas de colisao
-    for (unsigned i = 0; i < objectArray.size(); i++) {
+    /*for (unsigned i = 0; i < objectArray.size(); i++) {
         Rect box2 = objectArray[i]->GetBoxColisao();
         box2.x -= Camera::pos.x;
         box2.y -= Camera::pos.y;
         Collision::DrawHitbox(box2);
-    }
+    }*/
 
     if(printa_f){
         press_f.Render(game_w/2-press_f.GetWidth()/2, game_h/4, 0);
@@ -489,9 +497,6 @@ void State_03_IndustriaSS::TrocarDeComodo(){
                         //se saiu do deposito pra descarga
                         if(data.gaia_comodo == 8 && i == 12){
                             tile_map->Load("map/02_industria/State_03_IndustriaSS.txt"); //recarrega o mapa pro carro e as caixas voltarem pro lugar
-                            //avisa gaia que ela pode usar o chicote agora
-                            if(data.ja_pegou_chicote){
-                            }
                         }
                         data.gaia_comodo = i;
                         data.gaia_t_pos_inicio_comodo.x = data.gaia_t_pos.x;

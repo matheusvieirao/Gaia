@@ -17,6 +17,14 @@ bugs:
 - velocidade correndo da gaia aumentar tbm (a do guarda talvez ja esteja boa)
 - velocidade automatica da gaia: aumentar
 
+bugs 07/2018
+- renderizaçao da esteira ta estranha. uma boa seria tirar a transparencia dela talvez
+- quando entra num novo state com s precionado a contagem de sprite fica errada
+- pressionar D com S pressionado o D nao vai
+- colocar o observador 1 ou 2 quadrado mais na frente pra quando entrar na sala nao topar com ele
+- (dificil e critico) 
+- (critico) o ultimo guarda que fica parado nao morre, fica em loop infinito na animação dele morrendo.
+- (detalhe) quando pausa a musica volta ao inicio
 
 desejos futuros:
 - fullscreen

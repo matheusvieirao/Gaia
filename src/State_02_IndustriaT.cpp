@@ -610,13 +610,13 @@ bool State_02_IndustriaT::Is(std::string type){
 
 void State_02_IndustriaT::Pause(){
     if(musica1.IsOpen()){
-        musica1.Stop(0);
+        musica1.Stop();
     }
     if(musica2.IsOpen()){
-        musica2.Stop(0);
+        musica2.Stop();
     }
     if(musica3.IsOpen()){
-        musica3.Stop(0);
+        musica3.Stop();
     }
     if(som_esteira.IsOpen()){
         som_esteira.Stop();
@@ -624,12 +624,13 @@ void State_02_IndustriaT::Pause(){
     if(som_ronco.IsOpen()){ 
         som_ronco.Stop();
     }
-    if(efeito.IsOpen()){ 
-        efeito.Stop();
-    }
     if(fala.IsOpen()){ 
         fala.Stop();
     }
+    if(efeito.IsOpen()){ 
+        efeito.Stop();
+    }
+    SDL_Delay(10);
 }
 
 void State_02_IndustriaT::Resume(){
@@ -654,6 +655,7 @@ void State_02_IndustriaT::Resume(){
         musica2.Play(-1);
         musica3.Play(-1);
     }
+    SDL_Delay(10);
 }
 
 TileMap* State_02_IndustriaT::GetTileMap(){

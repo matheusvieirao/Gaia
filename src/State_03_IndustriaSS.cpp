@@ -463,6 +463,7 @@ void State_03_IndustriaSS::Pause(){
     if(fala.IsOpen()){ 
         fala.Stop();
     }
+    SDL_Delay(10);
 }
 
 void State_03_IndustriaSS::Resume(){
@@ -470,6 +471,7 @@ void State_03_IndustriaSS::Resume(){
         musica1.Open("audio/02_industria/musica fase2 layer 1.ogg");
         musica1.Play(-1);
     }
+    SDL_Delay(10);
 }
 
 bool State_03_IndustriaSS::Falar(float delay, std::string arquivo){

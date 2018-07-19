@@ -187,6 +187,10 @@ void Gaia::Update(float dt){
                     if(In.KeyRelease(SDLK_s)){
                         sprite_atual = ANDANDO;
                     }
+                    if(data.gaia_poderes > 0 && In.IsKeyDown(SDLK_d)){
+                        sprite_atual = TRANSPARENTE;
+                        modo_manual = true;
+                    }
                 }
 
 

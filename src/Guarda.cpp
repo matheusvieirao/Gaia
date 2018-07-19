@@ -96,6 +96,7 @@ void Guarda::Update(float dt){
 
         if(estado_atual == VIGIANDO_PORTA){
             //não faz nada, o guarda só fica parado vigiando a porta
+            movimento_atual = SE;
         }
         else if(estado_atual == DESCANSANDO_PARADO){
             if(tempo_estado.Get() > tempo_devagar*0.973){

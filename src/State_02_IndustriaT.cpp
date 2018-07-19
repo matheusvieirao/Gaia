@@ -459,15 +459,15 @@ void State_02_IndustriaT::InicializarComodo(int comodo){
         Vec2 guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
         AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::VIGIANDO_PORTA, comodo, "a0"));
 
-        guarda_t_pos = Vec2(50, 17);
+        guarda_t_pos = Vec2(49, 17);
         guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
         AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PERSEGUINDO, comodo, "a1"));
 
-        guarda_t_pos = Vec2(48, 16);
+        guarda_t_pos = Vec2(47, 16);
         guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
         AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PERSEGUINDO, comodo, "a2"));
 
-        guarda_t_pos = Vec2(50, 15);
+        guarda_t_pos = Vec2(49, 15);
         guarda_pe_pos = guarda_t_pos.CardToIsometricCenter(tile_set->GetTileWidth(), tile_set->GetTileHeight());
         AddObject(new Guarda(guarda_pe_pos.x, guarda_pe_pos.y, Guarda::PERSEGUINDO, comodo, "a3"));
 
@@ -498,7 +498,7 @@ void State_02_IndustriaT::InicializarComodo(int comodo){
     else if(comodo == 16) { //refeitorio
         std::vector<Vec2> v_guarda_t_pos;
 
-        v_guarda_t_pos.push_back(Vec2(54,18));
+        v_guarda_t_pos.push_back(Vec2(54,20));
         v_guarda_t_pos.push_back(Vec2(54,26));
         AddObject(new GuardaObservador(v_guarda_t_pos, comodo, tile_map));
 

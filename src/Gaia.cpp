@@ -51,13 +51,18 @@ Gaia::Gaia(float x, float y, StateData data){
     sp_transparente.SetFrameTime(0.05);
     sp_transparente.SetRepetitions(1);
 
-    m_dur = sp_andando.GetAnimationDur(); //quantos frames de animaçao tem em cada movimento
+    if(InputManager::GetInstance().IsKeyDown(SDLK_s)){
+        sprite_atual = CORRENDO;
+        m_dur = sp_correndo.GetAnimationDur();
+    }
+    else{
+        sprite_atual = ANDANDO;
+        m_dur = sp_andando.GetAnimationDur(); //quantos frames de animaçao tem em cada movimento
+    }
     m_sudeste = 1; //primeiro sprite em direçao ao movimento
     m_nordeste = 1+m_dur;
     m_noroeste = 1+m_dur*2;
     m_sudoeste = 1+m_dur*3;
-
-    sprite_atual = ANDANDO;
 
     altura_pe = 30;
     altura_box_col = 60;

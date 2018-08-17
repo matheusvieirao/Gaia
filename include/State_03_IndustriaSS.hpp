@@ -46,11 +46,16 @@ class State_03_IndustriaSS : public State{
 
         bool printa_f;
         Sprite press_f;
+        bool printa_mapa_com_x;
+        Sprite mapa_com_x;
+        bool printa_mapa_sem_x;
+        Sprite mapa_sem_x;
 
         //int comodo_jogador; //0- Quarto Velho | 4- Corredor | 8- Deposito | 12- Descarga
         int comodo_jogador_antigo;
         int num_fala;
         int track;
+        bool ja_tocou_track_8;
         
         Timer tempo_falas;
         Timer tempo_esteira;

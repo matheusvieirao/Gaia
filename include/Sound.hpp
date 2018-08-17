@@ -13,10 +13,10 @@ class Sound{
         void Stop(int ms); //para a musica com um fadeout de ms milisegundos
         void Open(std::string file); //se mal sucedido music == nullptr
         bool IsOpen();
-        bool IsPlaying();
+        bool IsPlaying(); 
     private:
-        static void Finished(int channel);
-        static bool finished;
+        static void Finished(int channel); //como é estatica só funciona quando só existe 1 som de cada vez
+        static bool finished; 
         Mix_Chunk* chunk;
         int channel;
 };

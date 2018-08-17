@@ -11,6 +11,8 @@ State_03_IndustriaSS::State_03_IndustriaSS(StateData data):bg("img/telas/backgro
     estado = JOGO;
     esta_pausado = false;
     printa_f = false;
+    printa_mapa_sem_x = false;
+    printa_mapa_com_x = false;
 
     bg.SetScaleX((float)Game::GetInstance().GetWindowWidth()/bg.GetWidth());
     bg.SetScaleY((float)Game::GetInstance().GetWindowHeight()/bg.GetHeight());
@@ -23,6 +25,17 @@ State_03_IndustriaSS::State_03_IndustriaSS(StateData data):bg("img/telas/backgro
     float scale = (float)(Game::GetInstance().GetWindowWidth()/3)/press_f.GetWidth();
     press_f.SetScaleX(scale);
     press_f.SetScaleY(scale);
+
+    mapa_com_x.Open("img/mapa/Industria SS com x.jpg");
+    scale = (float)(Game::GetInstance().GetWindowWidth()/1.5)/mapa_com_x.GetWidth();
+    mapa_com_x.SetScaleX(scale);
+    mapa_com_x.SetScaleY(scale);
+
+    mapa_sem_x.Open("img/mapa/Industria SS sem x.jpg");
+    scale = (float)(Game::GetInstance().GetWindowWidth()/1.5)/mapa_sem_x.GetWidth();
+    mapa_sem_x.SetScaleX(scale);
+    mapa_sem_x.SetScaleY(scale);
+
 
     this->data.Atribuir(data);
     this->data.state_atual = 3;
@@ -43,6 +56,9 @@ State_03_IndustriaSS::~State_03_IndustriaSS(){
 }
 
 void State_03_IndustriaSS::Update(float dt){
+    int game_w = Game::GetInstance().GetWindowWidth();
+    int game_h = Game::GetInstance().GetWindowHeight();
+
     InputManager& In = InputManager::GetInstance();
     Vec2 gaia_pos(0,0);
     if(Gaia::player != nullptr){
@@ -281,19 +297,47 @@ void State_03_IndustriaSS::Update(float dt){
                 case 7:
                     if(Falar(0, "audio/02_industria/012V - depois de tanto tempo eu tenho o mapa.ogg")){
                         track = 8;
+                        ja_tocou_track_8 = false;
                     }
                     break;
 
                 case 8:
-                    if(Falar(0, "audio/02_industria/013V - agora vai ate esse local.ogg")){
+
+                    if(!fala.IsOpen() && !ja_tocou_track_8){
+                        fala.Open("audio/02_industria/013V - agora vai ate esse local.ogg");
+                        fala.Play(0);
+                    }
+                    else if(!fala.IsPlaying()){
+                        if(fala.IsOpen()){
+                            fala.Stop();
+                        }
+                        ja_tocou_track_8 = true;
+                    }
+
+                    if(tempo_falas.Get() < 1){
+                        printa_mapa_com_x = false;
+                        printa_mapa_sem_x = true;
+                    }
+                    if(tempo_falas.Get() > 1) {
+                        printa_mapa_com_x = true;
+                        printa_mapa_sem_x = false;
+                    }
+                    if(tempo_falas.Get() > 2){
+                        tempo_falas.Restart();
+                    }
+
+                    if(In.KeyPress(SDLK_SPACE || SDLK_RETURN || SDLK_RETURN2)){
                         track = 9;
                     }
+
                     break;
 
                 case 9:
                     estado = JOGO;
                     track = 0;
                     data.ja_falou_velho = true;
+                    printa_mapa_com_x = false;
+                    printa_mapa_sem_x = false;
                     break;
             }
         }
@@ -369,6 +413,12 @@ void State_03_IndustriaSS::Render(){
 
     if(printa_f){
         press_f.Render(game_w/2-press_f.GetWidth()/2, game_h/4, 0);
+    }
+    if(printa_mapa_sem_x){
+        mapa_sem_x.Render(game_w/2-mapa_sem_x.GetWidth()/2, game_h/2-mapa_sem_x.GetHeight()/2, 0);
+    }
+    if(printa_mapa_com_x) {
+        mapa_com_x.Render(game_w/2-mapa_com_x.GetWidth()/2, game_h/2-mapa_com_x.GetHeight()/2, 0);
     }
 
     if(esta_pausado){

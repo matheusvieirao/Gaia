@@ -1,16 +1,16 @@
 s1_num_historia 2
 state_atual 3
 gaia_comodo 12
-gaia_t_pos 30 18
-gaia_t_pos_antiga 30 18
-gaia_t_pos_inicio_comodo 27 16
+gaia_t_pos 31 19
+gaia_t_pos_antiga 31 19
+gaia_t_pos_inicio_comodo 32 16
 gaia_hp 10
 gaia_poderes 1
-p_deposito 0
-p_corredor2 0
-esteira_ligada 0
+p_deposito 1
+p_corredor2 1
+esteira_ligada 1
 ja_mostrou_corre 1
-ja_mostrou_f_esteira 0
+ja_mostrou_f_esteira 1
 ja_mostrou_f_chicote 0
 ja_ficou_encurralada 4
 ja_falou_velho 1

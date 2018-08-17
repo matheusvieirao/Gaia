@@ -97,7 +97,7 @@ endif
 print-% : ; @echo $* = $($*)
 
 # Regra que inclui diretivas de debug na compilação
-debug: DIRECTIVES += -ggdb -O0
+debug: DIRECTIVES += -g -ggdb -O0
 debug: all
 
 # Regra que inclui diretivas de compilação otimizada

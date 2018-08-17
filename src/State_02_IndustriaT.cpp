@@ -634,23 +634,30 @@ void State_02_IndustriaT::Pause(){
 }
 
 void State_02_IndustriaT::Resume(){
-    if(!musica1.IsOpen()){
-        musica1.Open("audio/02_industria/musica fase2 layer 1.ogg");
-    }
-    if(!musica2.IsOpen()){
-        musica2.Open("audio/02_industria/musica fase2 layer 2.ogg");
-    }
-    if(!musica3.IsOpen()){
-        musica3.Open("audio/02_industria/musica fase2 layer 3.ogg");
-    }
 
     if(!data.ja_falou_velho){ //musica agitada durante a primeira perseguição
+        if(!musica3.IsOpen()){
+            musica3.Open("audio/02_industria/musica fase2 layer 3.ogg");
+        }
         musica3.Play(-1);
     }
     if(data.ja_falou_velho && !data.ja_pegou_chicote){ //se tiver no terreo no modo stealth, sem o chicote, sem poder atacar
+        if(!musica2.IsOpen()){
+            musica2.Open("audio/02_industria/musica fase2 layer 2.ogg");
+        }
         musica2.Play(-1);
     }
     if(data.ja_pegou_chicote){ //quando sobe ja podendo atacar
+        
+        if(!musica1.IsOpen()){
+            musica1.Open("audio/02_industria/musica fase2 layer 1.ogg");
+        }
+        if(!musica2.IsOpen()){
+            musica2.Open("audio/02_industria/musica fase2 layer 2.ogg");
+        }
+        if(!musica3.IsOpen()){
+            musica3.Open("audio/02_industria/musica fase2 layer 3.ogg");
+        }
         musica1.Play(-1);
         musica2.Play(-1);
         musica3.Play(-1);

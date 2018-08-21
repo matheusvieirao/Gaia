@@ -17,6 +17,7 @@ Game::Game(std::string title, int width, int height) {
     this->height = height;
 	if (instance == nullptr) {
 			instance = this;
+			SDL_SetHint(SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING, "1");
 			if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) == 0){
 				if(IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) != 0) {
                     frameStart = 0;
@@ -103,6 +104,7 @@ void Game::Push(State* state){
 }
 
 void Game::Run(){
+try {
     if(storedState != nullptr){
         stateStack.push(std::unique_ptr<State>(storedState));
         storedState = nullptr;
@@ -139,6 +141,10 @@ void Game::Run(){
     else {
         Resources::ClearImages();
     }
+}
+catch(const std::exception& e){
+	std::cout << e.what() << std::endl;
+}
 }
 
 void Game::CalculateDeltaTime() {

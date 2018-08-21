@@ -1,13 +1,13 @@
 s1_num_historia 2
-state_atual 2
-gaia_comodo 16
-gaia_t_pos 54 16
-gaia_t_pos_antiga 54 16
-gaia_t_pos_inicio_comodo 54 15
+state_atual 3
+gaia_comodo 12
+gaia_t_pos 31 17
+gaia_t_pos_antiga 31 17
+gaia_t_pos_inicio_comodo 32 16
 gaia_hp 10
 gaia_poderes 1
-p_deposito 0
-p_corredor2 0
+p_deposito 1
+p_corredor2 1
 esteira_ligada 1
 ja_mostrou_corre 1
 ja_mostrou_f_esteira 1

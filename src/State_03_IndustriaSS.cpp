@@ -150,7 +150,6 @@ void State_03_IndustriaSS::Update(float dt){
 
             //tile da poçao do chicote
             if(tile_map->GetTileInfo(data.gaia_comodo+2, data.gaia_t_pos.x, data.gaia_t_pos.y) == 89){
-                tile_map->ChangeTile(data.gaia_comodo+2, data.gaia_t_pos.x, data.gaia_t_pos.y, 0);
                 efeito.Open("audio/sons/got item.ogg");
                 efeito.Play(0);
                 data.ja_pegou_chicote = true;
@@ -237,9 +236,17 @@ void State_03_IndustriaSS::Update(float dt){
 
         if(!data.p_deposito){
             tile_map->ChangeTile(12, 26, 22, 0);
+            tile_map->ChangeTile(13, 27, 22, 91);
         }
         else{
             tile_map->ChangeTile(12, 26, 22, 14);
+            tile_map->ChangeTile(13, 27, 22, 0);
+        }
+        if(!data.ja_pegou_chicote){
+            tile_map->ChangeTile(10, 21, 25, 89);
+        }
+        else{
+            tile_map->ChangeTile(10, 21, 25, 0);
         }
     }
     else if(estado == FALA && !esta_pausado){

@@ -1,0 +1,18 @@
+s1_num_historia 2
+state_atual 3
+gaia_comodo 12
+gaia_t_pos 34 17
+gaia_t_pos_antiga 34 17
+gaia_t_pos_inicio_comodo 27 16
+gaia_hp 10
+gaia_poderes 1
+p_deposito 0
+p_corredor2 0
+esteira_ligada 1
+ja_mostrou_corre 1
+ja_mostrou_f_esteira 1
+ja_mostrou_f_chicote 0
+ja_ficou_encurralada 4
+ja_falou_velho 1
+ja_pegou_chave_rato 1
+ja_pegou_chicote 0

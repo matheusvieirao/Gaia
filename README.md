@@ -12,4 +12,4 @@ Gaia é uma gamartiniana que está cansada de viver uma vida monótona. Curiosa 
 O grupo do desenvovimento do jogo foi: Luís Filipe Andrade (Design), Isabelly Carvalho (Design), Gabriel (Música) e eu, Matheus Vieira (programação).
 
 ## Link do gameplay do jogo:
-[![Gameplay do jogo Gaia](https://i.ytimg.com/an_webp/5xlyS_qevVk/mqdefault_6s.webp?du=3000&sqp=CPTnhI4G&rs=AOn4CLCg0wRr_T5Q_Oc6JYpRd3Lc__sM5Q)](https://youtu.be/5xlyS_qevVk)
+[![Gameplay do jogo Gaia](img/thumbs/gaia-gameplay-thumbnail.webp)](https://youtu.be/5xlyS_qevVk)
